@@ -59,8 +59,14 @@ p{
     box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
     border-radius: 10px;
 
-    /* own explore:....holy shit...otherwise out chat wont work....fuck */
+    /* own explore:....holy shit...otherwise out chat wont work....fuck...TALENT FAZLE...how you became so TALENTED */
+    /* z-index: 100; */
+    
+}
+
+.zinIndexbb{
     z-index: 1000;
+
 }
 
 .showbb{

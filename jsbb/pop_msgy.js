@@ -9,20 +9,25 @@ const inputElm = document.querySelector('#inptTxt');
 const emojiBtn  = document.querySelector('#emoji-btnbb');
 let picker = null;
 
-
+// /* 
 // Emoji selection  
 window.addEventListener('DOMContentLoaded', () => {
     picker = new EmojiButton();
    
 
     picker.on('emoji', emoji => {
+      popup.classList.add('zinIndexbb');
       document.querySelector('input').value += emoji;
     });
   
     emojiBtn.addEventListener('click', () => {
+      ;
+      /* otherwise our emoji will under popup because of popup's huge z-index  */
+      popup.classList.remove('zinIndexbb');
       picker.togglePicker(emojiBtn);
     });
   });        
+
 
 //   chat button toggler 
 
