@@ -1,0 +1,130 @@
+.loaderbb {
+  position: absolute;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+
+.loaderbb:before {
+  content: 'Fazle';
+  content: 'f=000taki taki';
+  content: '';
+  display: block;
+  padding-top: 20%;
+  padding-top: 100%;
+}
+
+.loaderbb .svgbb {
+  -webkit-animation: rotatebb 2s linear infinite;
+          animation: rotatebb 2s linear infinite;
+  height: 100%;
+  -webkit-transform-origin: center center;
+          transform-origin: center center;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+@-webkit-keyframes rotatebb {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes rotatebb {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+.circlebb {
+  stroke-dasharray: 1, 200;
+  -webkit-animation: dashbb 1.5s ease-in-out infinite, colorbb 1.5s ease-in-out infinite;
+          animation: dashbb 1.5s ease-in-out infinite, colorbb 1.5s ease-in-out infinite;
+  stroke-linecap: square;
+  stroke-linecap: round;
+}
+
+@-webkit-keyframes dashbb {
+  0% {
+    /* dash length,,,distance between two dash */
+    /* first we have only 1 dash....and gap between 2 dash is 200 which is huge that's why we are only seeing only one dash  */
+    stroke-dasharray: 1, 200;
+    /* now starting  */
+    stroke-dashoffset: 0;
+  }
+  50% {
+    /* increasing dash length "89" that's why border is increasing */
+    stroke-dasharray: 89, 200;
+    /* negative value means moving dash to the right....after completing  */
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
+}
+
+@keyframes dashbb {
+  0% {
+    /* dash length,,,distance between two dash */
+    /* first we have only 1 dash....and gap between 2 dash is 200 which is huge that's why we are only seeing only one dash  */
+    stroke-dasharray: 1, 200;
+    /* now starting  */
+    stroke-dashoffset: 0;
+  }
+  50% {
+    /* increasing dash length "89" that's why border is increasing */
+    stroke-dasharray: 89, 200;
+    /* negative value means moving dash to the right....after completing  */
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
+}
+
+@-webkit-keyframes colorbb {
+  100%,
+  0% {
+    stroke: #d62d20;
+  }
+  40% {
+    stroke: #0057e7;
+  }
+  66% {
+    stroke: #008744;
+  }
+  80%,
+  90% {
+    stroke: #ffa700;
+  }
+}
+
+@keyframes colorbb {
+  100%,
+  0% {
+    stroke: #d62d20;
+  }
+  40% {
+    stroke: #0057e7;
+  }
+  66% {
+    stroke: #008744;
+  }
+  80%,
+  90% {
+    stroke: #ffa700;
+  }
+}
+/*# sourceMappingURL=animationc.css.map */

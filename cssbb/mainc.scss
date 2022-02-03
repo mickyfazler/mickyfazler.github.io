@@ -1,0 +1,379 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    /* outline: none; */
+  }
+  
+body{
+    max-width: 100vw;
+    max-height: 100vh;
+    // overflow: hidden;
+    // min-height: 100vh;
+    // max-width: 100vw;
+}
+
+#video-gridb{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    // overflow: hidden;
+ }
+video{
+  // height: 1080px;
+  // width: 400px;
+
+  width: 50vw;
+  height: 50vh;
+  /* height: auto; */
+  /* min-width: 300px;
+  max-height: 50%; */
+  object-fit: cover;
+                  /* All image croping from left and right and top-bottom side when we small .....yaho css 63.1*/
+  padding: 0px;
+ }
+ 
+
+.mainb {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-wrap: wrap;
+    // overflow: hidden;
+}
+
+.main__left { 
+    // flex: 0.8;          
+    flex: 1;          
+                /* it's actually flex-grow.....saw yaho flex 9 {and 11 and 14 code for know that it's shorthand1} */
+    display: flex;
+    flex-direction: column;
+}
+
+// .main__right {
+//     flex: 0.2
+// }
+
+/* his code */
+.main__videos {
+    flex-grow: 1;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+                             /* horizontally center <-> .....yaho flex 4 */ 
+    align-items: center;
+                        /* because of that our videos on vertically ↨  .....yaho flex 5*/
+    // padding: 10px;
+}
+
+.main__controls {
+    background-color: #1C1E20;
+}
+
+.main__right {
+    // background-color: #242324;
+    background-color: blue; 
+    border-left: 1px solid #3D3D42;
+}
+
+.main__controls {
+    color: #D2D2D2;
+    // background: yellow;
+    display: flex;
+    justify-content: space-between;
+                                    /* that's why first block at the left and 2nd on center and 3rd at the right */
+    // padding: 5px;
+    flex-wrap: wrap;
+}
+
+.main__controls__blockb {
+    display: flex;
+}
+
+.main__controls__button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    // padding: 8px 10px;
+    min-width: 80px;
+    cursor: pointer;
+   
+
+}
+
+/* that's why when we click on like 'mute' it shows a hover */
+/* his code...but I don't want...fuck */
+/* .main__controls__button:hover {
+    background-color: #343434;
+    border-radius: 5px;
+} */
+
+
+
+.main__controls__button i {
+    font-size: 24px;
+                    /* that's why text like 'mute,stop video  is big*/
+}
+
+.main__right {
+    display: flex;
+    flex-direction: column;
+}
+
+.main__header {
+    padding-top: 0px;
+    color: #F5F5F5;
+    text-align: center;
+                     /* horizontally center <-> .....yaho flex 4 */ 
+}
+
+/* .main__chat_window { */
+#main__chat_window {
+    // flex-grow: 1;
+                /* because of that 'input  at the last.....it takes all the space horizontally ↨(horizontally because upper you will saw [flex-direction: column;] own explore: } it can....saw yaho flex 9*/
+    overflow-y: auto;
+}
+
+.messages{
+    color: white;
+    list-style: none;
+}
+
+// .main__message_container {
+//     padding: 22px 12px;
+//     display: flex;
+// }
+
+.main__message_container input {
+    // flex-grow: 1;
+                /* sothat it takes the full width {horizontally <-> because [display: flex;] own explore: } */
+    background-color: transparent;
+    border: none;
+    color: #F5F5F5;
+}
+
+.leave_meeting {
+    color: #EB534B;
+}
+
+.unmute, .stop {
+    color: #CC3B33;
+}
+
+
+
+
+
+/* his code */
+
+.popup-screen{
+    z-index: 100;
+    position: fixed;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    transition: 0.5s ease;
+    transition-property: visibility;
+  }
+  
+  .popup-screen.active{
+    /* which div or anything which have this two class */
+    visibility: visible;
+    
+  
+  }
+  
+  .popup-box{
+    position: relative;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    max-width: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px;
+    padding: 50px 40px;
+    border-radius: 20px;
+    /* both same...but it's modern...but my old compiler don't understand this......https://stackoverflow.com/questions/66825515/getting-error-in-css-with-rgb0-0-0-15 */
+    // box-shadow: 0 5px 25px rgb(0 0 0 / 20%);
+
+    box-shadow: 0 5px 25px rgba(0, 0, 0,0.2);  
+    transform: scale(0);
+    transition: 0.5s ease;
+    transition-property: transform; 
+  }
+  
+  .popup-screen.active .popup-box{
+    transform: scale(1);
+  }
+
+  
+  /* 2 */
+  
+  
+  
+  form .data label{
+    font-size: 20px;
+  }
+  form .data input{
+    height: 100%;
+    width: 100%;
+    padding-left: 10px;
+    font-size: 17px;
+    border: 1px solid silver;
+  }
+  form .data input:focus{
+    border-color: #3498db;
+    border-bottom-width: 2px;
+    /* border-bottom-width: 8px; */
+    /* own explore */
+  }
+
+  form .btn{
+    margin: 30px 0;
+    height: 45px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+                /* Please commen this line to understand */
+  }
+  form .btn .inner{
+    height: 100%;
+    width: 100%;
+    width: 300%;
+    /* when we increase the width then it increase width from current to right...own explore */
+    /* width: 100vw; */
+    position: absolute;
+    left: -100%;
+    /* left: 0; */
+    z-index: -1;
+              /* it will show at the last AND OUR text will show */
+  
+    background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
+    /* left: 0; */
+  
+    transition: all 0.4s;
+    
+
+    
+  } 
+  // 
+  form .btn:hover .inner{
+    left: 0;
+  }
+  form .btn button{
+    height: 100%;
+    width: 100%;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+
+    /* by default not allowed...but it's not working */
+    /* cursor: not-allowed; */
+    /* pointer-events: none; */
+  }
+  form .signup-link{
+    text-align: center;
+  }
+  form .signup-link a{
+    color: #3498db;
+    text-decoration: none;
+  }
+  form .signup-link a:hover{
+    text-decoration: underline;
+  }
+
+
+
+  /* my code */
+  // because of this line...I want to comment out which I commented that's why I created this "scss: file...own explore: you became a GENIUS
+/*   #video-gridb{
+   
+    display: grid;
+    // grid-template-columns: minmax(50vw,100vw) minmax(50vw,100vw) ;
+    // grid-template-columns: minmax(50vw,100vw) minmax(50vw,100vw) ;
+    grid-template-columns: repeat(2,minmax(50%,100%)) ;
+    // grid-template-rows: 1fr 1fr;
+    grid-template-rows: repeat(auto-fit,1fr);   
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    // flex-wrap: wrap;         
+    padding: 0px;
+  }
+   */
+
+  .main__controls__button:hover,.chat-btnbb{
+    color: cyan;
+    border-radius: 5px;
+              /* offset-x | offset-y | blur-radius | color */
+              /* geek css. 130.html....multiple shadow */
+    box-shadow:  0 0 5px #33ffff,
+               0 0 10px #66ffff;
+  }
+
+  @media screen and (max-width:335px) {
+    .main__controls__button {
+      // font-size: 10px;
+      min-width: 50px;
+  
+    }
+
+    // .chat-popupbb{
+    //   width: ;
+    // }
+  
+  }
+
+  // @media screen and (max-width:600px) {
+  //   #video-gridb{
+  //   grid-template-columns: minmax(100%,100%) ;
+  //   }
+  // }
+
+@media screen and (max-width:346px) {
+  .popup-box{
+   
+    min-width: 260px;
+
+    margin: 10px;
+    /* vertical | horizontal */
+    padding: 30px 10px;
+   
+  }
+  .main__controls__button {
+    min-width: 50px;
+  
+   
+
+}
+  
+}
+
+@media screen and (max-width:710px) {
+  .main__controls__button span{
+    display: none;
+  }
+  // .main__left {
+  //   flex: 1;
+  // }
+  // .main__right {
+  //   flex: 0;
+  //   display: none;
+  // }
+}
+

@@ -1,0 +1,194 @@
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+   <title>Document</title>
+
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+                     <!-- we using bootstrap because of 'text font' -->
+
+   <link rel="stylesheet" href="cssbb/mainc.css">
+   <link rel="stylesheet" href="cssbb/ratingc.css">
+   <link rel="stylesheet" href="cssbb/animationc.css">
+   <link rel="stylesheet" href="cssbb/popup_messagey.css">
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> -->
+
+   <style>
+      /* .chat-popupbb{
+         display: none;
+      } */
+   </style>
+ 
+</head>
+
+<body>
+   <!-- <div class="chat-popupbb"  style="display: none;"> -->
+   <div class="chat-popupbb" >
+   <!-- <div class="chat-popupbb" > -->
+      <div class="badgebb" id="closemsgbb">X</div>
+      <div class="chat-areabb">
+       <div class="income-msgbb">
+           <!-- <img src="img/person.jpg" class="avatar" alt=""> -->
+           <!-- <img src="https://scontent.fcgp28-1.fna.fbcdn.net/v/t1.6435-1/cp0/c0.0.60.60a/p60x60/86468810_665797524174513_3326712462950006784_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=7206a8&_nc_ohc=sy3XG1aLy2MAX8k-1Ci&_nc_oc=AQkaOpod8cE9f5yPe7CD_x1ptDRBb8tdbqvj8YSxs8kWJkm3lr8hpx_d99_1zD25C34&_nc_ht=scontent.fcgp28-1.fna&oh=00_AT8qV26QuAQV-JmpVPU9T5ukq7_oLvJOfStUhdgwf1tqzg&oe=6221AD6E" class="avatarbb" alt=""> -->
+           <!-- <i><b>Others:</b></i>
+           <span class="msgbb"> Hi, How can I help you?</span> -->
+      </div>   
+   </div>
+
+      <div class="input-areab">
+          <input type="text" id="inptTxt">
+          <button id="emoji-btnbb"> &#127773;</button>
+          <button class="submitbb" id="btn_msg"><i class="fas fa-paper-plane"></i></button>
+      </div>
+  </div>
+
+   <div id="rating_scrnid" class='rating_screenbb' >
+      <div class='rating_screenboxbb'>
+         <div class="post">
+            <div class="text">Thanks for rating us!</div>
+         </div>
+         <div class="star-widget">
+            <input type="radio" name="rate" id="rate-5">
+            <label for="rate-5" class="fas fa-star"></label>
+            <input type="radio" name="rate" id="rate-4">
+            <label for="rate-4" class="fas fa-star"></label>
+            <input type="radio" name="rate" id="rate-3">
+            <label for="rate-3" class="fas fa-star"></label>
+            <input type="radio" name="rate" id="rate-2">
+            <label for="rate-2" class="fas fa-star"></label>
+            <input type="radio" name="rate" id="rate-1">
+            <label for="rate-1" class="fas fa-star"></label>
+            <form id="fdkfrm" action="#">
+               <header></header>
+               <div class="textarea">
+                  <textarea name="fedby" id="fedbackbb" cols="30" placeholder="Describe your experience.."></textarea>
+               </div>
+               <div class="btn">
+                  <button type="submit" id="postfdkbb">Post</button>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+
+   <div class="loaderbb" id="loaderbbid" style="display: none;">     
+      <svg class="svgbb"  viewBox="25 25 50 50">
+         <circle class="circlebb" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+      
+      </svg>
+   </div>
+      
+
+
+   <div class="mainb">
+      
+       <div class="popup-screen" >
+         <div class="popup-box" id="popidbb">
+            <p style="color:red;" id='inpt_errory'></p>
+           <form action="#" id='popFormbb'>
+             <div class="data">
+                <label>Room Name</label>
+                <input id='input_roomnamebb' type="text" placeholder='Join or Create any Room' required>
+             </div>
+             <div class="data">
+                <label>Your Name</label>
+                <input id='input_usernamebb' placeholder="Just give your name." type="text" required>
+             </div>
+            
+             <div class="btn">
+                <div class="inner"></div>
+                <button id='joinbtnbb' type="submit" >Enter</button>
+             </div>
+            
+          </form>
+         </div>
+
+
+         <!-- <div class="loaderbb" id="loaderbbid" style="display: none;">     
+            <svg class="svgbb"  viewBox="25 25 50 50">
+               <circle class="circlebb" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+            
+            </svg>
+         </div> -->
+       </div>
+
+     
+      
+       <div class="main__left">
+         <div class="main__videos" id="main_videobb">
+            <div id="video-gridb">
+               <div id="myvideobb">
+                  <video id="local_vidb" autoplay playsinline></video>
+               </div>
+            </div>
+         </div>
+         <div class="main__controls" id="allControlsbb">     <!-- means all the button at the left down....like mute,stop vide,.... -->
+            <div class="main__controls__blockb">         <!-- we have three blocks {mute,stop vide},{security,participants,chat},{leave meeting} -->
+
+             
+               <div id='toggle_audiob' class="main__controls__button main__mute_button">
+                  <i class="fas fa-microphone"></i>
+                  <span>Mute</span>
+               </div>
+               
+               <div id='toggle_vidb' class="main__controls__button main__video_button" >
+                  <i class="fas fa-video"></i>
+               
+                  <span>Stop Video</span>
+
+               </div>
+
+               
+         
+            </div> 
+
+            <div style="display: flex;">
+            <div class="main__controls__button chat-btnbb" >
+               <i id="msgiconbb"  class="fa fa-message">
+                  <div class="badgebb" id="newMsgbb" style="display: none;">1</div>
+
+               </i>
+            </div>
+
+            <div id='leave_meeting' class="main__controls__blockb">
+               <div  class="main__controls__button">
+                  <!-- <i class="fas fa-stop-circle"></i> -->
+                  <i class="fas fa-phone-slash"></i>
+                  <span class="leave_meeting">Leave Meeting</span>
+               </div>
+            </div>
+         </div>
+
+         </div>
+      </div>
+      
+      <!-- means "chat" baby  -->
+      <!-- <div class="main__right" style="display: none;">     
+         <div class="main__header">
+            <h6>Chat</h6>
+         </div>
+         <div id="main__chat_window">
+            <ul class="messages">
+               
+            </ul>
+
+         </div>
+         <div class="main__message_container">
+            <input id="input_messageh" type="text" placeholder="Type message here...">
+         </div>
+      </div> -->
+   </div>
+   <script src="jsbb/mainbb.js"></script>
+   <script src="jsbb/ratingg.js"></script>
+   <script src="jsbb/pop_msgy.js"></script>
+
+   <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.1.1/dist/index.min.js"></script>
+
+</body>
+</html>

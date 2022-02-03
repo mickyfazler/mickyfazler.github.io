@@ -1,0 +1,121 @@
+$green: #008744;
+$blue: #0057e7;
+$red: #d62d20;
+$yellow: #ffa700;
+$white: #eee;
+
+// scaling... any units
+// $width: 500px;
+// $width: 45%;
+
+.loaderbb {
+  // Relative...it works from the current position and it don't care does it goes on upper or not just moving from it's current position...yaho>css>43.1
+
+  position: absolute;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  // width: $width;
+
+  // backdrop-filter: blur(20px);
+ z-index: 1000;
+  // instead of giving the ":before" you can give it....own explore: talent fazle 
+//   height: $width;
+   &:before {
+      content: 'Fazle';
+      content: 'f=000taki taki';
+      content: '';
+    //   background: pink;
+      
+      // we must need to give it ....other wise default is inline then our padding won't work
+      display: block;
+  
+      // here this padding actualy giving the height of our svg and showing on the screen own explore: talent fazle 
+      padding-top: 20%;
+      padding-top: 100%;
+    }
+     
+   
+}
+
+.loaderbb .svgbb {
+ 
+  animation: rotatebb 2s linear infinite;
+  height: 100%;
+  transform-origin: center center;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+// rotating our "svg" 
+@keyframes rotatebb {
+  100% {
+  // 0%{
+    transform: rotate(360deg);
+  }
+}
+.circlebb {
+  stroke-dasharray: 1, 200;
+
+  // NOW YOU WILL SAW ALL THE THIng seeing as percentage shown on "@keyframes colorbb " ....crazy ...I understand you are a GENIUS
+  animation: dashbb 1.5s ease-in-out infinite, colorbb 1.5s ease-in-out infinite;
+  // animation: colorbb 6s ease-in-out infinite;
+  // animation: dashbb 15s ease-in-out infinite;
+  stroke-linecap: square;
+  stroke-linecap: round;
+}
+
+
+
+@keyframes dashbb {
+  0% {
+  /* dash length,,,distance between two dash */
+    /* first we have only 1 dash....and gap between 2 dash is 200 which is huge that's why we are only seeing only one dash  */
+  //detailed info... yaho baba svg>15.1....
+
+    stroke-dasharray: 1, 200;
+    /* now starting  */
+    // stroke-dasharray: 10, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    /* increasing dash length "89" that's why border is increasing */
+    stroke-dasharray: 89, 200;
+    /* negative value means moving dash to the right....after completing  */
+    stroke-dashoffset: -35px;
+    // stroke-dashoffset: 35px;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+    // stroke-dashoffset: 70px;
+  }
+}
+
+@keyframes colorbb {
+  //detailed info... yaho baba css>61....own explore baby 2 
+
+  100%,
+  0% {
+      // it gives border color...yaho 15.1
+    stroke: $red;
+  }
+  40% {
+    stroke: $blue;
+  }
+  66% {
+    stroke: $green;
+  }
+  80%,
+  90% {
+    stroke: $yellow;
+  }
+}
+
+
