@@ -1,11 +1,11 @@
 // 7,00 screen share
-// const popupScreen = document.querySelector(".popup-screen");
+const popupScreen = document.querySelector(".popup-screen");
 
-// window.addEventListener("load", () => {
-//     setTimeout(() => {
-//     popupScreen.classList.add("active");
-//     }, 2000); //Popup the screen in 02 seconds after the page is loaded.
-// });
+window.addEventListener("load", () => {
+    setTimeout(() => {
+    popupScreen.classList.add("active");
+    }, 2000); //Popup the screen in 02 seconds after the page is loaded.
+});
 
 
 
@@ -161,7 +161,7 @@ btnjoiny.addEventListener('click',(e)=>{
     console.log('endPoint',endPoint)
 
     // webSockety = new WebSocket(endPoint);
-    // webSockety = new WebSocket('wss://holecomb.herokuapp.com/');
+    webSockety = new WebSocket('wss://holecomb.herokuapp.com/');
     // webSockety = new WebSocket('ws://127.0.0.1:8000/');
     webSockety.addEventListener('open',(e)=>{ // NOTE: he always write like this ....which is suck
     // webSockety.onopen = () =>{         // NOTE: learn from codewithsingh 
