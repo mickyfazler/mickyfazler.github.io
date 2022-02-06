@@ -179,17 +179,17 @@ video{
     display: flex;
     justify-content: center;
     align-items: center;
-    visibility: hidden;
+    // visibility: hidden; 
+    // visibility: visible; 
     transition: 0.5s ease;
     transition-property: visibility;
   }
   
-  .popup-screen.active{
-    /* which div or anything which have this two class */
-    visibility: visible;
-    
+  // .popup-screen.activedd{
+  //   // which div or anything which have this two class
+  //   visibility: visible;  
   
-  }
+  // }
   
   .popup-box{
     position: relative;
@@ -212,7 +212,8 @@ video{
     transition-property: transform; 
   }
   
-  .popup-screen.active .popup-box{
+  .popup-screen.activedd .popup-box{
+  // .popup-screen .popup-box{
     transform: scale(1);
   }
 

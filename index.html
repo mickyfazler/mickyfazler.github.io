@@ -8,7 +8,7 @@
 
    <title>Document</title>
 
-   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+   <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"> -->
                      <!-- we using bootstrap because of 'text font' -->
 
    <link rel="stylesheet" href="cssbb/mainc.css">
@@ -19,17 +19,32 @@
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> -->
 
-   <style>
-      /* .chat-popupbb{
+   <!-- learn more about "defer" on https://stackoverflow.com/questions/13846621/how-to-get-a-script-to-load-last-on-webpage ...fuck... -->
+   <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.1.1/dist/index.min.js" defer></script>
+
+
+  <style>
+     /* .chat-popupbb{
          display: none;
       } */
-   </style>
+  </style>
  
+
 </head>
 
+
 <body>
-   <!-- <div class="chat-popupbb"  style="display: none;"> -->
-   <div class="chat-popupbb zinIndexbb" >
+   
+   <div class="loaderbb" id="loaderbbid" style="display: none;">     
+      <svg class="svgbb"  viewBox="25 25 50 50">
+         <circle class="circlebb" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+      
+      </svg>
+   </div>
+
+
+   <div class="chat-popupbb zinIndexbb"  style="display: none;">
+   <!-- <div class="chat-popupbb zinIndexbb" > -->
    <!-- <div class="chat-popupbb" > -->
       <div class="badgebb" id="closemsgbb">X</div>
       <div class="chat-areabb">
@@ -42,16 +57,28 @@
    </div>
 
       <div class="input-areab">
-          <input type="text" id="inptTxt">
+         <!-- use https://stackoverflow.com/questions/1338483/detecting-value-of-input-text-field-after-a-keydown-event-in-the-text-field ratherr then onkeydown...own explore: -->
+          <input type="text" id="inptTxt" oninput="msgPressFuncbb()">
           <button id="emoji-btnbb"> &#127773;</button>
-          <button class="submitbb" id="btn_msg"><i class="fas fa-paper-plane"></i></button>
+
+         
+             <!-- 👋 -->
+            <!-- using "fas" sothat both position same...own explore: -->
+            <button class="submitbb wavebb" style="display: block;" id="btn_msg"><i class="fas" style="font-size:30px;">&#128075;</i></button>
+          <button class="submitbb planebb" id="btn_msg" style="display: none;"><i class="fas fa-paper-plane" style="color: black; font-size:30px;"></i></button>
+          
+          <!-- <button class="submitbb" id="btn_msg"><span style='font-size:30px; z-index: 10000; position: absolute; margin-bottom: 16px;'>&#128075;</span></button> -->
+          
+            
+     
       </div>
   </div>
 
-   <div id="rating_scrnid" class='rating_screenbb' >
+  <!-- giving inline css because....if we don't give it then until our css load they still show...fuck...own explore: master mind -->
+   <div id="rating_scrnid" class='rating_screenbb' style="visibility: hidden; ">
       <div class='rating_screenboxbb'>
          <div class="post">
-            <div class="text">Thanks for rating us!</div>
+            <div class="text">Thanks for rating us!😁</div>
          </div>
          <div class="star-widget">
             <input type="radio" name="rate" id="rate-5">
@@ -77,18 +104,14 @@
       </div>
    </div>
 
-   <div class="loaderbb" id="loaderbbid" style="display: none;">     
-      <svg class="svgbb"  viewBox="25 25 50 50">
-         <circle class="circlebb" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
-      
-      </svg>
-   </div>
+   
       
 
 
    <div class="mainb">
       
-       <div class="popup-screen" >
+       <div class="popup-screen" style="visibility: hidden;" >
+       <!-- <div class="popup-screen"  > -->
          <div class="popup-box" id="popidbb">
             <p style="color:red;" id='inpt_errory'></p>
            <form action="#" id='popFormbb'>
@@ -151,7 +174,7 @@
             <div style="display: flex;">
             <div class="main__controls__button chat-btnbb" >
                <i id="msgiconbb"  class="fa fa-message">
-                  <div class="badgebb" id="newMsgbb" style="display: none;">1</div>
+                  <div class="badgebb" id="newMsgNumbb" style="display: none;">1</div>
 
                </i>
             </div>
@@ -184,11 +207,17 @@
          </div>
       </div> -->
    </div>
+
+   <script>
+
+
+      
+  </script>
+
    <script src="jsbb/mainbb.js"></script>
    <script src="jsbb/ratingg.js"></script>
    <script src="jsbb/pop_msgy.js"></script>
 
-   <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.1.1/dist/index.min.js"></script>
 
 </body>
 </html>

@@ -1,8 +1,10 @@
 const leave_meeting=document.querySelector('#leave_meeting');
-console.log(leave_meeting);
+// console.log(leave_meeting);
+const ratingScrn=document.querySelector('#rating_scrnid');
 leave_meeting.onclick=()=>{
     console.log('taki clicked');
-    document.querySelector('#rating_scrnid').classList.add("activebb");
+    ratingScrn.style.visibility= 'visible';
+    ratingScrn.classList.add("activebb");
     // webSockety.close();
     // peeryk.close();
 
@@ -65,7 +67,11 @@ leave_meeting.onclick=()=>{
 
         webSockety.close();
         peeryk.close();
-        
+
+        // giving back to previous page
+        setTimeout(() => {            
+            window.history.go(-1)
+        }, 2000);
         
         return false;
     }

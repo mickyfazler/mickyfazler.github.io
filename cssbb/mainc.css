@@ -200,16 +200,10 @@ video {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  visibility: hidden;
   -webkit-transition: 0.5s ease;
   transition: 0.5s ease;
   -webkit-transition-property: visibility;
   transition-property: visibility;
-}
-
-.popup-screen.active {
-  /* which div or anything which have this two class */
-  visibility: visible;
 }
 
 .popup-box {
@@ -247,7 +241,7 @@ video {
   transition-property: transform, -webkit-transform;
 }
 
-.popup-screen.active .popup-box {
+.popup-screen.activedd .popup-box {
   -webkit-transform: scale(1);
           transform: scale(1);
 }

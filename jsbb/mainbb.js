@@ -1,10 +1,23 @@
 // 7,00 screen share
 const popupScreen = document.querySelector(".popup-screen");
 
+
+
 window.addEventListener("load", () => {
     setTimeout(() => {
-    popupScreen.classList.add("active");
+        console.log('loaded baby');
+        popupScreen.classList.add("activedd");
+        
+        // we giving both because....actually this will visible....but if we add that class that "visibility" give animation...own explore: master mind
+        popupScreen.style.visibility= "visible";
+        
+        // because "input_roomnamebb" visible after "0.5s"{mainc.scss}...genius
+        setTimeout(() => {
+            document.getElementById("input_roomnamebb").focus();
+        }, 600);
+
     }, 2000); //Popup the screen in 02 seconds after the page is loaded.
+
 });
 
 
@@ -35,7 +48,9 @@ function WebsocketOnMessageFucnbb(event) {
     console.log('actiony',actiony);
     if (usernamey == peerUserNamey) {
         console.log('both same');
-        popupScreen.classList.remove("active"); 
+        popupScreen.classList.remove("activedd"); 
+        popupScreen.style.visibility= 'hidden';
+
         animationnn.style.display="none"; 
 
         return;
@@ -48,6 +63,8 @@ function WebsocketOnMessageFucnbb(event) {
         // const frm= document.querySelector('#popFormbb');
         // frm.reset();
         err.innerHTML='Please give another user name';
+        document.getElementById("input_usernamebb").focus();
+
         return;
     }
     console.log('i am under');
@@ -85,10 +102,11 @@ function WebsocketOnMessageFucnbb(event) {
 
 // learned from https://stackoverflow.com/questions/707565/how-do-you-add-css-with-javascript .....cool
 // Your CSS as text
+/* 
 let popy=document.getElementById('popidbb');
+// we need to give px otherwise it wont work.....popy.offsetLeft} means how much 'popy' left from the browser left....  offsetWidth means "popy' width
 var stylesbb = `
     .loaderbb{
-        /* we need to give px otherwise it wont work.....popy.offsetLeft} means how much 'popy' left from the browser left....  offsetWidth means "popy' width*/
         // offsetLeft:${popy.offsetLeft};
         offsetLeft:${popy.offsetLeft}px;
         offsetTop:${popy.offsetTop}px;
@@ -100,6 +118,29 @@ var stylesbb = `
 var styleSheetbb = document.createElement("style");
 styleSheetbb.type = "text/css";
 styleSheetbb.innerText = stylesbb;
+ */
+
+/* making reuseable */
+function loadingAnimationbb(selectorbb) {
+    let popy=document.querySelector(selectorbb);
+    var stylesbb = `
+        .loaderbb{
+            // offsetLeft:${popy.offsetLeft};
+            offsetLeft:${popy.offsetLeft}px;
+            offsetTop:${popy.offsetTop}px;
+            width:${Math.min(popy.offsetWidth,popy.offsetHeight)}px;
+            backdrop-filter: blur(10px);
+        }   
+    `
+    
+    var styleSheetbb = document.createElement("style");
+    styleSheetbb.type = "text/css";
+    styleSheetbb.innerText = stylesbb;
+
+    animationnn.style.display="block";
+    document.head.appendChild(styleSheetbb) 
+}
+
 
 /* stackoverflow copy end */
 btnjoiny.addEventListener('click',(e)=>{
@@ -123,9 +164,13 @@ btnjoiny.addEventListener('click',(e)=>{
         // console.log('widthy',window.innerWidth);
         // const circleRadiusbb=widthy/2;
         // console.log('circleRadiusbb',circleRadiusbb);
-        document.head.appendChild(styleSheetbb) 
+        
+        // before
+        // document.head.appendChild(styleSheetbb) 
+        // animationnn.style.display="block";
+        // after...automate
+        loadingAnimationbb('#popidbb')
 
-        animationnn.style.display="block";
         // animationnn.style.width=`${circleRadiusbb}px`;
         // document.getElementsByClassName('loaderbb').style.width=`${circleRadiusbb}px`;
 
@@ -226,7 +271,8 @@ function resizeVideobb() {
     // } 
 
     // if (totalUserb ==2 && isWidthBigbb) {
-    if (totalUserb ==2 ) {
+    // if (totalUserb ==2 ) {
+    if (totalUserb <=2 ) {
         if (isWidthBigbb) {
             console.log('1st baby');
             /* width: ${main_videoWidthb/2}px; */
@@ -234,7 +280,9 @@ function resizeVideobb() {
             stylesbb2 = `
             video{
                 width: ${main_videoWidthb/2}px;
+                /* it don't show good */
                 height: ${main_videoHeightbb}px;
+                /* height: ${main_videoHeightbb/0.8}px; */
                 } 
             `      
         }else{
@@ -243,7 +291,9 @@ function resizeVideobb() {
             video{
                 /* showing on full screen */
                 height: ${main_videoHeightbb/2}px; 
+                /* it don't show good */
                 width: ${main_videoWidthb}px;
+                /* width: ${main_videoWidthb/2}px; */
                 } 
             `      
         }
@@ -511,8 +561,8 @@ let iceServersh = {     // "h" in last means html
       {
         "urls": [
             "stun:stun.l.google.com:19302", 
-        "stun:stun1.l.google.com:19302", 
-        "stun:stun2.l.google.com:19302"
+            "stun:stun1.l.google.com:19302", 
+            "stun:stun2.l.google.com:19302"
     ]
       }
     ],
@@ -520,8 +570,8 @@ let iceServersh = {     // "h" in last means html
    
 var peeryk;
 function createOffererFuncbb(peerUserNamecc,receiver_channel_namecc) {
-    // var peercc=new RTCPeerConnection(null);
-    var peercc=new RTCPeerConnection(iceServersh);
+    var peercc=new RTCPeerConnection(null);
+    // var peercc=new RTCPeerConnection(iceServersh);
     peeryk=peercc;
     addLocalTracksFuncbb(peercc);
 

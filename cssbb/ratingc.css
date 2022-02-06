@@ -32,22 +32,26 @@
 .rating_screenbb{
   z-index: 200;
   position: fixed;
+ 
   background: rgba(255, 255, 255, 0.1); 
+  background: rgba(255, 255, 255, 0.5); 
   backdrop-filter: blur(10px);
   width: 100%;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  visibility: hidden;
+  /* visibility: hidden; */
   transition: 0.5s ease;
   transition-property: visibility;
 }
+
+/* which div or anything which have this two class */
+/* 
 .rating_screenbb.activebb{
-  /* which div or anything which have this two class */
   visibility: visible;
 }
-
+ */
 .rating_screenboxbb{
   position: relative;
   width: 400px;
