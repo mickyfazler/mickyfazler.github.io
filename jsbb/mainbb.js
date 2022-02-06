@@ -570,8 +570,8 @@ let iceServersh = {     // "h" in last means html
    
 var peeryk;
 function createOffererFuncbb(peerUserNamecc,receiver_channel_namecc) {
-    var peercc=new RTCPeerConnection(null);
-    // var peercc=new RTCPeerConnection(iceServersh);
+    // var peercc=new RTCPeerConnection(null);
+    var peercc=new RTCPeerConnection(iceServersh);
     peeryk=peercc;
     addLocalTracksFuncbb(peercc);
 
