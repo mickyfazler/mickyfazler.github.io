@@ -190,7 +190,7 @@ btnjoiny.addEventListener('click',(e)=>{
     // labelUsernamey.innerText=usernamey;
 
 
-    var locb=window.location;
+/*     var locb=window.location;
     console.log('window.location',window.location)
     var wsStart='ws://'
     
@@ -204,7 +204,7 @@ btnjoiny.addEventListener('click',(e)=>{
     var endPoint=wsStart + locb.host + locb.pathname
     console.log(`locb.host-> ${locb.host }, locb.pathname-> ${locb.pathname} ,locb.protocol ${locb.protocol}`)
     console.log('endPoint',endPoint)
-
+ */
     // webSockety = new WebSocket(endPoint);
     // webSockety = new WebSocket('wss://holecomb.herokuapp.com/');
     webSockety = new WebSocket('wss://web-production-807b.up.railway.app/');
