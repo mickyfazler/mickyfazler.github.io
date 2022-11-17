@@ -206,8 +206,9 @@ btnjoiny.addEventListener('click',(e)=>{
     console.log('endPoint',endPoint)
 
     // webSockety = new WebSocket(endPoint);
-    webSockety = new WebSocket('wss://holecomb.herokuapp.com/');
-    // webSockety = new WebSocket('ws://127.0.0.1:8000/');
+    // webSockety = new WebSocket('wss://holecomb.herokuapp.com/');
+    // webSockety = new WebSocket('wss://web-production-807b.up.railway.app/');
+    webSockety = new WebSocket('ws://127.0.0.1:8000/');
     webSockety.addEventListener('open',(e)=>{ // NOTE: he always write like this ....which is suck
     // webSockety.onopen = () =>{         // NOTE: learn from codewithsingh 
         console.log('connection openebb');
@@ -584,6 +585,7 @@ function createOffererFuncbb(peerUserNamecc,receiver_channel_namecc) {
     dcc.addEventListener('message',dcOnMessageFuncbb);          // NOTE: it's 'message' not 'messagejs'....own explore: it takes my 2 hours
 
     var remoteVideocc=creatVideoFuncbb(peerUserNamecc);
+    loadingAnimationbb(`#${peerUserNamecc}-video`);
     
     setOnTrackFuncbb(peercc,remoteVideocc);
     mapPeersy[peerUserNamecc] = [peercc,dcc];
@@ -617,6 +619,16 @@ function createOffererFuncbb(peerUserNamecc,receiver_channel_namecc) {
             'receiver_channel_namejs':receiver_channel_namecc
         });
     });
+
+    peercc.addEventListener('connectionstatechange', event => {
+        if (peercc.connectionState === 'connected') {
+            // Peers connected!
+            console.log('connected baby');
+            animationnn.style.display="none"; 
+
+        }
+    });
+
     peercc.createOffer()      // NOTE: IT'S not "createOffererFuncbb" ....it's 'createOffer 
         .then(o=>peercc.setLocalDescription(o))
         .then(()=>{
@@ -638,6 +650,7 @@ function createAnswererFuncbb(offeraa,peerUserNameaa,receiver_channel_nameaa){
 
 
     var remoteVideo=creatVideoFuncbb(peerUserNameaa);
+    loadingAnimationbb(`#${peerUserNameaa}-video`);
     setOnTrackFuncbb(peeraa,remoteVideo);
 
 
@@ -688,6 +701,18 @@ function createAnswererFuncbb(offeraa,peerUserNameaa,receiver_channel_nameaa){
             'receiver_channel_namejs':receiver_channel_nameaa
         })
     });
+    
+    // https://webrtc.org/getting-started/peer-connections#connection_established
+    peeraa.addEventListener('connectionstatechange', event => {
+        if (peeraa.connectionState === 'connected') {
+            // Peers connected!
+            console.log('connected baby');
+            animationnn.style.display="none"; 
+
+        }
+    });
+
+    
     peeraa.setRemoteDescription(offeraa)
     .then(()=>{
         console.log(`Remote description set successfully for ${peerUserNameaa}`)
@@ -731,6 +756,7 @@ function dcOnMessageFuncbb(eventd) {
 }
  */
 
+var loadingVideob=[];
 // done
 function creatVideoFuncbb(peerUserNamec) {
     console.log('creatVideoFuncbb called');
@@ -747,7 +773,8 @@ function creatVideoFuncbb(peerUserNamec) {
     var videoWrapperv=document.createElement('div');
     videoGridv.appendChild(videoWrapperv);
     videoWrapperv.appendChild(remoteVideov);
-    
+    // loadingAnimationbb(`#${peerUserNamec}-video`);
+    // loadingVideob.push(`#${peerUserNamec}-video`);
     return remoteVideov;
 }
 
