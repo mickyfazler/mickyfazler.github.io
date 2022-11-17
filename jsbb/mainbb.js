@@ -207,8 +207,8 @@ btnjoiny.addEventListener('click',(e)=>{
 
     // webSockety = new WebSocket(endPoint);
     // webSockety = new WebSocket('wss://holecomb.herokuapp.com/');
-    // webSockety = new WebSocket('wss://web-production-807b.up.railway.app/');
-    webSockety = new WebSocket('ws://127.0.0.1:8000/');
+    webSockety = new WebSocket('wss://web-production-807b.up.railway.app/');
+    // webSockety = new WebSocket('ws://127.0.0.1:8000/');
     webSockety.addEventListener('open',(e)=>{ // NOTE: he always write like this ....which is suck
     // webSockety.onopen = () =>{         // NOTE: learn from codewithsingh 
         console.log('connection openebb');
