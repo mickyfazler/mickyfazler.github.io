@@ -73,8 +73,12 @@ function WebsocketOnMessageFucnbb(event) {
     var receiver_channel_namey=parsedData['messagejs']['receiver_channel_namejs'];
 
     if (parsedData['messagejs']['candiatejs']) {
-        peerBeforebb.addIceCandidate(parsedData['messagejs']['candiatejs'])
-        return
+        console.log('candi ->',peerBeforebb);
+        if (peerBeforebb) {
+            peerBeforebb.addIceCandidate(parsedData['messagejs']['candiatejs'])
+            return
+            
+        }
 
     }
     if (actiony == 'new-peerjs') {
@@ -95,7 +99,8 @@ function WebsocketOnMessageFucnbb(event) {
     if (actiony == 'new-answerjs') {
         var answer=parsedData['messagejs']['sdpjs'];
         var peer=mapPeersy[peerUserNamey][0];
-        peer.setRemoteDescription(answer);
+        // peer.setRemoteDescription(answer);
+        peerBeforebb.setRemoteDescription(answer);
 
 
         return;
@@ -103,6 +108,7 @@ function WebsocketOnMessageFucnbb(event) {
 
     
 }
+
 
 
 // learned from https://stackoverflow.com/questions/707565/how-do-you-add-css-with-javascript .....cool
@@ -575,7 +581,8 @@ let iceServersh = {     // "h" in last means html
   }; 
 
 
-let peerBeforebb=new RTCPeerConnection(iceServersh);            // own explore: idea to save time baby GENIUS:
+// let peerBeforebb=new RTCPeerConnection(iceServersh);            // own explore: idea to save time baby GENIUS:
+let peerBeforebb;         
 /* 
 let myBeforeOfferbb;
 let myBeforeAnswerbb; 
@@ -592,11 +599,11 @@ initbb(); */
 let createOffererFuncbb = async (peerUserNamecc,receiver_channel_namecc) => {
     console.log('creating offer');
     // var peercc=new RTCPeerConnection(null);
-    // var peercc=new RTCPeerConnection(iceServersh);
-    // peeryk=peercc;
-
-    var peercc=peerBeforebb
+    var peercc=new RTCPeerConnection(iceServersh);
     peeryk=peercc;
+    peerBeforebb=peercc
+    // var peercc=peerBeforebb
+    // peeryk=peercc;
 
     // addLocalTracksFuncbb(peercc);
     addLocalTracksFuncbb();
@@ -700,11 +707,12 @@ let createAnswererFuncbb = async (offeraa,peerUserNameaa,receiver_channel_nameaa
     console.log('creating Answerer');
   
     // var peeraa=new RTCPeerConnection(null);
-    // var peeraa=new RTCPeerConnection(iceServersh);
-    // peeryk=peeraa;
-
-    peeraa=peerBeforebb;
+    var peeraa=new RTCPeerConnection(iceServersh);
     peeryk=peeraa;
+    peerBeforebb=peeraa; 
+
+    // peeraa=peerBeforebb;
+    // peeryk=peeraa;
     // addLocalTracksFuncbb(peeraa);
     addLocalTracksFuncbb();
 
@@ -753,14 +761,25 @@ let createAnswererFuncbb = async (offeraa,peerUserNameaa,receiver_channel_nameaa
         if (eventaa.candidate) {
             // console.log('New Ice candidate',JSON.stringify(peeraa.localDescription));
             console.log('New Ice candidate answer');
-            return;
-        }
 
+            // sendSignalFuncbb('new-answerjs',{
+            sendSignalFuncbb('dd',{
+                // 'sdpjs':peeraa.localDescription,
+                // 'receiver_channel_namejs':receiver_channel_nameaa,
+                    // 'sdpjs':peercc.localDescription,
+                    'candiatejs':eventaa.candidate,
+                    'receiver_channel_namejs':receiver_channel_nameaa
+                });
+            }
+    
+            // })
+        
         console.log('OUT New Ice candidate baby answer');           // own explore:we are sending all the ice candidate at once GENIUS: you can do anything
-        sendSignalFuncbb('new-answerjs',{
-            'sdpjs':peeraa.localDescription,
-            'receiver_channel_namejs':receiver_channel_nameaa
-        })
+        return;
+        // sendSignalFuncbb('new-answerjs',{
+        //     'sdpjs':peeraa.localDescription,
+        //     'receiver_channel_namejs':receiver_channel_nameaa
+        // })
     };
     // });
     
@@ -774,16 +793,46 @@ let createAnswererFuncbb = async (offeraa,peerUserNameaa,receiver_channel_nameaa
         }
     });
 
-    
-    peeraa.setRemoteDescription(offeraa)
+
+     
+    // NOTE:I don't understand why it's not working... own explore:please
+//     peeraa.setRemoteDescription(offeraa);
+//     peeraa.createAnswer().then((a)=>{
+//         console.log(`Remote description set successfully for ${peerUserNameaa}`)
+//         // return myBeforeAnswerbb;     
+//         peeraa. setLocalDescription(a);
+//         return ;     // it's not "createAnswererFuncbb" 
+//     })
+
+
+// peeraa.setRemoteDescription(offeraa)
+//     .then(()=>{
+//         console.log(`Remote description set successfully for ${peerUserNameaa}`)
+//         return peeraa.createAnswer();     // it's not "createAnswererFuncbb" 
+//         // return myBeforeAnswerbb;     
+//     })
+//     .then(a=>{
+//         console.log('Answer Created baby');
+//         peeraa.setLocalDescription(a)
+//     })
+
+
+//  both same baby..... you can do anything 
+peeraa.setRemoteDescription(offeraa)
     .then(()=>{
         console.log(`Remote description set successfully for ${peerUserNameaa}`)
-        return peeraa.createAnswer();     // it's not "createAnswererFuncbb" 
+             // it's not "createAnswererFuncbb" 
         // return myBeforeAnswerbb;     
     })
+    peeraa.createAnswer()
     .then(a=>{
         console.log('Answer Created baby');
-        peeraa.setLocalDescription(a)
+        peeraa.setLocalDescription(a);
+        sendSignalFuncbb('new-answerjs',{
+            // 'sdpjs':peeraa.localDescription,         // own explore:it's wrong... GENIUS:
+            'sdpjs':a,
+            'receiver_channel_namejs':receiver_channel_nameaa
+        })
     })
 }
 
