@@ -1,3 +1,5 @@
+
+
 // 7,00 screen share
 const popupScreen = document.querySelector(".popup-screen");
 
@@ -72,11 +74,6 @@ function WebsocketOnMessageFucnbb(event) {
 
     var receiver_channel_namey=parsedData['messagejs']['receiver_channel_namejs'];
 
-    if (parsedData['messagejs']['candiatejs']) {
-        peerBeforebb.addIceCandidate(parsedData['messagejs']['candiatejs'])
-        return
-
-    }
     if (actiony == 'new-peerjs') {
         console.log('new-peerjs baby');
         createOffererFuncbb(peerUserNamey,receiver_channel_namey);
@@ -572,34 +569,14 @@ let iceServersh = {     // "h" in last means html
     ]
       }
     ],
-  }; 
-
-
-let peerBeforebb=new RTCPeerConnection(iceServersh);            // own explore: idea to save time baby GENIUS:
-/* 
-let myBeforeOfferbb;
-let myBeforeAnswerbb; 
-let initbb = async () => {
-
-     peerBeforebb=new RTCPeerConnection(iceServersh);            // own explore: idea to save time baby GENIUS:
-     myBeforeOfferbb=peerBeforebb.createOffer();            // save time baby GENIUS: .....// NOTE: IT'S not "createOffererFuncbb" ....it's 'createOffer 
-    myBeforeAnswerbb=peerBeforebb.createAnswer();            //  save time baby GENIUS: .....
-}
-initbb(); */
-
-
-// function createOffererFuncbb(peerUserNamecc,receiver_channel_namecc) {
-let createOffererFuncbb = async (peerUserNamecc,receiver_channel_namecc) => {
-    console.log('creating offer');
+  };
+   
+var peeryk;
+function createOffererFuncbb(peerUserNamecc,receiver_channel_namecc) {
     // var peercc=new RTCPeerConnection(null);
-    // var peercc=new RTCPeerConnection(iceServersh);
-    // peeryk=peercc;
-
-    var peercc=peerBeforebb
+    var peercc=new RTCPeerConnection(iceServersh);
     peeryk=peercc;
-
-    // addLocalTracksFuncbb(peercc);
-    addLocalTracksFuncbb();
+    addLocalTracksFuncbb(peercc);
 
     var dcc=peercc.createDataChannel('channel');
     // dcc.onopen =()=>{
@@ -632,29 +609,18 @@ let createOffererFuncbb = async (peerUserNamecc,receiver_channel_namecc) => {
             
         }
     });
-    // peercc.addEventListener('icecandidate',(eventcc)=>{
-        peercc.onicecandidate = async (eventcc) => {
-
+    peercc.addEventListener('icecandidate',(eventcc)=>{
         if (eventcc.candidate) {
             // console.log('New Ice candidate baby',JSON.stringify(peercc.localDescription));
             console.log('New Ice candidate baby offer');
-
-            sendSignalFuncbb('new-offerjs',{
-                // 'sdpjs':peercc.localDescription,
-                'candiatejs':eventcc.candidate,
-                'receiver_channel_namejs':receiver_channel_namecc
-            });
             return;
         }
 
-        console.log('OUT New Ice candidate baby offer');       // own explore:we are sending all the ice candidate at once GENIUS: you can do anything
-
-        // sendSignalFuncbb('new-offerjs',{
-        //     'sdpjs':peercc.localDescription,
-        //     'receiver_channel_namejs':receiver_channel_namecc
-        // });
-    // });
-    };
+        sendSignalFuncbb('new-offerjs',{
+            'sdpjs':peercc.localDescription,
+            'receiver_channel_namejs':receiver_channel_namecc
+        });
+    });
 
     peercc.addEventListener('connectionstatechange', event => {
         if (peercc.connectionState === 'connected') {
@@ -665,26 +631,8 @@ let createOffererFuncbb = async (peerUserNamecc,receiver_channel_namecc) => {
         }
     });
 
-    // what he did 
-   /*  peercc.createOffer()      // NOTE: IT'S not "createOffererFuncbb" ....it's 'createOffer 
-    // myBeforeOfferbb      // saving time
-        .then(o=>peercc.setLocalDescription(o))
-        .then(()=>{
-            console.log('Local Description set successfully baby');
-        }) */
-
-
-    // what I did 
     peercc.createOffer()      // NOTE: IT'S not "createOffererFuncbb" ....it's 'createOffer 
-    // myBeforeOfferbb      // saving time
-        .then(o=>{
-            peercc.setLocalDescription(o);
-            sendSignalFuncbb('new-offerjs',{
-                // 'sdpjs':peeraa.localDescription,
-                'sdpjs':o,
-                'receiver_channel_namejs':receiver_channel_namecc
-            })
-        })
+        .then(o=>peercc.setLocalDescription(o))
         .then(()=>{
             console.log('Local Description set successfully baby');
         })
@@ -693,20 +641,14 @@ let createOffererFuncbb = async (peerUserNamecc,receiver_channel_namecc) => {
 }
 
 
-let peeraa;
+
 // NOTE: copief from "createOffererFuncbb"
-// function createAnswererFuncbb(offeraa,peerUserNameaa,receiver_channel_nameaa){ 
-let createAnswererFuncbb = async (offeraa,peerUserNameaa,receiver_channel_nameaa) => {
-    console.log('creating Answerer');
+function createAnswererFuncbb(offeraa,peerUserNameaa,receiver_channel_nameaa){ 
   
     // var peeraa=new RTCPeerConnection(null);
-    // var peeraa=new RTCPeerConnection(iceServersh);
-    // peeryk=peeraa;
-
-    peeraa=peerBeforebb;
+    var peeraa=new RTCPeerConnection(iceServersh);
     peeryk=peeraa;
-    // addLocalTracksFuncbb(peeraa);
-    addLocalTracksFuncbb();
+    addLocalTracksFuncbb(peeraa);
 
 
     var remoteVideo=creatVideoFuncbb(peerUserNameaa);
@@ -748,21 +690,19 @@ let createAnswererFuncbb = async (offeraa,peerUserNameaa,receiver_channel_nameaa
             
         }
     });
-    // peeraa.addEventListener('icecandidate',(eventaa)=>{
-        peeraa.onicecandidate = async (eventaa) => {
+    peeraa.addEventListener('icecandidate',(eventaa)=>{
         if (eventaa.candidate) {
             // console.log('New Ice candidate',JSON.stringify(peeraa.localDescription));
             console.log('New Ice candidate answer');
             return;
         }
 
-        console.log('OUT New Ice candidate baby answer');           // own explore:we are sending all the ice candidate at once GENIUS: you can do anything
+
         sendSignalFuncbb('new-answerjs',{
             'sdpjs':peeraa.localDescription,
             'receiver_channel_namejs':receiver_channel_nameaa
         })
-    };
-    // });
+    });
     
     // https://webrtc.org/getting-started/peer-connections#connection_established
     peeraa.addEventListener('connectionstatechange', event => {
@@ -779,7 +719,6 @@ let createAnswererFuncbb = async (offeraa,peerUserNameaa,receiver_channel_nameaa
     .then(()=>{
         console.log(`Remote description set successfully for ${peerUserNameaa}`)
         return peeraa.createAnswer();     // it's not "createAnswererFuncbb" 
-        // return myBeforeAnswerbb;     
     })
     .then(a=>{
         console.log('Answer Created baby');
@@ -791,13 +730,11 @@ let createAnswererFuncbb = async (offeraa,peerUserNameaa,receiver_channel_nameaa
 // done
 
 
-// sending our tracks(video/audio) to other peers own explore:
-// function addLocalTracksFuncbb(peerl) {
-function addLocalTracksFuncbb() {
+
+function addLocalTracksFuncbb(peerl) {
     console.log('addLocalTracksFuncbb called');
     localStreamy.getTracks().forEach(track =>{
-        // peerl.addTrack(track,localStreamy);
-        peerBeforebb.addTrack(track,localStreamy);
+        peerl.addTrack(track,localStreamy);
     });
     return;
 }
@@ -844,21 +781,14 @@ function creatVideoFuncbb(peerUserNamec) {
 }
 
 // done
-// when we get track(video,audio) from another peer/user then it will play on our remoteStreamt    own explore:
 function setOnTrackFuncbb(peert,remoteVideost) {
     console.log('setOnTrackFuncbb called',peert);
     var remoteStreamt=new MediaStream();
     remoteVideost.srcObject=remoteStreamt;
 
-    // peert.addEventListener('track',async (eventt)=>{
-    //     remoteStreamt.addTrack(eventt.track,remoteStreamt)
-    // });
-
-    peert.ontrack = async (event) => {
-        event.streams[0].getTracks().forEach((track) => {
-            remoteStreamt.addTrack(track)
-        })
-    }
+    peert.addEventListener('track',async (eventt)=>{
+        remoteStreamt.addTrack(eventt.track,remoteStreamt)
+    });
 }
 
 // done
