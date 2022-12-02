@@ -77,7 +77,10 @@ function WebsocketOnMessageFucnbb(event) {
 
         console.log('candi ->',peerBeforebb);
         if (peerBeforebb) {
-            peerBeforebb.addIceCandidate(parsedData['messagejs']['candiatejs'])
+            // peerBeforebb.addIceCandidate(parsedData['messagejs']['candiatejs'])
+            const IceCandidatebb = new RTCIceCandidate(parsedData['messagejs']['candiatejs']);
+            console.log('candidatedb baby')
+            peerBeforebb.addIceCandidate(IceCandidatebb);
             return
             
         }
