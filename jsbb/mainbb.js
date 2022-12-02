@@ -73,6 +73,8 @@ function WebsocketOnMessageFucnbb(event) {
     var receiver_channel_namey=parsedData['messagejs']['receiver_channel_namejs'];
 
     if (parsedData['messagejs']['candiatejs']) {
+        // animationnn.style.display="none"; 
+
         console.log('candi ->',peerBeforebb);
         if (peerBeforebb) {
             peerBeforebb.addIceCandidate(parsedData['messagejs']['candiatejs'])
@@ -97,6 +99,8 @@ function WebsocketOnMessageFucnbb(event) {
     }
     //  if (actiony == 'new-answerjs') {
     if (actiony == 'new-answerjs') {
+        animationnn.style.display="none"; 
+
         var answer=parsedData['messagejs']['sdpjs'];
         var peer=mapPeersy[peerUserNamey][0];
         console.log('mapPeersy 1 ->',mapPeersy);
@@ -571,13 +575,20 @@ function sendSignalFuncbb(actiony,message) {
 // Contains the stun server URL we will be using.
 let iceServersh = {     // "h" in last means html
     iceServers: [
-      {
-        "urls": [
-            "stun:stun.l.google.com:19302", 
-            "stun:stun1.l.google.com:19302", 
-            "stun:stun2.l.google.com:19302"
-    ]
-      }
+    //   {
+    //     "urls": [
+    //         "stun:stun.counterpath.com"
+    //         // "stun:stun.l.google.com:19302", 
+    //         // "stun:stun1.l.google.com:19302", 
+    //         // "stun:stun2.l.google.com:19302"
+    // ]
+    {
+        urls: "turn:openrelay.metered.ca:443",
+        username: "openrelayproject",
+        credential: "openrelayproject",
+      },
+      
+
     ],
   }; 
 
@@ -764,6 +775,12 @@ let createAnswererFuncbb = async (offeraa,peerUserNameaa,receiver_channel_nameaa
                 removeVideoFuncbb(remoteVideo);
                 resizeVideobb();
             
+        }
+        if (peeraa.connectionState === 'connected') {
+            // Peers connected!
+            console.log('connected baby');
+            animationnn.style.display="none"; 
+
         }
     });
     // peeraa.addEventListener('icecandidate',(eventaa)=>{
