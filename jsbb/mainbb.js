@@ -578,8 +578,25 @@ function sendSignalFuncbb(actiony,message) {
 // Contains the stun server URL we will be using.
 let iceServersh = {     // "h" in last means html
     iceServers: [
-      
         {
+            urls: "stun:openrelay.metered.ca:80",
+          },
+          {
+            urls: "turn:openrelay.metered.ca:80",
+            username: "openrelayproject",
+            credential: "openrelayproject",
+          },
+          {
+            urls: "turn:openrelay.metered.ca:443",
+            username: "openrelayproject",
+            credential: "openrelayproject",
+          },
+          {
+            urls: "turn:openrelay.metered.ca:443?transport=tcp",
+            username: "openrelayproject",
+            credential: "openrelayproject",
+          },
+/*         {
             //works 1-3 second video and audio and then disconnect
             urls: "turn:openrelay.metered.ca:443",
             username: "openrelayproject",
@@ -602,7 +619,7 @@ let iceServersh = {     // "h" in last means html
 //     ]
 // },
 
-      
+    */   
 
     ],
   }; 
