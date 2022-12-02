@@ -99,8 +99,8 @@ function WebsocketOnMessageFucnbb(event) {
     if (actiony == 'new-answerjs') {
         var answer=parsedData['messagejs']['sdpjs'];
         var peer=mapPeersy[peerUserNamey][0];
-        // peer.setRemoteDescription(answer);
-        peerBeforebb.setRemoteDescription(answer);
+        peer.setRemoteDescription(answer);
+        // peerBeforebb.setRemoteDescription(answer);
 
 
         return;
