@@ -632,7 +632,7 @@ let createOffererFuncbb = async (peerUserNamecc,receiver_channel_namecc) => {
         var iceConnectionStatecc=peercc.iceConnectionState;
 
         if (iceConnectionStatecc === 'failed' || iceConnectionStatecc === 'disconnected' || iceConnectionStatecc ==='closed') {
-            console.log('connection closedbb ->',mapPeersy[peerUserNamecc]);
+            console.log('connection closedCC ->',mapPeersy,iceConnectionStatecc);
             delete mapPeersy[peerUserNamecc];
         console.log('mapPeersy 3 ->',mapPeersy);
 
@@ -752,15 +752,17 @@ let createAnswererFuncbb = async (offeraa,peerUserNameaa,receiver_channel_nameaa
         var iceConnectionStateaa=peeraa.iceConnectionState;
 
         if (iceConnectionStateaa === 'failed' || iceConnectionStateaa === 'disconnected' || iceConnectionStateaa ==='closed') {
+            console.log('connection closedAA ->',mapPeersy,iceConnectionStateaa);
+            
             delete mapPeersy[peerUserNameaa];
         console.log('mapPeersy 5 ->',mapPeersy);
 
             // we need to call it after  "mapPeersy" is update...talent
-            resizeVideobb();
-            if (iceConnectionStateaa != 'closed') {
-                peeraa.close();
-            }
-            removeVideoFuncbb(remoteVideo);
+            // if (iceConnectionStateaa != 'closed') {
+                // peeraa.close();
+                // }
+                removeVideoFuncbb(remoteVideo);
+                resizeVideobb();
             
         }
     });
