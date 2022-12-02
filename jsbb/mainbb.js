@@ -99,6 +99,7 @@ function WebsocketOnMessageFucnbb(event) {
     if (actiony == 'new-answerjs') {
         var answer=parsedData['messagejs']['sdpjs'];
         var peer=mapPeersy[peerUserNamey][0];
+        console.log('mapPeersy 1 ->',mapPeersy);
         peer.setRemoteDescription(answer);
         // peerBeforebb.setRemoteDescription(answer);
 
@@ -621,6 +622,7 @@ let createOffererFuncbb = async (peerUserNamecc,receiver_channel_namecc) => {
     
     setOnTrackFuncbb(peercc,remoteVideocc);
     mapPeersy[peerUserNamecc] = [peercc,dcc];
+    console.log('mapPeersy 2 ->',mapPeersy);
 
 
     // we need to call it after  "mapPeersy" is update...talent
@@ -630,12 +632,15 @@ let createOffererFuncbb = async (peerUserNamecc,receiver_channel_namecc) => {
         var iceConnectionStatecc=peercc.iceConnectionState;
 
         if (iceConnectionStatecc === 'failed' || iceConnectionStatecc === 'disconnected' || iceConnectionStatecc ==='closed') {
+            console.log('connection closedbb ->',mapPeersy[peerUserNamecc]);
             delete mapPeersy[peerUserNamecc];
-            resizeVideobb();
-            if (iceConnectionStatecc != 'closed') {
-                peercc.close();
-            }
+        console.log('mapPeersy 3 ->',mapPeersy);
+
+        // if (iceConnectionStatecc == 'closed') {
+            peercc.close();
+            // }
             removeVideoFuncbb(remoteVideocc);
+            resizeVideobb();
             
         }
     });
@@ -734,6 +739,7 @@ let createAnswererFuncbb = async (offeraa,peerUserNameaa,receiver_channel_nameaa
         peeraa.dcaa.addEventListener('message',dcOnMessageFuncbb)       // NOTE: it's 'message' not 'messagejs'
     
         mapPeersy[peerUserNameaa] = [peeraa,peeraa.dcaa];
+        console.log('mapPeersy  4->',mapPeersy);
 
         // we need to call it after  "mapPeersy" is update...talent
         resizeVideobb();
@@ -747,6 +753,8 @@ let createAnswererFuncbb = async (offeraa,peerUserNameaa,receiver_channel_nameaa
 
         if (iceConnectionStateaa === 'failed' || iceConnectionStateaa === 'disconnected' || iceConnectionStateaa ==='closed') {
             delete mapPeersy[peerUserNameaa];
+        console.log('mapPeersy 5 ->',mapPeersy);
+
             // we need to call it after  "mapPeersy" is update...talent
             resizeVideobb();
             if (iceConnectionStateaa != 'closed') {
@@ -919,12 +927,13 @@ function removeVideoFuncbb(videorr) {
 
 function getDataChannelsFuncbb() {
     var dataChannelsf=[];
+    console.log('mapPeersy 6 ->',mapPeersy);
 
     for (peerUserNamem in mapPeersy) {
         var dataChannelp=mapPeersy[peerUserNamem][1];
         dataChannelsf.push(dataChannelp)
     }
-    console.log('getDataChannelsFuncbb mapPeersy ',mapPeersy);
+    // console.log('getDataChannelsFuncbb mapPeersy ',mapPeersy);
     console.log('getDataChannelsFuncbb dataChannelsf ',dataChannelsf);
 
     return dataChannelsf;
