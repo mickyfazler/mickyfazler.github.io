@@ -590,6 +590,7 @@ let iceServersh = {     // "h" in last means html
 //     ]
 // },
 //     {
+        //works 1-3 second video and audio and then disconnect
 //         urls: "turn:openrelay.metered.ca:443",
 //         username: "openrelayproject",
 //         credential: "openrelayproject",
@@ -651,12 +652,12 @@ let createOffererFuncbb = async (peerUserNamecc,receiver_channel_namecc) => {
 
         if (iceConnectionStatecc === 'failed' || iceConnectionStatecc === 'disconnected' || iceConnectionStatecc ==='closed') {
             console.log('connection closedCC ->',mapPeersy,iceConnectionStatecc);
-            delete mapPeersy[peerUserNamecc];
-        console.log('mapPeersy 3 ->',mapPeersy);
-
-        // if (iceConnectionStatecc == 'closed') {
-            peercc.close();
-            // }
+            
+            if (iceConnectionStatecc != 'closed') {
+                delete mapPeersy[peerUserNamecc];
+                peercc.close();
+                console.log('mapPeersy 3 ->',mapPeersy);
+            }
             removeVideoFuncbb(remoteVideocc);
             resizeVideobb();
             
@@ -772,13 +773,13 @@ let createAnswererFuncbb = async (offeraa,peerUserNameaa,receiver_channel_nameaa
         if (iceConnectionStateaa === 'failed' || iceConnectionStateaa === 'disconnected' || iceConnectionStateaa ==='closed') {
             console.log('connection closedAA ->',mapPeersy,iceConnectionStateaa);
             
-            delete mapPeersy[peerUserNameaa];
-        console.log('mapPeersy 5 ->',mapPeersy);
-
+            
             // we need to call it after  "mapPeersy" is update...talent
-            // if (iceConnectionStateaa != 'closed') {
-                // peeraa.close();
-                // }
+            if (iceConnectionStateaa != 'closed') {
+                delete mapPeersy[peerUserNameaa];
+                peeraa.close();
+                console.log('mapPeersy 5 ->',mapPeersy);
+                }
                 removeVideoFuncbb(remoteVideo);
                 resizeVideobb();
             
