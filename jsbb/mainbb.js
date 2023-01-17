@@ -226,7 +226,7 @@ btnjoiny.addEventListener('click',(e)=>{
  */
     // webSockety = new WebSocket(endPoint);
     // webSockety = new WebSocket('wss://holecomb.herokuapp.com/');
-    webSockety = new WebSocket('wss://web-production-807b.up.railway.app/');
+    webSockety = new WebSocket('wss://holecom.up.railway.app/');
     // webSockety = new WebSocket('ws://127.0.0.1:8000/');
     webSockety.addEventListener('open',(e)=>{ // NOTE: he always write like this ....which is suck
     // webSockety.onopen = () =>{         // NOTE: learn from codewithsingh 
@@ -578,11 +578,12 @@ function sendSignalFuncbb(actiony,message) {
 // Contains the stun server URL we will be using.
 let iceServersh = {     // "h" in last means html
     iceServers: [
-        {
-            urls: "stun:openrelay.metered.ca:80",
-          },
+        
           {
           urls:"stun:stun3.l.google.com:19302",
+          },
+          {
+            urls: "stun:openrelay.metered.ca:80",
           },
           {
             urls: "turn:openrelay.metered.ca:80",
