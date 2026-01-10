@@ -1,219 +1,698 @@
- 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nearby Offer — Pre-Seed Pitch Deck</title>
+  <style>
+    /* =========================
+       Nearby Offer Design System
+       Inspired by Airbnb 2009 Pitch Deck (Clean, Typography-led)
+       ========================= */
 
-   <title> video calls and chat</title>
-
-   <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"> -->
-                     <!-- we using bootstrap because of 'text font' -->
-
-   <link rel="stylesheet" href="cssbb/mainc.css">
-   <link rel="stylesheet" href="cssbb/ratingc.css">
-   <link rel="stylesheet" href="cssbb/animationc.css">
-   <link rel="stylesheet" href="cssbb/popup_messagey.css">
-
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> -->
-
-   <!-- learn more about "defer" on https://stackoverflow.com/questions/13846621/how-to-get-a-script-to-load-last-on-webpage ...fuck... -->
-   <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.1.1/dist/index.min.js" defer></script>
-
-
-
- 
-
-</head>
-
-
-<body>
-   
-   <div class="loaderbb" id="loaderbbid" style="display: none;">     
-      <svg class="svgbb"  viewBox="25 25 50 50">
-         <circle class="circlebb" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+    :root {
+      /* Palette */
+      --bg: #ffffff;
+      --bg-soft: #f4f5f7;
+      --ink: #222222;
+      --ink-soft: #484848; /* Airbnb gray */
+      --muted: #717171;
+      --border: #dddddd;
       
-      </svg>
-   </div>
+      /* Brand */
+      --primary: #FF385C; /* Modern App Red */
+      --primary-dark: #D90B3E;
+      --accent-blue: #008489; /* Trust teal */
 
+      /* Layout - 16:9 Standard Laptop Res */
+      --slide-w: 1366px;
+      --slide-h: 768px;
+      /* Increased horizontal pad to fill the wider screen, slightly reduced vertical to save height */
+      --pad-x: 100px; 
+      --pad-y: 85px; /* ← This is the magic number */
+      
+      --radius: 12px;
+      --font-main: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-   <div class="chat-popupbb zinIndexbb"  style="display: none;">
-   <!-- <div class="chat-popupbb zinIndexbb" > -->
-   <!-- <div class="chat-popupbb" > -->
-      <div class="badgebb" id="closemsgbb">X</div>
-      <div class="chat-areabb">
-       <div class="income-msgbb">
-           <!-- <img src="img/person.jpg" class="avatar" alt=""> -->
-           <!-- <img src="https://scontent.fcgp28-1.fna.fbcdn.net/v/t1.6435-1/cp0/c0.0.60.60a/p60x60/86468810_665797524174513_3326712462950006784_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=7206a8&_nc_ohc=sy3XG1aLy2MAX8k-1Ci&_nc_oc=AQkaOpod8cE9f5yPe7CD_x1ptDRBb8tdbqvj8YSxs8kWJkm3lr8hpx_d99_1zD25C34&_nc_ht=scontent.fcgp28-1.fna&oh=00_AT8qV26QuAQV-JmpVPU9T5ukq7_oLvJOfStUhdgwf1tqzg&oe=6221AD6E" class="avatarbb" alt=""> -->
-           <!-- <i><b>Others:</b></i>
-           <span class="msgbb"> Hi, How can I help you?</span> -->
-      </div>   
-   </div>
+      /* SCALED UP FONTS for 1366px width */
+      --h1-size: 76px;  /* Was 68px */
+      --h2-size: 58px;  /* Was 52px */
+      --lead-size: 32px; /* Was 28px */
+    }
 
-      <div class="input-areab">
-         <!-- use https://stackoverflow.com/questions/1338483/detecting-value-of-input-text-field-after-a-keydown-event-in-the-text-field ratherr then onkeydown...own explore: -->
-          <input type="text" id="inptTxt" oninput="msgPressFuncbb()">
-          <button id="emoji-btnbb"> &#127773;</button>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-         
-             <!-- 👋 -->
-            <!-- using "fas" sothat both position same...own explore: -->
-            <button class="submitbb wavebb" style="display: block;" id="btn_msg"><i class="fas" style="font-size:30px;">&#128075;</i></button>
-          <button class="submitbb planebb" id="btn_msg" style="display: none;"><i class="fas fa-paper-plane" style="color: black; font-size:30px;"></i></button>
-          
-          <!-- <button class="submitbb" id="btn_msg"><span style='font-size:30px; z-index: 10000; position: absolute; margin-bottom: 16px;'>&#128075;</span></button> -->
-          
-            
-     
+    body {
+      font-family: var(--font-main);
+      background: #111; /* Dark background for the presentation view */
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+      padding: 40px 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Slide Container */
+    .slide {
+      width: var(--slide-w);
+      height: var(--slide-h);
+      background: var(--bg);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden; 
+      /* own explore bitch  */
+    }
+
+    /* Inner Layout */
+    .inner {
+      flex: 1;
+      padding: var(--pad-y) var(--pad-x);
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* Vertically center content */
+    }
+
+    .top-align { justify-content: flex-start; }
+
+    /* Typography */
+    h1 {
+      font-size: var(--h1-size);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      color: var(--ink);
+    }
+    
+    h2 {
+      font-size: var(--h2-size);
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      line-height: 1.15;
+      margin-bottom: 24px;
+    }
+
+    h3 {
+      font-size: 28px; /* Scaled from 24 */
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    p.lead {
+      font-size: var(--lead-size);
+      line-height: 1.4;
+      color: var(--ink-soft);
+      max-width: 1100px; /* Wider measure for wider screen */
+      margin-bottom: 30px;
+      font-weight: 400;
+    }
+
+    .subtitle {
+      text-transform: uppercase;
+      font-size: 16px; /* Scaled from 14 */
+      letter-spacing: 2px;
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .highlight { color: var(--primary); }
+    .white { color: #fff; }
+    .dim { color: rgba(255,255,255,0.7); }
+
+    /* Layout Grids */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; } /* Wider gap */
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; }
+    
+    /* Components */
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 30px; /* More padding */
+    }
+
+    .bullet-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .bullet {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      font-size: 24px; /* Scaled from 22 */
+      line-height: 1.35;
+      color: var(--ink-soft);
+    }
+    
+    .check {
+      min-width: 28px;
+      height: 28px;
+      background: rgba(255, 56, 92, 0.1);
+      color: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 4px;
+    }
+
+    /* Themes */
+    .theme-dark {
+      background: #000;
+      color: #fff;
+    }
+    .theme-dark h1, .theme-dark h2 { color: #fff; }
+    .theme-dark p.lead { color: #ccc; }
+    .theme-dark .card { background: #1a1a1a; border-color: #333; }
+    .theme-dark .bullet { color: #ddd; }
+
+    .theme-primary {
+      background: linear-gradient(135deg, #FF385C 0%, #BD1E59 100%);
+      color: #fff;
+    }
+    .theme-primary h1, .theme-primary h2, .theme-primary p { color: #fff; }
+
+    /* Visual Elements */
+    .big-stat {
+      font-size: 64px; /* Scaled from 56 */
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .theme-dark .big-stat { color: #FF385C; }
+    .stat-label { font-size: 18px; color: var(--muted); line-height: 1.4; }
+    .theme-dark .stat-label { color: #999; }
+
+    /* CSS Phone Mockups (Abstract) */
+    .phones-container {
+      display: flex;
+      justify-content: center;
+      gap: 50px; /* Wider gap for wider screen */
+      margin-top: 20px;
+    }
+    
+    /* own explore bitch  */
+    .phone-mock {
+      width: 260px;  /* Slight increase from 260 */
+      height: 520px; /* Slight increase from 520 to match ratio */
+      border: 8px solid #333;
+      border-radius: 34px;
+      background: #fff;
+      position: relative;
+      /* overflow: hidden; This was missing in your code...i don't need that shit bitch...otherwise i won't able to show those text */
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    .phone-mock img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 24px; /* Match phone's inner radius */
+      image-rendering: crisp-edges;
+    }
+
+    /* Fake UI Elements for Mockups (kept for possible future use) */
+    .app-header { height: 50px; background: var(--bg-soft); display:flex; align-items:center; padding: 0 15px; gap:10px; border-bottom:1px solid #eee;}
+    .app-search { height: 20px; background: #ddd; border-radius: 4px; flex:1; }
+    .app-content { padding: 15px; display: grid; gap: 15px; }
+    .app-card { height: 80px; background: #f4f4f4; border-radius: 8px; display:flex; gap:10px; padding:8px;}
+    .app-img { width: 60px; background: #e0e0e0; border-radius: 4px; }
+    .app-lines { flex:1; display:flex; flex-direction:column; gap:6px; justify-content:center; }
+    .line { height: 8px; background: #e0e0e0; border-radius: 2px; }
+    .w-50 { width: 50%; }
+    .w-80 { width: 80%; }
+    
+    /* Comparison Table */
+    .matrix { width: 100%; border-collapse: collapse; margin-top: 30px; }
+    .matrix th { text-align: left; padding: 20px; color: var(--muted); font-size: 16px; text-transform: uppercase; border-bottom: 1px solid #333; }
+    .matrix td { padding: 25px 20px; font-size: 22px; border-bottom: 1px solid #333; }
+    .matrix tr:last-child td { border: none; }
+    .tick { color: var(--primary); font-weight: bold; }
+    
+    /* Bar Chart for Funding */
+    .bar-chart { display: flex; height: 70px; width: 100%; border-radius: 8px; overflow: hidden; margin: 30px 0; }
+    .bar-80 { width: 80%; background: #fff; color: var(--primary); display:grid; place-items:center; font-weight:bold; font-size:22px;}
+    .bar-20 { width: 20%; background: rgba(0,0,0,0.2); color: #fff; display:grid; place-items:center; font-weight:bold; font-size:22px;}
+
+    /* Print/PDF Override */
+    @media print {
+      body { padding: 0; background: #fff; display: block; }
+      .slide { page-break-after: always; box-shadow: none; margin-bottom: 0; }
+    }
+
+    /* giving this style is my genius ness...otherwise only slide 4 is nonsense */
+    .slide2 {
+      width: var(--slide-w);
+      height: var(--slide-h);
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    /* Print/PDF Override */
+    @media print {
+      /* 1. Define the "Paper" size to match your slide size exactly */
+      @page {
+        size: 1366px 768px; /* Custom paper size matching your --slide-w/h */
+        margin: 0;          /* Zero margins */
+      }
+
+      /* 2. Reset the body to remove gaps and background colors */
+      body {
+        margin: 0;
+        padding: 0;
+        gap: 0;
+        background: transparent; 
+        display: block; 
+        -webkit-print-color-adjust: exact; /* Force Chrome/Edge to print background colors */
+        print-color-adjust: exact;
+      }
+
+      /* 3. Force the slide to fill the custom page exactly */
+      .slide {
+        width: 1366px;
+        height: 768px;
+        page-break-after: always; /* Force new page after every slide */
+        break-after: page;
+        box-shadow: none;
+        margin: 0;
+        border: none;
+        overflow: hidden; /* Clip any overflow */
+        position: relative;
+        left: 0;
+        top: 0;
+      }
+      
+      /* Ensure the last slide doesn't generate an extra blank page */
+      .slide:last-child {
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Slide 1: Cover -->
+  <section class="slide theme-dark">
+    <div class="inner">
+      <h1 style="font-size: 96px;">Nearby Offer</h1>
+      <h2 style="font-weight: 400; color: #ccc;">The <span class="highlight">Local Google</span> for shopping.</h2>
+      <div style="height: 40px;"></div>
+      <p class="lead" style="max-width: 800px;">
+        Search the physical world around you. <br>
+        Know availability, price, and location before you visit.
+      </p>
+      <div style="margin-top: auto; display: flex; gap: 20px; align-items: center; opacity: 0.6;">
+        <div style="font-size: 16px; text-transform: uppercase; letter-spacing: 1px;">Pre-Seed Deck</div>
+        <div style="width: 50px; height: 1px; background: #fff;"></div>
+        <div style="font-size: 16px; text-transform: uppercase; letter-spacing: 1px;">Holecom</div>
       </div>
+    </div>
+  </section>
+
+  <!-- Slide 2: Problem -->
+  <section class="slide">
+    <div class="inner">
+      <span class="subtitle">The Problem</span>
+      <h2>Offline shopping is a "Black Box"</h2>
+      <p class="lead">97% of commerce in Bangladesh happens offline, but it is invisible to the internet.</p>
+      
+      <div class="grid-2">
+        <div class="bullet-list">
+          <div class="bullet">
+            <div class="check">✕</div>
+            <div><strong>Zero Visibility:</strong> Customers walk shop-to-shop asking "Do you have this?"</div>
+          </div>
+          <div class="bullet">
+            <div class="check">✕</div>
+            <div><strong>Price Opacity:</strong> No way to compare prices without physically bargaining.</div>
+          </div>
+          <div class="bullet">
+            <div class="check">✕</div>
+            <div><strong>Trust Gap:</strong> Facebook pages lack legitimacy; customers fear courier scams.</div>
+          </div>
+        </div>
+
+        <div class="card" style="background: var(--bg-soft); border:none; display:flex; align-items:center; justify-content:center; text-align:center; padding: 50px;">
+          <h3 style="color: var(--muted);">The Current Experience</h3>
+          <p style="font-size: 22px; margin-top: 15px;">
+            Search Online <br>↓<br> "Product Unavailable Locally" <br>↓<br> Visit 10 Offline Shops <br>↓<br> <strong>Wasted Time</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 3: Solution -->
+  <section class="slide theme-primary">
+    <div class="inner">
+      <span class="subtitle" style="color: rgba(255,255,255,0.8);">The Solution</span>
+      <h2 style="color: #fff;">Search Online. Buy Offline.</h2>
+      <p class="lead" style="color: rgba(255,255,255,0.9);">
+        A hyper-local discovery platform that connects online intent with offline inventory.
+      </p>
+
+      <div class="grid-3" style="margin-top: 50px;">
+        <div class="card" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white;">
+          <h3 style="color:white;">Discover</h3>
+          <p style="line-height:1.5; font-size: 18px;">See what's in stock at shops within 2km of your location.</p>
+        </div>
+        <div class="card" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white;">
+          <h3 style="color:white;">Compare</h3>
+          <p style="line-height:1.5; font-size: 18px;">Check prices and distance instantly. No more bargaining blind.</p>
+        </div>
+        <div class="card" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white;">
+          <h3 style="color:white;">Verify</h3>
+          <p style="line-height:1.5; font-size: 18px;">Chat via WhatsApp, verify the shop exists, and go buy with trust.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 4: Product -->
+  <section class="slide" style="background: #f8f8f8;">
+    <div class="inner top-align" style="padding: 60px var(--pad-x);">
+                            <!-- giving this style is my genius ness...otherwise only slide 4 is nonsense -->
+      <div style="text-align: center; ">
+        <span class="subtitle">The Product</span>
+        <h2>Built, Shipped, & Ready</h2>
+        <!-- <p class="lead" style="margin: 0 auto;">Live on Android. Scalable React Native architecture.</p> -->
+      </div>
+
+      <div class="phones-container">
+  <!-- Phone 1: Nearby Feed -->
+  <div class="phone-mock">
+    <div style="position:absolute; bottom:-35px; width:100%; text-align:center; color:black; font-size:14px; font-weight:bold; letter-spacing:1px;">NEARBY FEED</div>
+    <img src="https://raw.githubusercontent.com/mickyfazler/own_lrng/refs/heads/main/Screenshot_1767673972.png" alt="Nearby Feed"
+         style="width: 100%; height: 100%; object-fit: cover; object-position: center; image-rendering: crisp-edges; border-radius: 24px;">
   </div>
 
-  <!-- giving inline css because....if we don't give it then until our css load they still show...fuck...own explore: master mind -->
-   <div id="rating_scrnid" class='rating_screenbb' style="visibility: hidden; ">
-      <div class='rating_screenboxbb'>
-         <div class="post">
-            <div class="text">Thanks for rating us!😁</div>
-         </div>
-         <div class="star-widget">
-            <input type="radio" name="rate" id="rate-5">
-            <label for="rate-5" class="fas fa-star"></label>
-            <input type="radio" name="rate" id="rate-4">
-            <label for="rate-4" class="fas fa-star"></label>
-            <input type="radio" name="rate" id="rate-3">
-            <label for="rate-3" class="fas fa-star"></label>
-            <input type="radio" name="rate" id="rate-2">
-            <label for="rate-2" class="fas fa-star"></label>
-            <input type="radio" name="rate" id="rate-1">
-            <label for="rate-1" class="fas fa-star"></label>
-            <form id="fdkfrm" action="#">
-               <header></header>
-               <div class="textarea">
-                  <textarea name="fedby" id="fedbackbb" cols="30" placeholder="Describe your experience.."></textarea>
-               </div>
-               <div class="btn">
-                  <button type="submit" id="postfdkbb">Post</button>
-               </div>
-            </form>
-         </div>
+  <!-- Phone 2: Product View (highlighted with red border) -->
+  <div class="phone-mock" style="border-color: var(--primary);">
+    <div style="position:absolute; bottom:-35px; width:100%; text-align:center; color:var(--primary); font-size:14px; font-weight:bold; letter-spacing:1px;">PRODUCT VIEW</div>
+    <img src="https://raw.githubusercontent.com/mickyfazler/own_lrng/refs/heads/main/Screenshot_1767673982.png" alt="Product View"
+         style="width: 100%; height: 100%; object-fit: cover; object-position: center; image-rendering: crisp-edges; border-radius: 24px;">
+  </div>
+
+  <!-- Phone 3: Map Discovery -->
+  <div class="phone-mock">
+    <div style="position:absolute; bottom:-35px; width:100%; text-align:center; color:black; font-size:14px; font-weight:bold; letter-spacing:1px;">MAP DISCOVERY</div>
+    <img src="https://raw.githubusercontent.com/mickyfazler/own_lrng/refs/heads/main/Screenshot_1767674004.png" alt="Map Discovery"
+         style="width: 100%; height: 100%; object-fit: cover; object-position:top; image-rendering: crisp-edges; border-radius: 24px;">
+  </div>
+</div>
+      
+    </div>
+  </section>
+
+  <!-- Slide 5: Market -->
+  <section class="slide">
+    <div class="inner">
+      <span class="subtitle">The Market</span>
+      <h2>A Massive Untapped Gap</h2>
+      <p class="lead">Positioned perfectly between "Google Search" and "Traditional Ecommerce".</p>
+
+      <div class="grid-4" style="margin-top: 30px;">
+        <div class="card">
+          <div class="big-stat">$200B</div>
+          <div class="stat-label">Retail Market Size<br>(Bangladesh)</div>
+        </div>
+        <div class="card">
+          <div class="big-stat">97%</div>
+          <div class="stat-label">Transactions are <br>still Offline</div>
+        </div>
+        <div class="card">
+          <div class="big-stat">4.5M</div>
+          <div class="stat-label">Shops with no <br>digital discovery</div>
+        </div>
+        <div class="card">
+          <div class="big-stat">300K+</div>
+          <div class="stat-label">FB Sellers seeking <br>better tools</div>
+        </div>
       </div>
-   </div>
 
-   
+      <div style="margin-top: 50px; padding: 30px; border-left: 6px solid var(--primary); background: var(--bg-soft);">
+        <p style="margin: 0; font-size: 24px; color: var(--ink);">
+          <strong>Why Now?</strong> Internet penetration is high, but <strong>trust</strong> remains physical. People search online but buy offline. We bridge this specific gap.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 6: Business Model -->
+  <section class="slide theme-dark">
+    <div class="inner">
+      <span class="subtitle">Business Model</span>
+      <h2>Monetize Density</h2>
+      <p class="lead">Free for users. Freemium for Sellers.</p>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="highlight" style="font-weight:bold; margin-bottom:12px; font-size: 14px;">PHASE 1 (NOW)</div>
+          <h3 style="color:#fff;">Ads Revenue</h3>
+          <p class="dim" style="font-size: 18px;">Generate initial revenue through Google AdMob while building user base and inventory liquidity.</p>
+        </div>
+        <div class="card">
+          <div class="highlight" style="font-weight:bold; margin-bottom:12px; font-size: 14px;">PHASE 2 (GROWTH)</div>
+          <h3 style="color:#fff;">Seller Premium</h3>
+          <p class="dim" style="font-size: 18px;">Sellers pay for "Verified" badges, market insights, and AI-generated listings (Image-to-Description).</p>
+        </div>
+        <div class="card">
+          <div class="highlight" style="font-weight:bold; margin-bottom:12px; font-size: 14px;">PHASE 3 (SCALE)</div>
+          <h3 style="color:#fff;">Promoted Listings</h3>
+          <p class="dim" style="font-size: 18px;">Shops bid to appear at the top of search results for specific keywords within their locality.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 7: Go To Market -->
+  <section class="slide">
+    <div class="inner">
+      <span class="subtitle">Go-To-Market Strategy</span>
+      <h2>Win Chattogram First</h2>
+      <p class="lead">Strategy: Dominate one city density before expanding. Focus on zones with high student/tech-savvy populations.</p>
+
+      <div class="grid-2">
+        <div>
+          <h3>1. Hyper-Local Targeting</h3>
+          <div class="bullet-list" style="margin-top: 25px;">
+            <div class="bullet"><div class="check">→</div><div><strong>Agrabad & GEC:</strong> High commercial density.</div></div>
+            <div class="bullet"><div class="check">→</div><div><strong>EPZ Area:</strong> High volume commodity flow.</div></div>
+            <div class="bullet"><div class="check">→</div><div><strong>Universities:</strong> Target early adopters who hate roaming.</div></div>
+          </div>
+        </div>
+        
+        <div class="card" style="background: var(--bg-soft);">
+          <h3>2. The Flywheel</h3>
+          <div style="display:flex; justify-content: space-between; margin-top: 30px; text-align: center; font-size: 16px; font-weight: bold;">
+             <div>Onboard<br>Sellers</div>
+             <div style="padding-top:10px;">→</div>
+             <div>More<br>Inventory</div>
+             <div style="padding-top:10px;">→</div>
+             <div>More<br>Users</div>
+             <div style="padding-top:10px;">→</div>
+             <div>Sellers<br>Pay</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 8: Competition -->
+  <section class="slide theme-dark">
+    <div class="inner">
+      <span class="subtitle">Competitive Landscape</span>
+      <h2>Our "Blue Ocean"</h2>
       
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th style="color: white; font-size: 20px;">Nearby Offer</th>
+            <th>E-Commerce (Daraz)</th>
+            <th>Facebook/F-Commerce</th>
+            <th>Google Maps</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>See Nearby Availability</td>
+            <td class="tick">Yes</td>
+            <td>No</td>
+            <td>No</td>
+            <td>Sort of</td>
+          </tr>
+          <tr>
+            <td>Search by Product</td>
+            <td class="tick">Yes</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Compare Prices Locally</td>
+            <td class="tick">Yes</td>
+            <td>No</td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Offline Trust/Verification</td>
+            <td class="tick">High</td>
+            <td>Low</td>
+            <td>Low</td>
+            <td>High</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
+  <!-- Slide 9: Team -->
+  <section class="slide">
+    <div class="inner">
+      <span class="subtitle">The Team</span>
+      <h2>Founder-Led Execution</h2>
+      <p class="lead">Efficient, technical, and local.</p>
 
-   <div class="mainb">
+      <div class="grid-2">
+        <div class="card" style="border-left: 6px solid var(--primary);">
+          <h3>Fazle Rabbi</h3>
+          <p style="color: var(--muted); font-weight: 600; margin-bottom: 15px; font-size: 20px;">Founder & Lead Developer</p>
+          <div class="bullet-list">
+            <div class="bullet" style="font-size: 22px;"><div class="check">•</div><div>Solo built & deployed both Android Apps.</div></div>
+            <div class="bullet" style="font-size: 22px;"><div class="check">•</div><div>Accepted to <strong>UMN Twin Cities CSE</strong> (100% Scholarship).</div></div>
+            <div class="bullet" style="font-size: 22px;"><div class="check">•</div><div>Experience in React Native, LLMs, and E-com systems.</div></div>
+          </div>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; justify-content: center;">
+          <h3 style="color: var(--muted);">Why this team?</h3>
+          <p style="font-size: 24px; line-height: 1.5;">
+            We don't have overhead. We have product velocity. <br><br>
+            The technical risk is zero (apps are live). The funding is needed purely for <strong>distribution</strong>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 10: The Ask -->
+  <section class="slide theme-primary">
+    <div class="inner">
+      <span class="subtitle" style="color: rgba(255,255,255,0.8);">Funding Ask</span>
+      <h2 style="color: white;">Pre-Seed Investment</h2>
       
-       <div class="popup-screen" style="visibility: hidden;" >
-       <!-- <div class="popup-screen"  > -->
-         <div class="popup-box" id="popidbb">
-            <p style="color:red;" id='inpt_errory'></p>
-           <form action="#" id='popFormbb'>
-             <div class="data">
-                <label>Room Name</label>
-                <input id='input_roomnamebb' type="text" placeholder='Join or Create any Room' required>
-             </div>
-             <div class="data">
-                <label>Your Name</label>
-                <input id='input_usernamebb' placeholder="Just give your name." type="text" required>
-             </div>
-            
-             <div class="btn">
-                <div class="inner"></div>
-                <button id='joinbtnbb' type="submit" >Enter</button>
-             </div>
-            
-          </form>
-         </div>
-
-
-         <!-- <div class="loaderbb" id="loaderbbid" style="display: none;">     
-            <svg class="svgbb"  viewBox="25 25 50 50">
-               <circle class="circlebb" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
-            
-            </svg>
-         </div> -->
-       </div>
-
-     
-      
-       <div class="main__left">
-         <div class="main__videos" id="main_videobb">
-            <div id="video-gridb">
-               <div id="myvideobb">
-                  <video id="local_vidb" autoplay playsinline></video>
-               </div>
-            </div>
-         </div>
-         <div class="main__controls" id="allControlsbb">     <!-- means all the button at the left down....like mute,stop vide,.... -->
-            <div class="main__controls__blockb">         <!-- we have three blocks {mute,stop vide},{security,participants,chat},{leave meeting} -->
-
-             
-               <div id='toggle_audiob' class="main__controls__button main__mute_button">
-                  <i class="fas fa-microphone"></i>
-                  <span>Mute</span>
-               </div>
-               
-               <div id='toggle_vidb' class="main__controls__button main__video_button" >
-                  <i class="fas fa-video"></i>
-               
-                  <span>Stop Video</span>
-
-               </div>
-
-               
-         
-            </div> 
-
-            <div style="display: flex;">
-            <div class="main__controls__button chat-btnbb" >
-               <i id="msgiconbb"  class="fa fa-message">
-                  <div class="badgebb" id="newMsgNumbb" style="display: none;">1</div>
-
-               </i>
-            </div>
-
-            <div id='leave_meeting' class="main__controls__blockb">
-               <div  class="main__controls__button">
-                  <!-- <i class="fas fa-stop-circle"></i> -->
-                  <i class="fas fa-phone-slash"></i>
-                  <span class="leave_meeting">Leave Meeting</span>
-               </div>
-            </div>
-         </div>
-
-         </div>
+      <div style="font-size: 110px; font-weight: 800; line-height: 1; margin: 30px 0;">
+        10 Lakh <span style="font-size: 50px; font-weight: 400;">BDT</span>
       </div>
       
-      <!-- means "chat" baby  -->
-      <!-- <div class="main__right" style="display: none;">     
-         <div class="main__header">
-            <h6>Chat</h6>
-         </div>
-         <div id="main__chat_window">
-            <ul class="messages">
-               
-            </ul>
+      <p class="lead" style="color: white; opacity: 0.9;">
+        To achieve 1,000 Verified Sellers and 20,000 Active Users in Chattogram within 6 months.
+      </p>
 
-         </div>
-         <div class="main__message_container">
-            <input id="input_messageh" type="text" placeholder="Type message here...">
-         </div>
-      </div> -->
-   </div>
-
-   <script>
-
-
+      <div class="bar-chart">
+        <div class="bar-80">80% Marketing & User Acquisition</div>
+        <div class="bar-20">20% Dev & Ops</div>
+      </div>
       
-  </script>
+      <div class="grid-2" style="font-size: 20px; opacity: 0.8; margin-top: 20px;">
+        <div>• Billboard & Location Ads in Agrabad/GEC</div>
+        <div>• Server Costs & iOS Development</div>
+      </div>
+    </div>
+  </section>
 
-   <script src="jsbb/mainbb.js"></script>
-   <script src="jsbb/ratingg.js"></script>
-   <script src="jsbb/pop_msgy.js"></script>
+  <!-- Slide 11: Contact -->  <!-- Slide 11: Contact & Download -->
+     <!-- Slide 11: Contact & Download -->
+  <!-- Slide 11: Contact & Download -->
+  <section class="slide theme-dark" style="text-align: center;">
+    <div class="inner">
+      <h2 style="font-size: 72px; margin-bottom: 30px;">Let's fix offline shopping.</h2>
+      
+      <!-- Contact Info Grid -->
+      <div style="display: flex; gap: 80px; justify-content: center; margin-bottom: 60px; text-align: left;">
+        <div>
+          <div style="font-size: 16px; color: #999; text-transform: uppercase; margin-bottom:6px;">Founder</div>
+          <div style="font-size: 28px; font-weight: 600;">Fazle Rabbi</div>
+        </div>
+        <div>
+          <div style="font-size: 16px; color: #999; text-transform: uppercase; margin-bottom:6px;">Email</div>
+          <a href="mailto:contact@holecom.com" style="font-size: 28px; font-weight: 600; text-decoration: none; color: inherit;">contact@holecom.com</a>
+        </div>
+        <div>
+          <div style="font-size: 16px; color: #999; text-transform: uppercase; margin-bottom:6px;">Phone</div>
+          <a href="tel:+8801647521338" style="font-size: 28px; font-weight: 600; text-decoration: none; color: inherit;">880 16475 21338</a>
+        </div>
+      </div>
 
+      <!-- APP DOWNLOAD CONTAINER -->
+      <div style="padding: 40px 60px; border-radius: 20px; border: 1px solid #333; display: inline-block; background: rgba(255,255,255,0.02);">
+        
+        <!-- LIVE: ANDROID -->
+        <p style="color: #ccc; margin-bottom: 25px; font-size: 18px; letter-spacing: 1px; text-transform: uppercase;">
+           Live on Google Play
+        </p>
+        
+        <div style="display: flex; gap: 60px; justify-content: center;">
+          
+          <!-- App 1: User App -->
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+            <a href="https://play.google.com/store/apps/details?id=com.holecom.offerx" target="_blank" style="transition: transform 0.2s;">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" 
+                   alt="Get User App" style="height: 70px;">
+            </a>
+            <span style="font-size: 16px; color: #666;">Shopper App</span>
+          </div>
+
+          <!-- Vertical Divider -->
+          <div style="width: 1px; background: #333; height: 90px;"></div>
+
+          <!-- App 2: Seller App -->
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+            <a href="http://play.google.com/store/apps/details?id=com.holecom.sellerx" target="_blank" style="transition: transform 0.2s;">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" 
+                   alt="Get Seller App" style="height: 70px;">
+            </a>
+            <span style="font-size: 16px; color: #666;">Seller App</span>
+          </div>
+        </div>
+
+        <!-- SEPARATOR -->
+        <div style="margin: 30px auto; width: 60%; height: 1px; background: #333;"></div>
+        
+        <!-- READY: iOS -->
+        <div style="text-align: center; opacity: 0.6; filter: grayscale(100%);">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" 
+               alt="iOS" style="height: 60px;">
+          <div style="font-size: 15px; color: #999; margin-top: 10px; font-weight: 500;">
+             iOS Version Ready <span style="color: #555;">(React Native)</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="margin-top: auto; opacity: 0.4; font-size: 16px;">
+        Holecom • Chattogram, Bangladesh
+      </div>
+    </div>
+  </section>
 
 </body>
 </html>
