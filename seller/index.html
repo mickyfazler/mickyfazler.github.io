@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ScanKoro - ডিজিটাল দোকান</title>
+    <meta property="og:title" content="ScanKoro তে আমাদের ডিজিটাল দোকান ভিজিট করুন" />
+    <meta property="og:description" content="আমাদের সব প্রোডাক্ট, দাম ও অফার দেখতে এখনই স্ক্যান করুন!" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --green: #16a34a;
+            --green-light: #dcfce7;
+            --yellow: #FFEB3B;
+            --yellow-dim: rgba(255,235,59,0.75);
+            --black: #0f172a;
+            --gray: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background: #f1f5f9;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        .phone-wrap {
+            width: 100%;
+            max-width: 480px;
+            height: 100dvh;
+            max-height: 100dvh;
+            background: white;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 40px rgba(0,0,0,0.08);
+        }
+
+        /* ── TOP BAR ── */
+        .top-bar {
+            position: absolute;
+            top: 0; left: 0; width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            z-index: 30;
+        }
+
+        .icon-btn {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(8px);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px;
+            color: var(--black);
+            border: none; cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+
+        /* ── COVER PHOTO ── */
+        .cover {
+            width: 100%;
+            height: 210px;
+            background: url('https://images.unsplash.com/photo-1556228453-efd6c1ff04f9?w=900&q=80') center/cover no-repeat;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .cover-tags {
+            position: absolute;
+            bottom: 12px; left: 12px; right: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cover-tag {
+            background: rgba(255,255,255,0.18);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 99px;
+            display: flex; align-items: center; gap: 5px;
+        }
+
+        /* ── PROFILE CARD ── */
+        .profile-card {
+            background: white;
+            border-radius: 24px 24px 0 0;
+            margin-top: -20px;
+            flex: 1;
+            position: relative;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        .profile-inner {
+            padding: 0 16px 190px;
+        }
+
+        .shop-header {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 16px 0 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .shop-avatar {
+            width: 78px; height: 78px;
+            border-radius: 16px;
+            background: url('https://images.unsplash.com/photo-1556228453-efd6c1ff04f9?w=200&q=80') center/cover;
+            border: 3px solid white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+            flex-shrink: 0;
+        }
+
+        .shop-meta { flex: 1; }
+
+        .shop-name {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--black);
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+
+        .tag {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 9px;
+            border-radius: 99px;
+            display: flex; align-items: center; gap: 4px;
+        }
+
+        .tag-purple { background: #f3e8ff; color: #7e22ce; }
+        .tag-orange { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+        .tag-green  { background: var(--green-light); color: #15803d; }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat { text-align: center; }
+        .stat-val { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.25rem; color: var(--black); }
+        .stat-lbl { font-size: 0.75rem; color: var(--gray); font-weight: 500; margin-top: 2px; }
+        .stat-divider { width: 1px; background: var(--border); margin: 6px 0; }
+
+        .action-row { display: flex; gap: 8px; padding: 14px 0; }
+
+        .btn {
+            flex: 1;
+            padding: 10px 0;
+            border-radius: 12px;
+            font-family: 'Hind Siliguri', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border: none;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            cursor: pointer;
+        }
+
+        .btn-primary { background: var(--green); color: white; }
+        .btn-outline-green { background: white; color: var(--green); border: 1.5px solid var(--green); }
+        .btn-outline { background: white; color: var(--black); border: 1.5px solid var(--border); }
+
+        .products-section { padding-top: 4px; }
+        .products-title { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--black); }
+        .products-sub { font-size: 0.8rem; color: var(--gray); margin-top: 2px; margin-bottom: 12px; }
+
+        .products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .product-img {
+            width: 100%;
+            aspect-ratio: 1;
+            position: relative;
+            overflow: hidden;
+            background: #f1f5f9;
+        }
+
+        .skel-img {
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 300% 100%;
+            animation: shimmer 1.6s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0%   { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .price-badge {
+            position: absolute;
+            bottom: 8px; right: 8px;
+            background: var(--black);
+            color: var(--yellow);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 8px;
+        }
+
+        .product-name {
+            padding: 8px 10px 12px;
+            display: flex; flex-direction: column; gap: 5px;
+        }
+
+        .skel-line {
+            height: 10px;
+            border-radius: 99px;
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 300% 100%;
+            animation: shimmer 1.6s infinite linear;
+        }
+
+        .skel-line.w-full { width: 100%; }
+        .skel-line.w-60   { width: 60%; }
+
+        /* ── BLUR / LOCK OVERLAY ── */
+        .content-blur { filter: blur(5px); user-select: none; pointer-events: none; }
+
+        .lock-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.25) 30%,
+                rgba(255,255,255,0.6) 60%,
+                rgba(255,255,255,0.85) 80%
+            );
+            z-index: 6;
+            border-radius: 24px 24px 0 0;
+        }
+
+        /* ── CTA SHEET ── */
+        .cta-sheet {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%;
+            background: var(--black);
+            border-radius: 30px 30px 0 0;
+            padding: 22px 24px 36px;
+            z-index: 20;
+            text-align: center;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.15);
+            animation: slideUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to   { transform: translateY(0); }
+        }
+
+        .cta-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .cta-logo-icon {
+            width: 28px; height: 28px;
+            background: var(--yellow);
+            border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .cta-logo-icon svg { width: 16px; height: 16px; }
+
+        .cta-logo-text {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .cta-tagline {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 900;
+            line-height: 1.2;
+            color: var(--yellow);
+            margin-bottom: 10px;
+        }
+
+        .cta-sub {
+            font-size: 0.92rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.55);
+            margin-bottom: 22px;
+            line-height: 1.45;
+        }
+
+        /* ── Redirect progress bar (shows only on Android auto-redirect) ── */
+        .redirect-bar-wrap {
+            height: 3px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 99px;
+            margin-bottom: 18px;
+            overflow: hidden;
+            display: none; /* shown by JS */
+        }
+
+        .redirect-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--yellow);
+            border-radius: 99px;
+            transition: width linear;
+        }
+
+        .redirect-label {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 16px;
+            display: none; /* shown by JS */
+        }
+
+        .play-store-btn {
+            display: inline-block;
+            transition: transform .2s ease, opacity .2s ease;
+        }
+        .play-store-btn:active { transform: scale(0.95); opacity: 0.85; }
+        .play-store-btn img {
+            height: 56px; width: auto;
+        }
+
+        /* DEV MODE banner */
+        .dev-banner {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            background: #f59e0b;
+            color: #1c1917;
+            font-family: monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 4px 0;
+            z-index: 9999;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body>
+<div class="phone-wrap">
+
+    <!-- Cover photo -->
+    <div class="cover">
+        <div class="cover-tags">
+            <span class="cover-tag"><i class="fas fa-store" style="font-size:10px;"></i> <span id="shopCategory">Market shop</span></span>
+            <span class="cover-tag"><i class="fas fa-location-arrow" style="font-size:10px;"></i> <span id="shopDist">-- km</span></span>
+        </div>
+    </div>
+
+    <!-- Profile card: blurred content -->
+    <div class="profile-card">
+        <div class="content-blur">
+            <div class="profile-inner">
+
+                <div class="shop-header">
+                    <div class="shop-avatar"></div>
+                    <div class="shop-meta">
+                        <div class="shop-name" id="shopName">Electronics Mart</div>
+                        <div class="tag-row">
+                            <span class="tag tag-purple"><i class="fas fa-location-dot" style="font-size:9px;"></i> Agrabad</span>
+                            <span class="tag tag-orange"><i class="fas fa-store" style="font-size:9px;"></i> Shop 1113 · Center</span>
+                            <span class="tag tag-green"><i class="fas fa-tag" style="font-size:9px;"></i> Electronics</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat">
+                        <div class="stat-val">207</div>
+                        <div class="stat-lbl">Products</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <div class="stat-val">5</div>
+                        <div class="stat-lbl">Followers</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <div class="stat-val">-- km</div>
+                        <div class="stat-lbl">Away</div>
+                    </div>
+                </div>
+
+                <div class="action-row">
+                    <button class="btn btn-primary"><i class="fas fa-check"></i> Following</button>
+                    <button class="btn btn-outline-green"><i class="fab fa-whatsapp"></i> Chat</button>
+                    <button class="btn btn-outline"><i class="fas fa-location-dot"></i> Location</button>
+                </div>
+
+                <div class="products-section">
+                    <div class="products-title">Products</div>
+                    <div class="products-sub">207 items from this shop</div>
+                    <div class="products-grid">
+                        <div class="product-card">
+                            <div class="product-img"><div class="skel-img"></div><span class="price-badge">৳ --</span></div>
+                            <div class="product-name"><div class="skel-line w-full"></div><div class="skel-line w-60"></div></div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-img"><div class="skel-img"></div><span class="price-badge">৳ --</span></div>
+                            <div class="product-name"><div class="skel-line w-full"></div><div class="skel-line w-60"></div></div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-img"><div class="skel-img"></div><span class="price-badge">৳ --</span></div>
+                            <div class="product-name"><div class="skel-line w-full"></div><div class="skel-line w-60"></div></div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-img"><div class="skel-img"></div><span class="price-badge">৳ --</span></div>
+                            <div class="product-name"><div class="skel-line w-full"></div><div class="skel-line w-60"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="lock-overlay"></div>
+
+        <!-- CTA Sheet -->
+        <div class="cta-sheet">
+
+            <div class="cta-logo">
+                <div class="cta-logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round">
+                        <path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+                        <path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+                        <rect x="7" y="7" width="10" height="10" rx="2"/>
+                    </svg>
+                </div>
+                <span class="cta-logo-text">ScanKoro</span>
+            </div>
+
+            <div class="cta-tagline">আগে ফোনে,<br>তারপর দোকানে।</div>
+            <div class="cta-sub">দোকানের সব পণ্য, দাম ও অফার দেখতে ডাউনলোড করুন</div>
+
+            <!-- Progress bar — only shown during Android auto-redirect countdown -->
+            <div class="redirect-bar-wrap" id="redirectBarWrap">
+                <div class="redirect-bar" id="redirectBar"></div>
+            </div>
+            <div class="redirect-label" id="redirectLabel">Play Store-এ নিয়ে যাচ্ছি...</div>
+
+            <a href="#" class="play-store-btn" id="downloadBtn" onclick="handleDownloadClick(event)">
+                <img src="https://raw.githubusercontent.com/mickyfz/ml-project/refs/heads/master/Google-Play-PNG-Picture.png" alt="Get it on Google Play">
+            </a>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    // ─────────────────────────────────────────────────────────────────────────────
+    // ★ DEVELOPMENT FLAG
+    // Set DEV_MODE = true while building/testing.
+    // Nothing will redirect, and a yellow banner will appear at the top.
+    // Set to false before deploying to production.
+    // ─────────────────────────────────────────────────────────────────────────────
+    const DEV_MODE = false;
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Desktop behavior toggle
+    // Keep FALSE - big apps show the hook on PC instead of kicking to Play Store.
+    // ─────────────────────────────────────────────────────────────────────────────
+    const DESKTOP_AUTO_REDIRECT = false;
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // CONFIG — change these when you buy scankoro.com
+    // ─────────────────────────────────────────────────────────────────────────────
+    const CONFIG = {
+        APP_PACKAGE: 'com.holecom.offerx',
+        APP_HOST: 'www.holecom.com', // ← swap to www.scankoro.com later
+        PLAY_STORE_URL: 'https://play.google.com/store/apps/details?id=com.holecom.offerx',
+        /*
+         * market:// opens the Play Store APP directly (not the website in browser).
+         * All Android devices with Google Play have this scheme, safe to rely on.
+         */
+        MARKET_URL: 'market://details?id=com.holecom.offerx',
+        REDIRECT_DELAY: 2200, // show "আগে ফোনে, তারপর দোকানে।" for 2.2s
+    };
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Parse URL - THIS PAGE IS SELLER ONLY
+    // Link format is always: https://www.holecom.com/?s=SHOP_ID
+    // We only need the 's' param to pass to Play Store for deferred deep link
+    // ─────────────────────────────────────────────────────────────────────────────
+    const urlParams = new URLSearchParams(window.location.search);
+    const sellerId = urlParams.get('s'); // e.g.?s=55edfaYWkHjUV62s4wE
+
+    // NOTE: We are NOT changing the shop name anymore. Your HTML keeps "Electronics Mart"
+    // as a nice placeholder. No more "Shop #123" nonsense.
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Device detection
+    // ─────────────────────────────────────────────────────────────────────────────
+    function isAndroid() {
+        return /Android/i.test(navigator.userAgent);
+    }
+
+    /*
+     * visibilitychange fires when the browser tab goes to background,
+     * which happens the moment the OS hands off to the app or Play Store.
+     * We use this as the signal that a redirect succeeded, so we don't
+     * fire follow-up fallbacks unnecessarily.
+     */
+    let appOpened = false;
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) appOpened = true;
+    });
+
+    /*
+     * ─── PLAY STORE WEB URL ─────────────────────────────────────────────────────
+     * Last-resort fallback, opens the Play Store website in the browser.
+     * Used only when both intent:// and market:// fail (e.g. de-Googled devices,
+     * desktop browsers, or in-app browsers that block all custom schemes).
+     * Referrer is passed through so deferred deep linking still works after install.
+     */
+    function buildPlayStoreWebUrl() {
+        const base = CONFIG.PLAY_STORE_URL;
+        if (!sellerId) return base;
+        const referrer = encodeURIComponent(`deeplink=seller_${sellerId}`);
+        return `${base}&referrer=${referrer}`;
+    }
+
+    /*
+     * ─── MARKET URL ─────────────────────────────────────────────────────────────
+     * market:// is handled natively by the Play Store app, not the browser.
+     * Using this as the S.browser_fallback_url inside intent:// means Chrome
+     * opens the Play Store app when our app isn't installed, instead of opening
+     * the Play Store website in a browser tab.
+     */
+    function buildMarketUrl() {
+        const base = CONFIG.MARKET_URL;
+        if (!sellerId) return base;
+        const referrer = encodeURIComponent(`deeplink=seller_${sellerId}`);
+        return `${base}&referrer=${referrer}`;
+    }
+
+    /*
+     * ─── LAYER 1: APP INTENT URL ────────────────────────────────────────────────
+     * Primary intent, tries to open the already-installed app directly.
+     *
+     * Fallback chain baked into this intent:
+     * App found -> opens app
+     * App not found -> S.browser_fallback_url fires -> market:// -> Play Store app
+     */
+    function buildIntentUrl() {
+        const path = sellerId? `/?s=${sellerId}` : '/';
+        /*
+         * Double-encode market:// because it lives inside another URL parameter.
+         * Chrome decodes it once before using it as the fallback destination.
+         */
+        const marketFallback = encodeURIComponent(buildMarketUrl());
+        return `intent://${CONFIG.APP_HOST}${path}#Intent;scheme=https;package=${CONFIG.APP_PACKAGE};S.browser_fallback_url=${marketFallback};end`;
+    }
+
+    /*
+     * ─── LAYER 2: PLAY STORE APP INTENT URL ─────────────────────────────────────
+     * Secondary intent, used only if Layer 1 didn't open anything.
+     * Directly targets the Play Store app via market:// scheme wrapped in intent://
+     * with package=com.android.vending.
+     *
+     * Why this instead of plain market://
+     * Some in-app browsers block bare custom scheme redirects. Wrapping in
+     * intent:// with an explicit package bypasses that block, pattern used by
+     * Branch SDK and Firebase.
+     */
+    function buildPlayStoreIntentUrl() {
+        const referrer = sellerId
+           ? `&referrer=${encodeURIComponent(`deeplink=seller_${sellerId}`)}`
+            : '';
+        const webFallback = encodeURIComponent(buildPlayStoreWebUrl());
+        return `intent://details?id=${CONFIG.APP_PACKAGE}${referrer}#Intent;scheme=market;package=com.android.vending;S.browser_fallback_url=${webFallback};end`;
+    }
+
+    /*
+     * ─── 3-LAYER REDIRECT CHAIN ─────────────────────────────────────────────────
+     * Fires the three layers in sequence, each step only runs if the previous
+     * one didn't open anything (appOpened still false).
+     *
+     * Timers are NESTED, not parallel. Parallel timers cause a race condition,
+     * a slow device might still be launching the app when the next timer fires.
+     * Nesting ensures each layer waits for the previous.
+     */
+    function fireRedirectChain() {
+        // Layer 1, try to open installed app
+        window.location.href = buildIntentUrl();
+
+        setTimeout(() => {
+            // Layer 2, app wasn't found, try Play Store app via intent
+            if (appOpened) return;
+            window.location.href = buildPlayStoreIntentUrl();
+
+            setTimeout(() => {
+                // Layer 3, genuine last resort, open Play Store website
+                if (appOpened) return;
+                window.open(buildPlayStoreWebUrl(), '_blank');
+            }, 800);
+
+        }, 500);
+    }
+
+    /*
+     * ─── DOWNLOAD BUTTON HANDLER ────────────────────────────────────────────────
+     * Triggered by a manual user tap, skips the progress bar and fires
+     * the redirect chain immediately.
+     * Chrome 120+ requires a user gesture to honour intent:// navigations,
+     * so this path is the most reliable trigger point.
+     */
+    function handleDownloadClick(e) {
+        e.preventDefault();
+        if (isAndroid() &&!DEV_MODE) {
+            fireRedirectChain();
+        } else {
+            window.open(buildPlayStoreWebUrl(), '_blank');
+        }
+    }
+
+    /*
+     * ─── AUTO REDIRECT (on page load, Android only) ─────────────────────────────
+     * Shows an animated progress bar, then fires the redirect chain.
+     */
+    function initRedirect() {
+        if (DEV_MODE) {
+            const banner = document.createElement('div');
+            banner.className = 'dev-banner';
+            banner.textContent = '⚠ DEV MODE — redirects disabled';
+            document.body.prepend(banner);
+            return;
+        }
+
+        if (!isAndroid()) {
+            if (DESKTOP_AUTO_REDIRECT) {
+                setTimeout(() => window.location.href = buildPlayStoreWebUrl(), 1500);
+            }
+            return;
+        }
+
+        const barWrap = document.getElementById('redirectBarWrap');
+        const bar = document.getElementById('redirectBar');
+        const label = document.getElementById('redirectLabel');
+
+        barWrap.style.display = 'block';
+        label.style.display = 'block';
+
+        requestAnimationFrame(() => {
+            bar.style.transition = `width ${CONFIG.REDIRECT_DELAY}ms linear`;
+            bar.style.width = '100%';
+        });
+
+        setTimeout(() => {
+            if (!appOpened) fireRedirectChain();
+        }, CONFIG.REDIRECT_DELAY);
+    }
+
+    window.addEventListener('load', initRedirect);
+
+    /*
+    ─────────────────────────────────────────────────────────────────────────────
+      ★ ANDROID APP LINKS — THE PROPER LONG-TERM FIX ★
+    ─────────────────────────────────────────────────────────────────────────────
+      Android App Links make the OS intercept plain HTTPS URLs at the system
+      level, Chrome never sees them. No intent:// needed. 100% reliable.
+
+      STEP 1, Host this file at:
+        https://www.holecom.com/.well-known/assetlinks.json
+
+      STEP 2, In AndroidManifest.xml, use two SEPARATE intent-filters.
+        Do NOT mix http + https in the same autoVerify filter.
+
+      STEP 3, Once verified, the JS simplifies to just:
+        window.location.href = `https://www.holecom.com/?s=${sellerId}`;
+    ─────────────────────────────────────────────────────────────────────────────
+
+    ─────────────────────────────────────────────────────────────────────────────
+      DEFERRED DEEP LINK — React Native side (seller version)
+    ─────────────────────────────────────────────────────────────────────────────
+      import installReferrer from 'react-native-install-referrer';
+      const ref = await installReferrer.getInstallReferrer();
+      // ref = "deeplink=seller_55edfaYWkHjUV62s4wE"
+      if (ref?.startsWith('deeplink=seller_')) {
+        const sellerId = ref.split('_')[1];
+        navigation.navigate('SellerScreen', { sellerId });
+      }
+    ─────────────────────────────────────────────────────────────────────────────
+    */
+</script>
+</body>
+</html>

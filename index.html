@@ -1,698 +1,928 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="bn">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nearby Offer — Pre-Seed Pitch Deck</title>
-  <style>
-    /* =========================
-       Nearby Offer Design System
-       Inspired by Airbnb 2009 Pitch Deck (Clean, Typography-led)
-       ========================= */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScanKoro — আগে ফোনে, তারপর দোকানে</title>
+<meta name="description" content="আশেপাশের দোকানের পণ্য, দাম ও ঠিকানা— একসাথে ফোনেই স্ক্যান করুন!">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@0,700;0,800;0,900&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-    :root {
-      /* Palette */
-      --bg: #ffffff;
-      --bg-soft: #f4f5f7;
-      --ink: #222222;
-      --ink-soft: #484848; /* Airbnb gray */
-      --muted: #717171;
-      --border: #dddddd;
-      
-      /* Brand */
-      --primary: #FF385C; /* Modern App Red */
-      --primary-dark: #D90B3E;
-      --accent-blue: #008489; /* Trust teal */
+<style>
+:root {
+  --y: #FFEB3B;
+  --yd: #F9D300;
+  --bk: #080808;
+  --bk2: #111111;
+  --bk3: #1a1a1a;
+  --bk4: #242424;
+  --wh: #ffffff;
+  --muted: rgba(255,255,255,0.45);
+  --border: rgba(255,255,255,0.07);
+  --r: 20px;
+}
 
-      /* Layout - 16:9 Standard Laptop Res */
-      --slide-w: 1366px;
-      --slide-h: 768px;
-      /* Increased horizontal pad to fill the wider screen, slightly reduced vertical to save height */
-      --pad-x: 100px; 
-      --pad-y: 85px; /* ← This is the magic number */
-      
-      --radius: 12px;
-      --font-main: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+*, *::before, *::after { 
+  margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; 
+}
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--bk);
+  color: var(--wh);
+  font-family: 'Hind Siliguri', sans-serif;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
 
-      /* SCALED UP FONTS for 1366px width */
-      --h1-size: 76px;  /* Was 68px */
-      --h2-size: 58px;  /* Was 52px */
-      --lead-size: 32px; /* Was 28px */
-    }
+/* ══════════ NAV ══════════ */
+nav {
+  position: fixed; top: 0; left: 0; width: 100%;
+  z-index: 100; padding: 0 5%; height: 72px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(8,8,8,0.6);
+  backdrop-filter: blur(24px) saturate(1.3);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+nav.scrolled {
+  height: 64px; background: rgba(8,8,8,0.95);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; transition: transform 0.2s ease;
+}
+.nav-logo:hover { transform: translateY(-1px); }
+.nav-logo-icon {
+  width: 36px; height: 36px; background: var(--y);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; box-shadow: 0 4px 12px rgba(255,235,59,0.3);
+  transition: all 0.3s ease;
+}
+.nav-logo:hover .nav-logo-icon { box-shadow: 0 6px 20px rgba(255,235,59,0.4); transform: rotate(-5deg); }
+.nav-logo-icon svg { width: 18px; height: 18px; }
+.nav-logo-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 900; font-size: 1.3rem; color: var(--wh); letter-spacing: -0.5px;
+}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── Nav Download Button — pill style, minimal ── */
+.nav-cta {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--y); color: var(--bk);
+  font-family: 'Hind Siliguri', sans-serif;
+  font-weight: 800; font-size: 0.88rem;
+  padding: 9px 18px; border-radius: 99px;
+  text-decoration: none; border: none;
+  box-shadow: 0 4px 16px rgba(255,235,59,0.25);
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  white-space: nowrap;
+}
+.nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,235,59,0.4); background: var(--yd); }
+.nav-cta:active { transform: translateY(0) scale(0.97); }
+.nav-cta svg { width: 15px; height: 15px; flex-shrink: 0; }
 
-    body {
-      font-family: var(--font-main);
-      background: #111; /* Dark background for the presentation view */
-      color: var(--ink);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 40px;
-      padding: 40px 0;
-      -webkit-font-smoothing: antialiased;
-    }
+/* ══════════ HERO ══════════ */
+.hero {
+  min-height: 100svh; display: flex; flex-direction: column;
+  justify-content: center; align-items: center; text-align: center;
+  padding: 120px 5% 80px; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,235,59,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,235,59,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 75%);
+  pointer-events: none;
+  animation: gridPulse 8s ease-in-out infinite;
+}
+@keyframes gridPulse { 0%,100% { opacity:.4; } 50% { opacity:.7; } }
+.hero::after {
+  content: '';
+  position: absolute; top: -15%; left: 50%; transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(255,235,59,0.15) 0%, transparent 60%);
+  pointer-events: none;
+  animation: glowPulse 6s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0%,100% { opacity:.6; transform:translateX(-50%) scale(1); }
+  50% { opacity:1; transform:translateX(-50%) scale(1.05); }
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,235,59,0.08); border: 1px solid rgba(255,235,59,0.2);
+  color: var(--y); font-size: 0.85rem; font-weight: 700;
+  padding: 7px 16px; border-radius: 99px; margin-bottom: 32px;
+  position: relative; z-index: 2;
+  animation: fadeUp 0.6s ease both;
+  backdrop-filter: blur(12px); box-shadow: 0 4px 16px rgba(255,235,59,0.1);
+}
+.hero-badge-dot {
+  width: 7px; height: 7px; background: var(--y); border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite; box-shadow: 0 0 8px rgba(255,235,59,0.6);
+}
+@keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.6; transform:scale(.85); } }
+.hero-headline {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 900; font-size: clamp(2.8rem, 8vw, 6rem);
+  line-height: 1.05; letter-spacing: -2.5px; color: var(--wh);
+  position: relative; z-index: 2; animation: fadeUp 0.6s 0.1s ease both;
+}
+.hero-headline .y { color: var(--y); text-shadow: 0 0 40px rgba(255,235,59,0.3); }
+.hero-headline .stroke {
+  -webkit-text-stroke: 2.5px var(--y); color: transparent;
+  filter: drop-shadow(0 0 20px rgba(255,235,59,0.2));
+}
+.hero-sub {
+  font-size: clamp(1.05rem, 2.5vw, 1.3rem); color: rgba(255,255,255,0.6);
+  font-weight: 500; max-width: 520px; margin: 20px auto 0; line-height: 1.6;
+  position: relative; z-index: 2; animation: fadeUp 0.6s 0.2s ease both;
+}
+.hero-actions {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  margin-top: 40px; position: relative; z-index: 2;
+  flex-wrap: wrap; animation: fadeUp 0.6s 0.3s ease both;
+}
 
-    /* Slide Container */
-    .slide {
-      width: var(--slide-w);
-      height: var(--slide-h);
-      background: var(--bg);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden; 
-      /* own explore bitch  */
-    }
+/* ── Primary Store Button — the big fix ── */
+.btn-store {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 14px;
+  background: var(--y); color: var(--bk);
+  text-decoration: none;
+  padding: 14px 24px 14px 18px;
+  border-radius: 16px; border: 1px solid rgba(249,211,0,0.6);
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 4px 20px rgba(255,235,59,0.28);
+  overflow: hidden;
+}
+.btn-store::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, transparent 55%);
+  opacity: 0; transition: opacity 0.3s ease;
+}
+.btn-store:hover { transform: translateY(-3px); background: var(--yd); box-shadow: 0 10px 36px rgba(255,235,59,0.42); }
+.btn-store:hover::before { opacity: 1; }
+.btn-store:active { transform: translateY(-1px) scale(0.98); }
 
-    /* Inner Layout */
-    .inner {
-      flex: 1;
-      padding: var(--pad-y) var(--pad-x);
-      display: flex;
-      flex-direction: column;
-      justify-content: center; /* Vertically center content */
-    }
+/* Google Play colorful logo */
+.gp-logo { flex-shrink: 0; width: 28px; height: 28px; }
 
-    .top-align { justify-content: flex-start; }
+.btn-store-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2; }
+.btn-store-sub {
+  font-family: 'Hind Siliguri', sans-serif;
+  font-size: 0.72rem; font-weight: 600; opacity: 0.7; letter-spacing: 0.01em;
+}
+.btn-store-name {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.08rem; font-weight: 900; letter-spacing: -0.3px;
+}
 
-    /* Typography */
-    h1 {
-      font-size: var(--h1-size);
-      font-weight: 800;
-      letter-spacing: -2px;
-      line-height: 1.1;
-      margin-bottom: 20px;
-      color: var(--ink);
-    }
-    
-    h2 {
-      font-size: var(--h2-size);
-      font-weight: 700;
-      letter-spacing: -1.5px;
-      line-height: 1.15;
-      margin-bottom: 24px;
-    }
+/* ── Ghost scroll button ── */
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: rgba(255,255,255,0.75); font-weight: 700; font-size: 0.95rem;
+  text-decoration: none; padding: 14px 22px; border-radius: 14px;
+  border: 1.5px solid rgba(255,255,255,0.1);
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  backdrop-filter: blur(8px);
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,0.22); color: #fff; transform: translateY(-2px); }
+.btn-ghost i { transition: transform 0.3s ease; font-size: 0.9rem; }
+.btn-ghost:hover i { transform: translateY(3px); }
 
-    h3 {
-      font-size: 28px; /* Scaled from 24 */
-      font-weight: 600;
-      margin-bottom: 12px;
-      letter-spacing: -0.5px;
-    }
+/* ── Floating cards ── */
+.hero-cards {
+  position: relative; z-index: 2; margin-top: 70px;
+  width: 100%; max-width: 680px; height: 260px;
+  animation: fadeUp 0.6s 0.4s ease both;
+}
+.fl-card {
+  position: absolute;
+  background: rgba(26,26,26,0.82); backdrop-filter: blur(20px) saturate(1.2);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+  padding: 14px 16px; display: flex; align-items: center; gap: 14px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05) inset;
+  min-width: 270px; max-width: 360px; width: auto;
+  animation: floatCard 5s ease-in-out infinite; cursor: default;
+  transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+.fl-card:hover { transform: scale(1.05) translateY(-6px) !important; z-index:10; border-color: rgba(255,235,59,0.3); animation-play-state: paused; }
+.fl-card:nth-child(1) { top:0; left:0; animation-delay:0s; }
+.fl-card:nth-child(2) { top:0; right:0; animation-delay:0.8s; }
+.fl-card:nth-child(3) { bottom:0; left:50%; transform:translateX(-50%); animation-delay:1.6s; }
+@keyframes floatCard { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-12px); } }
+.fl-card:nth-child(3) { animation-name: floatCard3; }
+@keyframes floatCard3 {
+  0%,100% { transform:translateX(-50%) translateY(0); }
+  50% { transform:translateX(-50%) translateY(-12px); }
+}
+.fl-card:nth-child(3):hover { transform: translateX(-50%) scale(1.05) translateY(-6px) !important; }
+.fl-img {
+  width: 60px; height: 60px; border-radius: 14px; object-fit: cover;
+  flex-shrink: 0; background: var(--bk4); border: 1px solid rgba(255,255,255,0.05);
+}
+.fl-name { font-size: .98rem; font-weight: 800; color:#fff; white-space:nowrap; letter-spacing:-.2px; }
+.fl-shop { font-size: .8rem; color:var(--muted); margin-top:3px; display:flex; align-items:center; gap:4px; }
+.fl-price {
+  margin-left:auto; font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:900; font-size:1.15rem; color:var(--y); white-space:nowrap;
+  text-shadow:0 0 12px rgba(255,235,59,0.2); flex-shrink: 0;
+}
 
-    p.lead {
-      font-size: var(--lead-size);
-      line-height: 1.4;
-      color: var(--ink-soft);
-      max-width: 1100px; /* Wider measure for wider screen */
-      margin-bottom: 30px;
-      font-weight: 400;
-    }
+/* ══════════ SECTIONS ══════════ */
+section { padding: 100px 5%; }
+.section-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,235,59,0.06); border: 1px solid rgba(255,235,59,0.18);
+  color: var(--y); font-size: .8rem; font-weight: 800;
+  padding: 6px 14px; border-radius: 99px;
+  text-transform: uppercase; letter-spacing: .06em; margin-bottom: 24px;
+  backdrop-filter: blur(8px);
+}
+.section-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 900; font-size: clamp(2.2rem, 5vw, 3.4rem);
+  line-height: 1.1; letter-spacing: -1.5px; color:#fff; margin-bottom:16px;
+}
+.section-desc { font-size:1.08rem; color:var(--muted); max-width:520px; line-height:1.65; }
+.divider {
+  width:50px; height:4px;
+  background:linear-gradient(90deg,var(--y) 0%,var(--yd) 100%);
+  border-radius:4px; margin:20px 0;
+  box-shadow:0 2px 8px rgba(255,235,59,0.3);
+}
 
-    .subtitle {
-      text-transform: uppercase;
-      font-size: 16px; /* Scaled from 14 */
-      letter-spacing: 2px;
-      color: var(--primary);
-      font-weight: 700;
-      margin-bottom: 16px;
-      display: block;
-    }
+/* ══════════ HOW ══════════ */
+.how { background: var(--bk); border-top: 1px solid var(--border); }
+.how-inner {
+  display:grid; grid-template-columns:1fr 1fr; gap:80px;
+  align-items:center; max-width:1200px; margin:0 auto;
+}
+.how-steps { display:flex; flex-direction:column; gap:32px; margin-top:40px; }
+.how-step {
+  display:flex; gap:20px; align-items:flex-start;
+  opacity:0; transform:translateX(-20px);
+  transition:opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1);
+  padding:8px; border-radius:16px;
+}
+.how-step.visible { opacity:1; transform:none; }
+.how-step:hover { background:rgba(255,255,255,.02); }
+.step-num {
+  width:48px; height:48px; background:var(--y); color:var(--bk);
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:900; font-size:1.2rem;
+  border-radius:14px; display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; box-shadow:0 4px 16px rgba(255,235,59,0.3); transition:transform .3s ease;
+}
+.how-step:hover .step-num { transform:scale(1.05) rotate(-3deg); }
+.step-body h3 { font-weight:800; font-size:1.1rem; margin-bottom:6px; letter-spacing:-.3px; }
+.step-body p { font-size:.95rem; color:var(--muted); line-height:1.6; }
 
-    .highlight { color: var(--primary); }
-    .white { color: #fff; }
-    .dim { color: rgba(255,255,255,0.7); }
+/* Phone mockup */
+.phone-mock { position:relative; display:flex; justify-content:center; }
+.phone-frame {
+  width:260px; background:var(--bk2); border-radius:40px;
+  border:3px solid rgba(255,255,255,.08); padding:18px 12px;
+  box-shadow:0 50px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.04) inset;
+  position:relative; overflow:hidden; transition:transform .3s ease;
+}
+.phone-frame:hover { transform:scale(1.02); }
+.phone-notch { width:90px; height:24px; background:var(--bk); border-radius:0 0 18px 18px; margin:0 auto 16px; }
+.phone-screen { background:var(--bk3); border-radius:24px; padding:14px; min-height:400px; }
+.mock-header { display:flex; align-items:center; gap:8px; margin-bottom:16px; }
+.mock-search {
+  flex:1; background:var(--bk4); border-radius:12px; padding:10px 14px;
+  font-size:.72rem; color:var(--muted); display:flex; align-items:center; gap:8px;
+  border:1px solid rgba(255,255,255,.05);
+}
+.mock-loc {
+  font-size:.62rem; color:var(--y); font-weight:700;
+  background:rgba(255,235,59,.12); padding:7px 10px; border-radius:10px;
+  white-space:nowrap; border:1px solid rgba(255,235,59,.2);
+}
+.mock-card {
+  background:var(--bk4); border-radius:14px; padding:12px;
+  display:flex; gap:12px; margin-bottom:10px; align-items:center;
+  border:1px solid rgba(255,255,255,.04); transition:all .2s ease;
+}
+.mock-card:hover { border-color:rgba(255,235,59,.15); }
+.mock-img {
+  width:48px; height:48px; border-radius:10px; flex-shrink:0;
+  object-fit:cover; background:#333; border:1px solid rgba(255,255,255,.05);
+}
+.mock-name { font-size:.75rem; font-weight:800; color:#fff; letter-spacing:-.2px; }
+.mock-shop { font-size:.62rem; color:var(--muted); margin-top:3px; }
+.mock-price { font-size:.9rem; font-weight:900; color:var(--y); margin-left:auto; white-space:nowrap; font-family:'Plus Jakarta Sans',sans-serif; }
+.phone-glow {
+  position:absolute; bottom:-80px; left:50%; transform:translateX(-50%);
+  width:320px; height:240px;
+  background:radial-gradient(ellipse,rgba(255,235,59,.2) 0%,transparent 65%);
+  pointer-events:none; animation:phoneGlow 4s ease-in-out infinite;
+}
+@keyframes phoneGlow { 0%,100%{opacity:.6}50%{opacity:1} }
 
-    /* Layout Grids */
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; } /* Wider gap */
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; }
-    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; }
-    
-    /* Components */
-    .card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 30px; /* More padding */
-    }
+/* ══════════ FEATURES ══════════ */
+.features { background:var(--bk2); border-top:1px solid var(--border); }
+.features-header { max-width:1200px; margin:0 auto 60px; }
+.feat-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:20px; max-width:1200px; margin:0 auto;
+}
+.feat-card {
+  background:rgba(26,26,26,.5); backdrop-filter:blur(12px);
+  border:1px solid var(--border); border-radius:24px; padding:32px 26px;
+  transition:all .4s cubic-bezier(.4,0,.2,1); opacity:0; transform:translateY(20px);
+}
+.feat-card.visible { opacity:1; transform:none; }
+.feat-card:hover { border-color:rgba(255,235,59,.25); transform:translateY(-6px); background:rgba(26,26,26,.8); box-shadow:0 12px 32px rgba(0,0,0,.5); }
+.feat-icon {
+  width:52px; height:52px; background:rgba(255,235,59,.08); border-radius:16px;
+  display:flex; align-items:center; justify-content:center; font-size:1.35rem;
+  color:var(--y); margin-bottom:20px; border:1px solid rgba(255,235,59,.15); transition:all .3s ease;
+}
+.feat-card:hover .feat-icon { transform:scale(1.08) rotate(-5deg); background:rgba(255,235,59,.12); box-shadow:0 0 24px rgba(255,235,59,.2); }
+.feat-card h3 { font-size:1.1rem; font-weight:800; margin-bottom:10px; letter-spacing:-.3px; }
+.feat-card p { font-size:.9rem; color:var(--muted); line-height:1.6; }
 
-    .bullet-list {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    
-    .bullet {
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-      font-size: 24px; /* Scaled from 22 */
-      line-height: 1.35;
-      color: var(--ink-soft);
-    }
-    
-    .check {
-      min-width: 28px;
-      height: 28px;
-      background: rgba(255, 56, 92, 0.1);
-      color: var(--primary);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      font-weight: bold;
-      margin-top: 4px;
-    }
+/* ══════════ SELLER ══════════ */
+.seller { background:var(--bk); border-top:1px solid var(--border); }
+.seller-inner {
+  max-width:1200px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;
+}
+.seller-highlight {
+  background:linear-gradient(135deg,var(--y) 0%,var(--yd) 100%);
+  border-radius:32px; padding:48px 40px; color:var(--bk);
+  position:relative; overflow:hidden;
+  box-shadow:0 24px 48px rgba(255,235,59,.25), 0 0 0 1px rgba(255,255,255,.1) inset;
+}
+.seller-highlight::before {
+  content:''; position:absolute; top:-60px; right:-60px;
+  width:240px; height:240px; background:rgba(255,255,255,.12); border-radius:50%;
+}
+.seller-highlight::after {
+  content:''; position:absolute; bottom:-40px; left:-40px;
+  width:180px; height:180px; background:rgba(0,0,0,.08); border-radius:50%;
+}
+.seller-highlight h2 {
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:clamp(1.8rem,4vw,2.6rem); font-weight:900;
+  line-height:1.15; letter-spacing:-1px; margin-bottom:16px; position:relative;
+}
+.seller-highlight p {
+  font-size:1rem; line-height:1.65; opacity:.8; margin-bottom:28px; position:relative;
+}
+.seller-steps { display:flex; flex-direction:column; gap:12px; position:relative; margin-bottom:32px; }
+.s-step {
+  display:flex; align-items:center; gap:12px;
+  background:rgba(0,0,0,.12); border-radius:14px; padding:13px 16px;
+  font-size:.95rem; font-weight:700; transition:all .3s ease; border:1px solid rgba(0,0,0,.1);
+}
+.s-step:hover { background:rgba(0,0,0,.18); transform:translateX(4px); }
+.s-step i { font-size:1.05rem; color:var(--bk); opacity:.7; }
 
-    /* Themes */
-    .theme-dark {
-      background: #000;
-      color: #fff;
-    }
-    .theme-dark h1, .theme-dark h2 { color: #fff; }
-    .theme-dark p.lead { color: #ccc; }
-    .theme-dark .card { background: #1a1a1a; border-color: #333; }
-    .theme-dark .bullet { color: #ddd; }
+/* ── Seller Download Button — dark on yellow card ── */
+.btn-store-dark {
+  position:relative; display:inline-flex; align-items:center; gap:14px;
+  background:var(--bk); color:var(--wh);
+  text-decoration:none; padding:14px 24px 14px 18px;
+  border-radius:16px; border:1px solid rgba(255,255,255,.08);
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 4px 20px rgba(0,0,0,.3);
+  overflow:hidden;
+}
+.btn-store-dark::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.06) 0%,transparent 55%);
+  opacity:0; transition:opacity .3s ease;
+}
+.btn-store-dark:hover { transform:translateY(-3px); background:#1a1a1a; box-shadow:0 10px 36px rgba(0,0,0,.5); }
+.btn-store-dark:hover::before { opacity:1; }
+.btn-store-dark:active { transform:translateY(-1px) scale(.98); }
+.btn-store-dark .btn-store-sub { opacity:.55; }
+.btn-store-dark .btn-store-name { color:#fff; }
 
-    .theme-primary {
-      background: linear-gradient(135deg, #FF385C 0%, #BD1E59 100%);
-      color: #fff;
-    }
-    .theme-primary h1, .theme-primary h2, .theme-primary p { color: #fff; }
+.seller-stats { display:flex; flex-direction:column; gap:24px; }
+.stat-item {
+  padding:28px 26px; background:rgba(26,26,26,.5); backdrop-filter:blur(12px);
+  border:1px solid var(--border); border-radius:24px;
+  display:flex; align-items:center; gap:20px;
+  opacity:0; transform:translateX(20px);
+  transition:all .5s cubic-bezier(.4,0,.2,1);
+}
+.stat-item.visible { opacity:1; transform:none; }
+.stat-item:hover { background:rgba(26,26,26,.8); border-color:rgba(255,235,59,.2); transform:translateX(-4px); }
+.stat-icon {
+  width:56px; height:56px; background:rgba(255,235,59,.08); border-radius:16px;
+  display:flex; align-items:center; justify-content:center; font-size:1.6rem;
+  flex-shrink:0; border:1px solid rgba(255,235,59,.15);
+}
+.stat-title { font-weight:800; font-size:1.05rem; margin-bottom:4px; letter-spacing:-.2px; }
+.stat-desc { font-size:.88rem; color:var(--muted); line-height:1.5; }
 
-    /* Visual Elements */
-    .big-stat {
-      font-size: 64px; /* Scaled from 56 */
-      font-weight: 800;
-      color: var(--primary);
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-    .theme-dark .big-stat { color: #FF385C; }
-    .stat-label { font-size: 18px; color: var(--muted); line-height: 1.4; }
-    .theme-dark .stat-label { color: #999; }
+/* ══════════ CTA ══════════ */
+.cta-section { background:var(--bk2); border-top:1px solid var(--border); text-align:center; }
+.cta-box {
+  max-width:700px; margin:0 auto; padding:70px 40px;
+  background:rgba(26,26,26,.6); backdrop-filter:blur(20px);
+  border:1px solid rgba(255,235,59,.12); border-radius:36px;
+  position:relative; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.cta-box::before {
+  content:''; position:absolute; top:-100px; left:50%; transform:translateX(-50%);
+  width:500px; height:400px;
+  background:radial-gradient(ellipse,rgba(255,235,59,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.cta-box h2 {
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:clamp(2.2rem,6vw,3.6rem); font-weight:900;
+  line-height:1.05; letter-spacing:-1.5px; margin-bottom:18px; position:relative;
+}
+.cta-box p {
+  color:var(--muted); font-size:1.1rem; margin-bottom:36px; line-height:1.65; position:relative;
+}
 
-    /* CSS Phone Mockups (Abstract) */
-    .phones-container {
-      display: flex;
-      justify-content: center;
-      gap: 50px; /* Wider gap for wider screen */
-      margin-top: 20px;
-    }
-    
-    /* own explore bitch  */
-    .phone-mock {
-      width: 260px;  /* Slight increase from 260 */
-      height: 520px; /* Slight increase from 520 to match ratio */
-      border: 8px solid #333;
-      border-radius: 34px;
-      background: #fff;
-      position: relative;
-      /* overflow: hidden; This was missing in your code...i don't need that shit bitch...otherwise i won't able to show those text */
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    }
+/* Two-app download layout */
+.download-group {
+  display:flex; flex-direction:column; align-items:center; gap:20px; position:relative;
+}
+.download-apps {
+  display:flex; gap:16px; flex-wrap:wrap; justify-content:center;
+}
+.download-label {
+  font-size:.78rem; font-weight:700; color:rgba(255,255,255,.3);
+  text-transform:uppercase; letter-spacing:.08em;
+  margin-bottom:-6px;
+}
+.download-app-group {
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+}
+.download-app-tag {
+  font-size:.72rem; font-weight:700; color:rgba(255,255,255,.4);
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08);
+  padding:3px 10px; border-radius:99px; letter-spacing:.04em;
+}
+.coming-soon-chip {
+  display:inline-flex; align-items:center; gap:7px;
+  background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
+  color:var(--muted); font-size:.82rem; font-weight:600;
+  padding:8px 16px; border-radius:99px; backdrop-filter:blur(8px);
+}
 
-    .phone-mock img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      border-radius: 24px; /* Match phone's inner radius */
-      image-rendering: crisp-edges;
-    }
+/* ══════════ FOOTER ══════════ */
+footer {
+  background:var(--bk); border-top:1px solid var(--border);
+  padding:40px 5%; display:flex; align-items:center;
+  justify-content:space-between; gap:20px; flex-wrap:wrap;
+}
+.footer-logo {
+  display:flex; align-items:center; gap:10px;
+  text-decoration:none; transition:transform .2s ease;
+}
+.footer-logo:hover { transform:translateY(-2px); }
+.footer-logo-icon {
+  width:32px; height:32px; background:var(--y); border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 4px 12px rgba(255,235,59,.25);
+}
+.footer-logo-icon svg { width:16px; height:16px; }
+.footer-logo-text { font-family:'Plus Jakarta Sans',sans-serif; font-weight:900; font-size:1.1rem; color:#fff; }
+.footer-copy { font-size:.85rem; color:rgba(255,255,255,.35); }
+.footer-link {
+  font-size:.85rem; color:rgba(255,255,255,.45);
+  text-decoration:none; transition:all .2s ease; position:relative;
+}
+.footer-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:var(--y); transition:width .3s ease; }
+.footer-link:hover { color:var(--y); }
+.footer-link:hover::after { width:100%; }
 
-    /* Fake UI Elements for Mockups (kept for possible future use) */
-    .app-header { height: 50px; background: var(--bg-soft); display:flex; align-items:center; padding: 0 15px; gap:10px; border-bottom:1px solid #eee;}
-    .app-search { height: 20px; background: #ddd; border-radius: 4px; flex:1; }
-    .app-content { padding: 15px; display: grid; gap: 15px; }
-    .app-card { height: 80px; background: #f4f4f4; border-radius: 8px; display:flex; gap:10px; padding:8px;}
-    .app-img { width: 60px; background: #e0e0e0; border-radius: 4px; }
-    .app-lines { flex:1; display:flex; flex-direction:column; gap:6px; justify-content:center; }
-    .line { height: 8px; background: #e0e0e0; border-radius: 2px; }
-    .w-50 { width: 50%; }
-    .w-80 { width: 80%; }
-    
-    /* Comparison Table */
-    .matrix { width: 100%; border-collapse: collapse; margin-top: 30px; }
-    .matrix th { text-align: left; padding: 20px; color: var(--muted); font-size: 16px; text-transform: uppercase; border-bottom: 1px solid #333; }
-    .matrix td { padding: 25px 20px; font-size: 22px; border-bottom: 1px solid #333; }
-    .matrix tr:last-child td { border: none; }
-    .tick { color: var(--primary); font-weight: bold; }
-    
-    /* Bar Chart for Funding */
-    .bar-chart { display: flex; height: 70px; width: 100%; border-radius: 8px; overflow: hidden; margin: 30px 0; }
-    .bar-80 { width: 80%; background: #fff; color: var(--primary); display:grid; place-items:center; font-weight:bold; font-size:22px;}
-    .bar-20 { width: 20%; background: rgba(0,0,0,0.2); color: #fff; display:grid; place-items:center; font-weight:bold; font-size:22px;}
+/* ══════════ ANIMATIONS ══════════ */
+@keyframes fadeUp { from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)} }
 
-    /* Print/PDF Override */
-    @media print {
-      body { padding: 0; background: #fff; display: block; }
-      .slide { page-break-after: always; box-shadow: none; margin-bottom: 0; }
-    }
+/* ══════════ RESPONSIVE ══════════ */
+@media(max-width:768px){
+  section{padding:70px 5%}
+  nav{height:64px;padding:0 4%}
+  .nav-logo-text{font-size:1.1rem}
+  .nav-logo-icon{width:32px;height:32px}
+  .nav-cta{font-size:.82rem;padding:8px 14px}
 
-    /* giving this style is my genius ness...otherwise only slide 4 is nonsense */
-    .slide2 {
-      width: var(--slide-w);
-      height: var(--slide-h);
-      background: var(--bg);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-    /* Print/PDF Override */
-    @media print {
-      /* 1. Define the "Paper" size to match your slide size exactly */
-      @page {
-        size: 1366px 768px; /* Custom paper size matching your --slide-w/h */
-        margin: 0;          /* Zero margins */
-      }
+  .hero{padding:100px 4% 60px}
+  .hero-cards{height:auto;position:static;display:flex;flex-direction:column;gap:12px;max-width:100%}
+  .fl-card{position:static;transform:none !important;animation:none;width:100%;max-width:100%;min-width:0}
 
-      /* 2. Reset the body to remove gaps and background colors */
-      body {
-        margin: 0;
-        padding: 0;
-        gap: 0;
-        background: transparent; 
-        display: block; 
-        -webkit-print-color-adjust: exact; /* Force Chrome/Edge to print background colors */
-        print-color-adjust: exact;
-      }
+  .how-inner{grid-template-columns:1fr;gap:50px}
+  .phone-mock{order:-1}
+  .feat-grid{grid-template-columns:1fr}
+  .seller-inner{grid-template-columns:1fr;gap:50px}
+  .download-apps{flex-direction:column;align-items:center}
+  footer{justify-content:center;text-align:center}
+}
+@media(max-width:480px){
+  .hero-headline{font-size:2.6rem;letter-spacing:-1px}
+  .section-title{font-size:2rem}
+  .btn-store,.btn-store-dark{padding:12px 20px 12px 14px}
+  .seller-highlight{padding:36px 28px}
+  .cta-box{padding:48px 24px}
+}
 
-      /* 3. Force the slide to fill the custom page exactly */
-      .slide {
-        width: 1366px;
-        height: 768px;
-        page-break-after: always; /* Force new page after every slide */
-        break-after: page;
-        box-shadow: none;
-        margin: 0;
-        border: none;
-        overflow: hidden; /* Clip any overflow */
-        position: relative;
-        left: 0;
-        top: 0;
-      }
-      
-      /* Ensure the last slide doesn't generate an extra blank page */
-      .slide:last-child {
-        page-break-after: avoid;
-        break-after: avoid;
-      }
-    }
-  </style>
+/* NEW: Refined nav button */
+.nav-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: var(--wh);
+  font-family: 'Hind Siliguri', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 10px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.nav-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--y);
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+}
+
+.nav-cta:hover {
+  border-color: var(--y);
+  color: var(--bk);
+  transform: translateY(-2px);
+}
+
+.nav-cta:hover::before {
+  transform: translateY(0);
+}
+
+.nav-cta:active { 
+  transform: translateY(0) scale(0.98); 
+}
+
+.nav-cta i {
+  font-size: 0.95rem;
+  transition: transform 0.3s ease;
+}
+
+.nav-cta:hover i {
+  transform: scale(1.1);
+}
+</style>
 </head>
+
 <body>
 
-  <!-- Slide 1: Cover -->
-  <section class="slide theme-dark">
-    <div class="inner">
-      <h1 style="font-size: 96px;">Nearby Offer</h1>
-      <h2 style="font-weight: 400; color: #ccc;">The <span class="highlight">Local Google</span> for shopping.</h2>
-      <div style="height: 40px;"></div>
-      <p class="lead" style="max-width: 800px;">
-        Search the physical world around you. <br>
-        Know availability, price, and location before you visit.
-      </p>
-      <div style="margin-top: auto; display: flex; gap: 20px; align-items: center; opacity: 0.6;">
-        <div style="font-size: 16px; text-transform: uppercase; letter-spacing: 1px;">Pre-Seed Deck</div>
-        <div style="width: 50px; height: 1px; background: #fff;"></div>
-        <div style="font-size: 16px; text-transform: uppercase; letter-spacing: 1px;">Holecom</div>
-      </div>
+<!-- ══ NAV ══ -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#080808" stroke-width="2.5" stroke-linecap="round">
+        <path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+        <path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+        <rect x="7" y="7" width="10" height="10" rx="2"/>
+      </svg>
     </div>
-  </section>
+    <span class="nav-logo-text">ScanKoro</span>
+  </a>
 
-  <!-- Slide 2: Problem -->
-  <section class="slide">
-    <div class="inner">
-      <span class="subtitle">The Problem</span>
-      <h2>Offline shopping is a "Black Box"</h2>
-      <p class="lead">97% of commerce in Bangladesh happens offline, but it is invisible to the internet.</p>
-      
-      <div class="grid-2">
-        <div class="bullet-list">
-          <div class="bullet">
-            <div class="check">✕</div>
-            <div><strong>Zero Visibility:</strong> Customers walk shop-to-shop asking "Do you have this?"</div>
-          </div>
-          <div class="bullet">
-            <div class="check">✕</div>
-            <div><strong>Price Opacity:</strong> No way to compare prices without physically bargaining.</div>
-          </div>
-          <div class="bullet">
-            <div class="check">✕</div>
-            <div><strong>Trust Gap:</strong> Facebook pages lack legitimacy; customers fear courier scams.</div>
-          </div>
-        </div>
+  <!-- Nav CTA → direct to Play Store -->
+  <a href="https://play.google.com/store/apps/details?id=com.holecom.offerx"
+     class="nav-cta" target="_blank" rel="noopener">    
+    <i class="fab fa-google-play"></i> ডাউনলোড করুন
+  </a>
+</nav>
 
-        <div class="card" style="background: var(--bg-soft); border:none; display:flex; align-items:center; justify-content:center; text-align:center; padding: 50px;">
-          <h3 style="color: var(--muted);">The Current Experience</h3>
-          <p style="font-size: 22px; margin-top: 15px;">
-            Search Online <br>↓<br> "Product Unavailable Locally" <br>↓<br> Visit 10 Offline Shops <br>↓<br> <strong>Wasted Time</strong>
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Slide 3: Solution -->
-  <section class="slide theme-primary">
-    <div class="inner">
-      <span class="subtitle" style="color: rgba(255,255,255,0.8);">The Solution</span>
-      <h2 style="color: #fff;">Search Online. Buy Offline.</h2>
-      <p class="lead" style="color: rgba(255,255,255,0.9);">
-        A hyper-local discovery platform that connects online intent with offline inventory.
-      </p>
-
-      <div class="grid-3" style="margin-top: 50px;">
-        <div class="card" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white;">
-          <h3 style="color:white;">Discover</h3>
-          <p style="line-height:1.5; font-size: 18px;">See what's in stock at shops within 2km of your location.</p>
-        </div>
-        <div class="card" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white;">
-          <h3 style="color:white;">Compare</h3>
-          <p style="line-height:1.5; font-size: 18px;">Check prices and distance instantly. No more bargaining blind.</p>
-        </div>
-        <div class="card" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white;">
-          <h3 style="color:white;">Verify</h3>
-          <p style="line-height:1.5; font-size: 18px;">Chat via WhatsApp, verify the shop exists, and go buy with trust.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Slide 4: Product -->
-  <section class="slide" style="background: #f8f8f8;">
-    <div class="inner top-align" style="padding: 60px var(--pad-x);">
-                            <!-- giving this style is my genius ness...otherwise only slide 4 is nonsense -->
-      <div style="text-align: center; ">
-        <span class="subtitle">The Product</span>
-        <h2>Built, Shipped, & Ready</h2>
-        <!-- <p class="lead" style="margin: 0 auto;">Live on Android. Scalable React Native architecture.</p> -->
-      </div>
-
-      <div class="phones-container">
-  <!-- Phone 1: Nearby Feed -->
-  <div class="phone-mock">
-    <div style="position:absolute; bottom:-35px; width:100%; text-align:center; color:black; font-size:14px; font-weight:bold; letter-spacing:1px;">NEARBY FEED</div>
-    <img src="https://raw.githubusercontent.com/mickyfazler/own_lrng/refs/heads/main/Screenshot_1767673972.png" alt="Nearby Feed"
-         style="width: 100%; height: 100%; object-fit: cover; object-position: center; image-rendering: crisp-edges; border-radius: 24px;">
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="hero-badge-dot"></span>
+    আগ্রাবাদ · চট্টগ্রাম
   </div>
 
-  <!-- Phone 2: Product View (highlighted with red border) -->
-  <div class="phone-mock" style="border-color: var(--primary);">
-    <div style="position:absolute; bottom:-35px; width:100%; text-align:center; color:var(--primary); font-size:14px; font-weight:bold; letter-spacing:1px;">PRODUCT VIEW</div>
-    <img src="https://raw.githubusercontent.com/mickyfazler/own_lrng/refs/heads/main/Screenshot_1767673982.png" alt="Product View"
-         style="width: 100%; height: 100%; object-fit: cover; object-position: center; image-rendering: crisp-edges; border-radius: 24px;">
+  <h1 class="hero-headline">
+    কোন দোকানে<br>
+    <span class="y">কী আছে?</span><br>
+    <span class="stroke">ফোনেই জানুন</span>
+  </h1>
+
+  <p class="hero-sub">
+    আশেপাশের দোকানের সব পণ্য, দাম ও ঠিকানা—<br>একসাথে। দোকানে যাওয়ার আগেই।
+  </p>
+
+  <div class="hero-actions">
+    <!-- Primary: direct to Play Store, no double-tap -->
+    <a href="https://play.google.com/store/apps/details?id=com.holecom.offerx"
+       id="heroDownloadBtn" target="_blank" rel="noopener" style="display:inline-block;">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play" style="height:60px; width:auto;">
+    </a>
+
+    <a href="#how" class="btn-ghost">
+      কীভাবে কাজ করে <i class="fas fa-arrow-down"></i>
+    </a>
   </div>
 
-  <!-- Phone 3: Map Discovery -->
-  <div class="phone-mock">
-    <div style="position:absolute; bottom:-35px; width:100%; text-align:center; color:black; font-size:14px; font-weight:bold; letter-spacing:1px;">MAP DISCOVERY</div>
-    <img src="https://raw.githubusercontent.com/mickyfazler/own_lrng/refs/heads/main/Screenshot_1767674004.png" alt="Map Discovery"
-         style="width: 100%; height: 100%; object-fit: cover; object-position:top; image-rendering: crisp-edges; border-radius: 24px;">
+  <!-- Floating product cards -->
+  <div class="hero-cards">
+    <div class="fl-card">
+      <img class="fl-img"
+        src="https://images.unsplash.com/photo-1598032895455-526c9e347a87?w=200&h=200&fit=crop&q=80" alt="শার্ট">
+      <div>
+        <div class="fl-name">ফরমাল শার্ট Premium</div>
+        <div class="fl-shop"><i class="fas fa-store" style="color:#3b82f6;font-size:.7rem"></i> মেনজ চয়েস · আখতারুজ্জামান</div>
+      </div>
+      <div class="fl-price">৳১,২০০</div>
+    </div>
+    <div class="fl-card">
+      <img class="fl-img"
+        src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=200&h=200&fit=crop&q=80" alt="বিরিয়ানি">
+      <div>
+        <div class="fl-name">মেজবানি বিরিয়ানি</div>
+        <div class="fl-shop"><i class="fas fa-utensils" style="color:#f59e0b;font-size:.7rem"></i> চিটাগাং ডাইন · ৩০০ মি</div>
+      </div>
+      <div class="fl-price">৳৩৫০</div>
+    </div>
+    <div class="fl-card">
+      <img class="fl-img"
+        src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=200&fit=crop&q=80" alt="হেডফোন">
+      <div>
+        <div class="fl-name">ANC হেডফোন Pro</div>
+        <div class="fl-shop"><i class="fas fa-store" style="color:#ef4444;font-size:.7rem"></i> Audi Beat · সাউথল্যান্ড</div>
+      </div>
+      <div class="fl-price">৳২,২০০</div>
+    </div>
   </div>
-</div>
-      
-    </div>
-  </section>
+</section>
 
-  <!-- Slide 5: Market -->
-  <section class="slide">
-    <div class="inner">
-      <span class="subtitle">The Market</span>
-      <h2>A Massive Untapped Gap</h2>
-      <p class="lead">Positioned perfectly between "Google Search" and "Traditional Ecommerce".</p>
+<!-- ══ HOW IT WORKS ══ -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <div>
+      <span class="section-label"><i class="fas fa-circle-play"></i> কীভাবে কাজ করে</span>
+      <h2 class="section-title">৩ ধাপে দোকান<br>এখন হাতের মুঠোয়</h2>
+      <div class="divider"></div>
+      <p class="section-desc">রিকশায় চড়ে দোকানে দোকানে যাওয়ার দিন শেষ। এখন ফোনেই দেখুন আশেপাশে কী পাওয়া যাচ্ছে।</p>
 
-      <div class="grid-4" style="margin-top: 30px;">
-        <div class="card">
-          <div class="big-stat">$200B</div>
-          <div class="stat-label">Retail Market Size<br>(Bangladesh)</div>
+      <div class="how-steps">
+        <div class="how-step">
+          <div class="step-num">১</div>
+          <div class="step-body">
+            <h3>অ্যাপ খুলুন বা QR স্ক্যান করুন</h3>
+            <p>আশেপাশের ডিজিটাল দোকানগুলো একসাথে ফিডে দেখুন, অথবা দোকানের QR কোড স্ক্যান করে সরাসরি সেই দোকানে ঢুকুন।</p>
+          </div>
         </div>
-        <div class="card">
-          <div class="big-stat">97%</div>
-          <div class="stat-label">Transactions are <br>still Offline</div>
+        <div class="how-step">
+          <div class="step-num">২</div>
+          <div class="step-body">
+            <h3>পণ্য, দাম ও ঠিকানা দেখুন</h3>
+            <p>ছবিসহ পণ্যের বিস্তারিত, দাম এবং দোকানটি ঠিক কোথায়—ম্যাপে দেখুন।</p>
+          </div>
         </div>
-        <div class="card">
-          <div class="big-stat">4.5M</div>
-          <div class="stat-label">Shops with no <br>digital discovery</div>
-        </div>
-        <div class="card">
-          <div class="big-stat">300K+</div>
-          <div class="stat-label">FB Sellers seeking <br>better tools</div>
-        </div>
-      </div>
-
-      <div style="margin-top: 50px; padding: 30px; border-left: 6px solid var(--primary); background: var(--bg-soft);">
-        <p style="margin: 0; font-size: 24px; color: var(--ink);">
-          <strong>Why Now?</strong> Internet penetration is high, but <strong>trust</strong> remains physical. People search online but buy offline. We bridge this specific gap.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Slide 6: Business Model -->
-  <section class="slide theme-dark">
-    <div class="inner">
-      <span class="subtitle">Business Model</span>
-      <h2>Monetize Density</h2>
-      <p class="lead">Free for users. Freemium for Sellers.</p>
-
-      <div class="grid-3">
-        <div class="card">
-          <div class="highlight" style="font-weight:bold; margin-bottom:12px; font-size: 14px;">PHASE 1 (NOW)</div>
-          <h3 style="color:#fff;">Ads Revenue</h3>
-          <p class="dim" style="font-size: 18px;">Generate initial revenue through Google AdMob while building user base and inventory liquidity.</p>
-        </div>
-        <div class="card">
-          <div class="highlight" style="font-weight:bold; margin-bottom:12px; font-size: 14px;">PHASE 2 (GROWTH)</div>
-          <h3 style="color:#fff;">Seller Premium</h3>
-          <p class="dim" style="font-size: 18px;">Sellers pay for "Verified" badges, market insights, and AI-generated listings (Image-to-Description).</p>
-        </div>
-        <div class="card">
-          <div class="highlight" style="font-weight:bold; margin-bottom:12px; font-size: 14px;">PHASE 3 (SCALE)</div>
-          <h3 style="color:#fff;">Promoted Listings</h3>
-          <p class="dim" style="font-size: 18px;">Shops bid to appear at the top of search results for specific keywords within their locality.</p>
+        <div class="how-step">
+          <div class="step-num">৩</div>
+          <div class="step-body">
+            <h3>নিশ্চিত হয়ে যান বা WhatsApp করুন</h3>
+            <p>পছন্দের পণ্য আছে কিনা নিশ্চিত হয়ে যান, কিংবা সরাসরি বিক্রেতার সাথে WhatsApp-এ কথা বলুন।</p>
+          </div>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- Slide 7: Go To Market -->
-  <section class="slide">
-    <div class="inner">
-      <span class="subtitle">Go-To-Market Strategy</span>
-      <h2>Win Chattogram First</h2>
-      <p class="lead">Strategy: Dominate one city density before expanding. Focus on zones with high student/tech-savvy populations.</p>
+    <!-- Phone mockup -->
+    <div class="phone-mock">
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="mock-header">
+            <div class="mock-search">
+              <i class="fas fa-magnifying-glass" style="font-size:.65rem;color:#64748b"></i>
+              পণ্য বা দোকান খুঁজুন
+            </div>
+            <div class="mock-loc">
+              <i class="fas fa-location-dot" style="font-size:.55rem"></i> আগ্রাবাদ
+            </div>
+          </div>
+          <div style="font-size:.65rem;color:rgba(255,255,255,.35);font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">আশেপাশের পণ্য</div>
+          <div class="mock-card">
+            <img class="mock-img" src="https://images.unsplash.com/photo-1598032895455-526c9e347a87?w=100&h=100&fit=crop&q=80" alt="">
+            <div><div class="mock-name">ফরমাল শার্ট</div><div class="mock-shop">মেনজ চয়েস</div></div>
+            <div class="mock-price">৳১,২০০</div>
+          </div>
+          <div class="mock-card">
+            <img class="mock-img" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100&h=100&fit=crop&q=80" alt="">
+            <div><div class="mock-name">ANC হেডফোন</div><div class="mock-shop">Audi Beat</div></div>
+            <div class="mock-price">৳২,২০০</div>
+          </div>
+          <div class="mock-card">
+            <img class="mock-img" src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=100&h=100&fit=crop&q=80" alt="">
+            <div><div class="mock-name">মেজবানি বিরিয়ানি</div><div class="mock-shop">চিটাগাং ডাইন</div></div>
+            <div class="mock-price">৳৩৫০</div>
+          </div>
+          <div style="margin-top:12px;background:rgba(255,235,59,.08);border:1px solid rgba(255,235,59,.15);border-radius:10px;padding:10px;display:flex;align-items:center;gap:8px;">
+            <i class="fas fa-qrcode" style="color:var(--y);font-size:1rem"></i>
+            <div style="font-size:.65rem;color:rgba(255,255,255,.6);font-weight:600">QR স্ক্যান করে দোকানে ঢুকুন</div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-glow"></div>
+    </div>
+  </div>
+</section>
 
-      <div class="grid-2">
+<!-- ══ FEATURES ══ -->
+<section class="features">
+  <div class="features-header">
+    <span class="section-label"><i class="fas fa-sparkles"></i> সুবিধাসমূহ</span>
+    <h2 class="section-title">যা পাবেন ScanKoro-তে</h2>
+    <div class="divider"></div>
+  </div>
+
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-icon"><i class="fas fa-store"></i></div>
+      <h3>পুরো দোকান এক ট্যাপে</h3>
+      <p>QR কোড স্ক্যান করলেই সেই দোকানের সব পণ্য, দাম ও বিস্তারিত খুলে যাবে।</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><i class="fas fa-location-dot"></i></div>
+      <h3>ম্যাপে দূরত্ব ও দিকনির্দেশনা</h3>
+      <p>দোকানটি ঠিক কোথায়, কতটা দূরে—ম্যাপে দেখুন এবং রাস্তা খুঁজুন।</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><i class="fab fa-whatsapp"></i></div>
+      <h3>সরাসরি WhatsApp চ্যাট</h3>
+      <p>পণ্য দেখে মনে ধরলে সরাসরি বিক্রেতার WhatsApp-এ মেসেজ পাঠান।</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><i class="fas fa-tag"></i></div>
+      <h3>সেরা দাম মিস হবে না</h3>
+      <p>এলাকার সেরা ডিল ও অফার ফিডে সরাসরি দেখুন। দাম তুলনা করুন সহজেই।</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><i class="fas fa-star"></i></div>
+      <h3>রিভিউ ও প্রশ্ন-উত্তর</h3>
+      <p>দোকান ও পণ্য সম্পর্কে রিভিউ দেখুন, প্রশ্ন করুন এবং সিদ্ধান্ত নিন।</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><i class="fas fa-clock"></i></div>
+      <h3>সময় ও রিকশাভাড়া বাঁচান</h3>
+      <p>আগে ফোনে দেখুন—পণ্য আছে কিনা নিশ্চিত হয়ে তারপর দোকানে যান।</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SELLER ══ -->
+<section class="seller">
+  <div class="seller-inner">
+    <div class="seller-highlight">
+      <h2>আপনার দোকান এখন<br>ডিজিটাল</h2>
+      <p>কাস্টমার এখন হাঁটে না, স্ক্যান করে। ScanKoro Seller দিয়ে আপনার দোকানকে পুরো চট্টগ্রাম দেখবে।</p>
+
+      <div class="seller-steps">
+        <div class="s-step"><i class="fas fa-user-plus"></i> ২ মিনিটে অ্যাকাউন্ট খুলুন</div>
+        <div class="s-step"><i class="fas fa-camera"></i> ছবি তুলে পণ্য দিন</div>
+        <div class="s-step"><i class="fas fa-qrcode"></i> QR প্রিন্ট করে দোকানে লাগান</div>
+        <div class="s-step"><i class="fas fa-users"></i> কাস্টমার স্ক্যান করলেই সব পাবে</div>
+      </div>
+
+      <!-- Seller app download — dark button on yellow bg -->
+      <a href="https://play.google.com/store/apps/details?id=com.holecom.sellerx"
+         target="_blank" rel="noopener" style="display:inline-block; position:relative; z-index:1;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play" style="height:60px; width:auto;">
+      </a>
+    </div>
+
+    <div class="seller-stats">
+      <div class="stat-item">
+        <div class="stat-icon">📍</div>
         <div>
-          <h3>1. Hyper-Local Targeting</h3>
-          <div class="bullet-list" style="margin-top: 25px;">
-            <div class="bullet"><div class="check">→</div><div><strong>Agrabad & GEC:</strong> High commercial density.</div></div>
-            <div class="bullet"><div class="check">→</div><div><strong>EPZ Area:</strong> High volume commodity flow.</div></div>
-            <div class="bullet"><div class="check">→</div><div><strong>Universities:</strong> Target early adopters who hate roaming.</div></div>
-          </div>
-        </div>
-        
-        <div class="card" style="background: var(--bg-soft);">
-          <h3>2. The Flywheel</h3>
-          <div style="display:flex; justify-content: space-between; margin-top: 30px; text-align: center; font-size: 16px; font-weight: bold;">
-             <div>Onboard<br>Sellers</div>
-             <div style="padding-top:10px;">→</div>
-             <div>More<br>Inventory</div>
-             <div style="padding-top:10px;">→</div>
-             <div>More<br>Users</div>
-             <div style="padding-top:10px;">→</div>
-             <div>Sellers<br>Pay</div>
-          </div>
+          <div class="stat-title">এলাকাভিত্তিক অটো প্রচার</div>
+          <div class="stat-desc">আপনার এলাকার কাস্টমারের কাছে আপনার পণ্য পৌঁছে যাবে</div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- Slide 8: Competition -->
-  <section class="slide theme-dark">
-    <div class="inner">
-      <span class="subtitle">Competitive Landscape</span>
-      <h2>Our "Blue Ocean"</h2>
-      
-      <table class="matrix">
-        <thead>
-          <tr>
-            <th>Feature</th>
-            <th style="color: white; font-size: 20px;">Nearby Offer</th>
-            <th>E-Commerce (Daraz)</th>
-            <th>Facebook/F-Commerce</th>
-            <th>Google Maps</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>See Nearby Availability</td>
-            <td class="tick">Yes</td>
-            <td>No</td>
-            <td>No</td>
-            <td>Sort of</td>
-          </tr>
-          <tr>
-            <td>Search by Product</td>
-            <td class="tick">Yes</td>
-            <td>Yes</td>
-            <td>No</td>
-            <td>No</td>
-          </tr>
-          <tr>
-            <td>Compare Prices Locally</td>
-            <td class="tick">Yes</td>
-            <td>No</td>
-            <td>No</td>
-            <td>No</td>
-          </tr>
-          <tr>
-            <td>Offline Trust/Verification</td>
-            <td class="tick">High</td>
-            <td>Low</td>
-            <td>Low</td>
-            <td>High</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- Slide 9: Team -->
-  <section class="slide">
-    <div class="inner">
-      <span class="subtitle">The Team</span>
-      <h2>Founder-Led Execution</h2>
-      <p class="lead">Efficient, technical, and local.</p>
-
-      <div class="grid-2">
-        <div class="card" style="border-left: 6px solid var(--primary);">
-          <h3>Fazle Rabbi</h3>
-          <p style="color: var(--muted); font-weight: 600; margin-bottom: 15px; font-size: 20px;">Founder & Lead Developer</p>
-          <div class="bullet-list">
-            <div class="bullet" style="font-size: 22px;"><div class="check">•</div><div>Solo built & deployed both Android Apps.</div></div>
-            <div class="bullet" style="font-size: 22px;"><div class="check">•</div><div>Accepted to <strong>UMN Twin Cities CSE</strong> (100% Scholarship).</div></div>
-            <div class="bullet" style="font-size: 22px;"><div class="check">•</div><div>Experience in React Native, LLMs, and E-com systems.</div></div>
-          </div>
-        </div>
-        
-        <div style="display: flex; flex-direction: column; justify-content: center;">
-          <h3 style="color: var(--muted);">Why this team?</h3>
-          <p style="font-size: 24px; line-height: 1.5;">
-            We don't have overhead. We have product velocity. <br><br>
-            The technical risk is zero (apps are live). The funding is needed purely for <strong>distribution</strong>.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Slide 10: The Ask -->
-  <section class="slide theme-primary">
-    <div class="inner">
-      <span class="subtitle" style="color: rgba(255,255,255,0.8);">Funding Ask</span>
-      <h2 style="color: white;">Pre-Seed Investment</h2>
-      
-      <div style="font-size: 110px; font-weight: 800; line-height: 1; margin: 30px 0;">
-        10 Lakh <span style="font-size: 50px; font-weight: 400;">BDT</span>
-      </div>
-      
-      <p class="lead" style="color: white; opacity: 0.9;">
-        To achieve 1,000 Verified Sellers and 20,000 Active Users in Chattogram within 6 months.
-      </p>
-
-      <div class="bar-chart">
-        <div class="bar-80">80% Marketing & User Acquisition</div>
-        <div class="bar-20">20% Dev & Ops</div>
-      </div>
-      
-      <div class="grid-2" style="font-size: 20px; opacity: 0.8; margin-top: 20px;">
-        <div>• Billboard & Location Ads in Agrabad/GEC</div>
-        <div>• Server Costs & iOS Development</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Slide 11: Contact -->  <!-- Slide 11: Contact & Download -->
-     <!-- Slide 11: Contact & Download -->
-  <!-- Slide 11: Contact & Download -->
-  <section class="slide theme-dark" style="text-align: center;">
-    <div class="inner">
-      <h2 style="font-size: 72px; margin-bottom: 30px;">Let's fix offline shopping.</h2>
-      
-      <!-- Contact Info Grid -->
-      <div style="display: flex; gap: 80px; justify-content: center; margin-bottom: 60px; text-align: left;">
+      <div class="stat-item">
+        <div class="stat-icon">💬</div>
         <div>
-          <div style="font-size: 16px; color: #999; text-transform: uppercase; margin-bottom:6px;">Founder</div>
-          <div style="font-size: 28px; font-weight: 600;">Fazle Rabbi</div>
-        </div>
-        <div>
-          <div style="font-size: 16px; color: #999; text-transform: uppercase; margin-bottom:6px;">Email</div>
-          <a href="mailto:contact@holecom.com" style="font-size: 28px; font-weight: 600; text-decoration: none; color: inherit;">contact@holecom.com</a>
-        </div>
-        <div>
-          <div style="font-size: 16px; color: #999; text-transform: uppercase; margin-bottom:6px;">Phone</div>
-          <a href="tel:+8801647521338" style="font-size: 28px; font-weight: 600; text-decoration: none; color: inherit;">880 16475 21338</a>
+          <div class="stat-title">সরাসরি WhatsApp লিড</div>
+          <div class="stat-desc">কাস্টমার পণ্য দেখেই WhatsApp-এ সরাসরি আপনাকে মেসেজ করবে</div>
         </div>
       </div>
-
-      <!-- APP DOWNLOAD CONTAINER -->
-      <div style="padding: 40px 60px; border-radius: 20px; border: 1px solid #333; display: inline-block; background: rgba(255,255,255,0.02);">
-        
-        <!-- LIVE: ANDROID -->
-        <p style="color: #ccc; margin-bottom: 25px; font-size: 18px; letter-spacing: 1px; text-transform: uppercase;">
-           Live on Google Play
-        </p>
-        
-        <div style="display: flex; gap: 60px; justify-content: center;">
-          
-          <!-- App 1: User App -->
-          <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-            <a href="https://play.google.com/store/apps/details?id=com.holecom.offerx" target="_blank" style="transition: transform 0.2s;">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" 
-                   alt="Get User App" style="height: 70px;">
-            </a>
-            <span style="font-size: 16px; color: #666;">Shopper App</span>
-          </div>
-
-          <!-- Vertical Divider -->
-          <div style="width: 1px; background: #333; height: 90px;"></div>
-
-          <!-- App 2: Seller App -->
-          <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-            <a href="http://play.google.com/store/apps/details?id=com.holecom.sellerx" target="_blank" style="transition: transform 0.2s;">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" 
-                   alt="Get Seller App" style="height: 70px;">
-            </a>
-            <span style="font-size: 16px; color: #666;">Seller App</span>
-          </div>
+      <div class="stat-item">
+        <div class="stat-icon">🏷️</div>
+        <div>
+          <div class="stat-title">অফার পোস্ট করুন</div>
+          <div class="stat-desc">বিশেষ ছাড় বা অফার পোস্ট করুন, সবার আগে কাস্টমার পাবে</div>
         </div>
-
-        <!-- SEPARATOR -->
-        <div style="margin: 30px auto; width: 60%; height: 1px; background: #333;"></div>
-        
-        <!-- READY: iOS -->
-        <div style="text-align: center; opacity: 0.6; filter: grayscale(100%);">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" 
-               alt="iOS" style="height: 60px;">
-          <div style="font-size: 15px; color: #999; margin-top: 10px; font-weight: 500;">
-             iOS Version Ready <span style="color: #555;">(React Native)</span>
-          </div>
-        </div>
-
       </div>
-
-      <div style="margin-top: auto; opacity: 0.4; font-size: 16px;">
-        Holecom • Chattogram, Bangladesh
+      <div class="stat-item">
+        <div class="stat-icon">⭐</div>
+        <div>
+          <div class="stat-title">রিভিউতে বিশ্বাস বাড়ান</div>
+          <div class="stat-desc">কাস্টমারের রিভিউ দিয়ে নতুন কাস্টমারের আস্থা অর্জন করুন</div>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
+<!-- ══ CTA ══ -->
+<section class="cta-section" id="download">
+  <div class="cta-box">
+    <h2>আগে ফোনে,<br><span style="color:var(--y)">তারপর দোকানে!</span></h2>
+    <p>দোকান আপনার কাছে আসুক। আগে স্ক্যান করুন, তারপর সিদ্ধান্ত নিন।</p>
+
+    <div class="download-group">
+      <div class="download-apps">
+        <!-- User app -->
+        <div class="download-app-group">
+          <span class="download-app-tag">ক্রেতাদের জন্য</span>
+          <a href="https://play.google.com/store/apps/details?id=com.holecom.offerx"
+             target="_blank" rel="noopener" style="display:inline-block;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play" style="height:60px; width:auto;">
+          </a>
+        </div>
+
+        <!-- Seller app -->
+        <div class="download-app-group">
+          <span class="download-app-tag">দোকানদারদের জন্য</span>
+          <a href="https://play.google.com/store/apps/details?id=com.holecom.sellerx"
+             target="_blank" rel="noopener" style="display:inline-block;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play" style="height:60px; width:auto;">
+          </a>
+        </div>
+      </div>
+
+      <div class="coming-soon-chip">
+        <i class="fab fa-apple"></i> iOS — শীঘ্রই আসছে
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <a href="#" class="footer-logo">
+    <div class="footer-logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#080808" stroke-width="2.5" stroke-linecap="round">
+        <path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+        <path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+        <rect x="7" y="7" width="10" height="10" rx="2"/>
+      </svg>
+    </div>
+    <span class="footer-logo-text">ScanKoro</span>
+  </a>
+  <span class="footer-copy">© 2025 ScanKoro · চট্টগ্রাম, বাংলাদেশ</span>
+  <div style="display:flex;gap:16px;flex-wrap:wrap">
+    <a href="https://www.holecom.com/privacy-policy.html" class="footer-link">গোপনীয়তা নীতি</a>
+    <!-- <a href="#" class="footer-link">যোগাযোগ</a> -->
+  </div>
+</footer>
+
+<script>
+// Nav scroll effect
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Scroll reveal
+const revealEls = document.querySelectorAll('.how-step, .feat-card, .stat-item');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), entry.target.dataset.delay || 0);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+revealEls.forEach((el, i) => { el.dataset.delay = (i % 3) * 100; observer.observe(el); });
+
+// Android deep link for hero button
+document.getElementById('heroDownloadBtn').addEventListener('click', function(e) {
+  if (/Android/i.test(navigator.userAgent)) {
+    e.preventDefault();
+    const intentUrl = 'intent://www.holecom.com/#Intent;scheme=https;package=com.holecom.offerx;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.holecom.offerx;end';
+    window.location.href = intentUrl;
+    setTimeout(() => { window.location.href = 'https://play.google.com/store/apps/details?id=com.holecom.offerx'; }, 1200);
+  }
+});
+</script>
 </body>
 </html>
