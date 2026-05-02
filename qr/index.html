@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScanKoro – Digital Shop Sticker Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@500;600;700&family=Inter:wght@800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<style>
+  :root { --theme:#FFEB3B; }
+  * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body { font-family:'Inter', system-ui, -apple-system, sans-serif; }
+  .font-bn { font-family:'Hind Siliguri', system-ui, sans-serif; }
+  
+  .wrap { 
+    filter: drop-shadow(0 25px 50px rgba(0,0,0,.5));
+    perspective: 1200px;
+    transition: transform .4s ease;
+  }
+  .sticker {
+    width:480px;
+    height:640px;
+    background: var(--theme);
+    border-radius:36px;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    transform-style: preserve-3d;
+    transition: background .3s ease, transform .3s ease;
+  }
+  
+  .brand {
+    font-weight:700;
+    font-size:52px;
+    letter-spacing:-0.5px;
+    color:#000;
+    margin-top:28px;
+    z-index:3;
+    position:relative;
+    text-align:center;
+    width:100%;
+  }
+  .tagline {
+    font-size: 24px;
+    font-weight: 600;
+    color: rgba(0,0,0,.8);
+    margin-top: 2px;
+    z-index: 3;
+    position: relative;
+    letter-spacing: .2px;
+  }
+ .magnifier {
+    position:relative;
+    width:320px;
+    height:320px;
+    margin-top:14px;
+    z-index:5;
+    animation: float 6s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0) rotateZ(0); }
+    50% { transform: translateY(-6px) rotateZ(-0.5deg); }
+  }
+ .lens {
+    position:absolute;
+    width:260px;
+    height:260px;
+    left:30px;
+    top:0;
+    border:22px solid #000;
+    border-radius:50%;
+    background: var(--theme);
+    transition: background.3s ease;
+    display:grid;
+    place-items:center;
+    box-shadow: inset 0 0 0 2px rgba(0,0,0,.06), 0 8px 20px rgba(0,0,0,.08);
+    overflow:hidden;
+  }
+ .sticker-gloss {
+    position:absolute;
+    inset:0;
+    background: radial-gradient(420px 240px at 50% -40px, rgba(255,255,255,.45) 0%, rgba(255,255,255,.15) 30%, rgba(255,255,255,0) 60%);
+    pointer-events:none;
+    z-index:1;
+  }
+  .sticker-overlay {
+    position:absolute;
+    inset:0;
+    background: linear-gradient(180deg, rgba(255,255,255,.15), transparent 30%, transparent 70%, rgba(0,0,0,.04));
+    mix-blend-mode: multiply;
+    pointer-events:none;
+    z-index:1;
+  }
+  .lens-shine {
+    position:absolute;
+    width:140%;
+    height:60px;
+    top:18%;
+    left:-20%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.85), transparent);
+    transform: rotate(-18deg);
+    filter: blur(2px);
+    opacity:.6;
+    animation: shine 5s ease-in-out infinite;
+    z-index:3;
+    pointer-events:none;
+  }
+  @keyframes shine {
+    0%,70%,100% { transform: translateX(-120%) rotate(-18deg); opacity:0; }
+    15% { opacity:.7; }
+    30% { transform: translateX(120%) rotate(-18deg); opacity:0; }
+  }
+ .lens img {
+    width:150px;
+    height:150px;
+    display:block;
+    position:relative;
+    z-index:2;
+    border-radius:8px;
+  }
+  /* --- MODIFIED: Reduced handle size slightly --- */
+ .handle {
+    position:absolute;
+    width:150px;
+    height:38px;
+    background:#000;
+    border-radius:19px;
+    left:226px;
+    top:222px;
+    transform:rotate(45deg);
+    transform-origin:left center;
+    box-shadow: 0 4px 10px rgba(0,0,0,.25);
+  } 
+  .bottom {
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;
+    height:118px;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+    z-index:4;
+    box-shadow: 0 -10px 30px rgba(0,0,0,.08);
+  }
+  .shop .name {
+    font-family:'Hind Siliguri', sans-serif;
+    font-size:28px;
+    font-weight:700;
+    color:#000;
+    line-height:1.4;
+    outline:none;
+    max-width:230px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .shop .name:empty:before { content:'দোকানের নাম'; color:rgba(0,0,0,.3); }
+  .shop .name:focus { background: rgba(0,0,0,.04); padding:0 4px; margin-left:-4px; border-radius:6px; }
+  .verified-badge { width: 26px; height: 26px; flex-shrink: 0; }
+
+  /* --- MODIFIED: New premium pill design --- */
+  
+  .pill:active { 
+    transform: scale(.97) translateY(1px);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05);
+  }
+  .pill svg {
+    width: 16px;
+    height: 16px;
+    color: #555;
+    margin-bottom: 2px;
+  }
+  .glass {
+    background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+  }
+
+  @media (max-width: 640px) {
+    .sticker { transform: scale(.78); transform-origin: top center; }
+    .wrap { height: 500px; }
+  }
+
+  @media print {
+    @page { size: 480px 640px; margin: 0; }
+    html, body { background: #fff !important; padding: 0 !important; margin: 0 !important; width: 480px !important; height: 640px !important; overflow: hidden !important; }
+    .no-print, .bg-decor, .absolute.-inset-6 { display: none !important; }
+    body > div.relative, main, section { padding: 0 !important; margin: 0 !important; display: block !important; }
+    .wrap { filter: none !important; perspective: none !important; transform: none !important; height: 640px !important; margin: 0 !important; }
+    .sticker { position: fixed !important; top: 0 !important; left: 0 !important; transform: none !important; box-shadow: none !important; margin: 0 !important; border-radius: 0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .magnifier, .lens-shine { animation: none !important; }
+    .lens-shine { display: none !important; }
+  }
+ .pill {
+  background: linear-gradient(135deg, var(--theme) 0%, var(--theme) 100%);
+  color: var(--pill-text-color, #000);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 12px 22px 13px;
+  border-radius: 999px;
+  border: 2px solid rgba(0,0,0,.15);
+  box-shadow: 
+    inset 0 1px 0 rgba(255,255,255,.5),
+    inset 0 -1px 0 rgba(0,0,0,.12), /* <-- FIX: Changed the 2px blur to 0 for a crisp edge */
+    0 0 0 1px rgba(255,255,255,.1),
+    0 4px 14px rgba(0,0,0,.2),
+    0 2px 4px rgba(0,0,0,.15);
+  position: relative;
+  overflow: hidden;
+  transition: all .2s cubic-bezier(.4,0,.2,1);
+}
+
+.pill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, 
+    rgba(255,255,255,.3) 0%, 
+    rgba(255,255,255,.08) 45%, 
+    transparent 50%, 
+    rgba(0,0,0,.05) 100%
+  );
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.pill::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -10%;
+  right: -10%;
+  height: 60%;
+  background: linear-gradient(180deg, rgba(255,255,255,.35), transparent);
+  filter: blur(6px);
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.pill svg {
+  width: 18px;
+  height: 18px;
+  color: inherit;
+  opacity: .85;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.15));
+  flex-shrink: 0;
+}
+
+.pill span {
+  position: relative;
+  text-shadow: 0 1px 2px rgba(0,0,0,.08);
+}
+</style>
+</head>
+<body class="min-h-screen bg-[#020617] text-white selection:bg-[var(--theme)] selection:text-black">
+  <div class="bg-decor fixed inset-0 -z-10">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#020617] to-black"></div>
+    <div class="absolute -top-32 -left-32 w- h- rounded-full bg-[var(--theme)]/20 blur-"></div>
+    <div class="absolute bottom-0 right-0 w- h- rounded-full bg-cyan-500/15 blur-"></div>
+  </div>
+
+  <div class="relative z-10 max-w- mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+    <header class="no-print flex items-center justify-between gap-4 mb-10">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-[var(--theme)] grid place-items-center shadow-lg shadow-yellow-500/10">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <circle cx="10" cy="10" r="7" stroke="black" stroke-width="2.5"/>
+              <path d="M15.5 15.5L21 21" stroke="black" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none">ScanKoro</h1>
+            <p class="text- uppercase tracking-[1.6px] text-white/50 font-semibold -mt-0.5">Digital Shop Sticker</p>
+          </div>
+        </div>
+    </header>
+
+    <main class="grid lg:grid-cols-5 gap-10 lg:gap-14 items-start">
+      <!-- Preview -->
+      <section class="lg:col-span-3 flex flex-col items-center">
+        <div class="relative">
+          <div class="absolute -inset-6 bg-[var(--theme)]/10 blur- rounded- -z-10 no-print"></div>
+          <div class="wrap" id="tiltWrap">
+            <div class="sticker" id="sticker">
+              <div class="sticker-gloss"></div>
+              <div class="sticker-overlay"></div>
+              <div class="brand">ScanKoro</div>
+              <div class="tagline font-bn">দোকানের সব পণ্য অনলাইনে দেখুন</div>
+              
+              <div class="magnifier">
+                <div class="lens">
+                <div class="lens-shine"></div>
+                  <img id="qr" alt="QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=https://scankoro.com/s/mens-choice&format=png&margin=2&color=000000&bgcolor=FFEB3B">
+                </div>
+                <div class="handle"></div>
+              </div>
+
+              <div class="bottom">
+                <div class="shop flex items-center gap-2">
+                  <div class="name" id="shopNamePreview" contenteditable="true" spellcheck="false">মেনজ চয়েস</div>
+                  <svg class="verified-badge" id="verifiedBadge" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24.5 14C24.5 19.799 19.799 24.5 14 24.5C8.20101 24.5 3.5 19.799 3.5 14C3.5 8.20101 8.20101 3.5 14 3.5C15.931 3.5 17.7492 4.00497 19.3334 4.88936" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M24.3076 5.8623L14.4999 15.6699L10.6621 11.832" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <!-- MODIFIED: New premium pill with icon -->
+                <div class="pill" id="pillPreview">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+  <path d="M21.9 10.6c.1-.4.1-.8.1-1.2 0-2.1-1.2-4-3-5L16.5 3c-.4-.2-.9-.4-1.4-.4h-6c-.5 0-1 .1-1.4.4L5.1 4.4c-1.9 1-3 2.9-3 5 0 .4 0 .8.1 1.2L3 13v7c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-7l.9-2.4zM7 19H5v-5h2v5zm5 0h-2v-5h2v5zm5 0h-2v-5h2v5zm2.4-8.8c-.5.5-1.2.8-1.9.8s-1.4-.3-1.9-.8c-.3-.3-.7-.3-1 0-.5.5-1.2.8-1.9.8s-1.4-.3-1.9-.8c-.3-.3-.7-.3-1 0-.5.5-1.2.8-1.9.8s-1.4-.3-1.9-.8L4.2 9c0-.3-.1-.7-.1-1 0-1.2.7-2.3 1.7-2.9L8.3 4c.2-.1.4-.2.7-.2h6c.2 0 .5.1.7.2l2.5 1.1c1.1.6 1.7 1.7 1.7 2.9 0 .3 0 .7-.1 1l-.4 1.2z"/>
+</svg>
+                    <span id="pillTextPreview">Digital Shop</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Controls -->
+      <aside class="lg:col-span-2 no-print w-full">
+        <div class="glass rounded- border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,.5)] overflow-hidden">
+          <div class="p-6 sm:p-8">
+            <h2 class="text- font-bold tracking-tight">কাস্টমাইজ করুন</h2>
+            <p class="text-white/60 text-sm mt-1.5 font-bn">আপনার দোকানের নাম ও লিংক দিয়ে স্টিকার বানান</p>
+
+            <div class="mt-7 space-y-5">
+              <!-- Shop Name -->
+              <div>
+                <label class="text- font-semibold text-white/70 uppercase tracking-wider flex items-center justify-between">
+                  <span class="font-bn">দোকানের নাম</span>
+                  <span class="text-white/40 normal-case">Bangla / English</span>
+                </label>
+                <input id="shopName" class="mt-2 w-full bg-black/40 border border-white/10 focus:border-[var(--theme)]/60 focus:ring-2 focus:ring-[var(--theme)]/20 outline-none rounded-2xl px-4 h-12 text- font-bn font-semibold transition" value="মেনজ চয়েস" placeholder="আপনার দোকানের নাম">
+              </div>
+
+              <!-- Slug + URL -->
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="text- font-semibold text-white/70 uppercase tracking-wider">Shop Slug</label>
+                  <div class="mt-2 relative">
+                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40 text-sm">/s/</span>
+                    <input id="shopSlug" class="w-full bg-black/40 border border-white/10 focus:border-[var(--theme)]/60 focus:ring-2 focus:ring-[var(--theme)]/20 outline-none rounded-2xl pl-9 pr-4 h-12 text- font-medium" value="mens-choice">
+                  </div>
+                </div>
+                <div>
+                  <label class="text- font-semibold text-white/70 uppercase tracking-wider flex justify-between">
+                    <span>Custom URL</span>
+                    <button id="copyBtn" class="text- text-[var(--theme)] hover:underline">Copy</button>
+                  </label>
+                  <input id="customUrl" class="mt-2 w-full bg-black/40 border border-white/10 focus:border-[var(--theme)]/60 focus:ring-2 focus:ring-[var(--theme)]/20 outline-none rounded-2xl px-4 h-12 text-" placeholder="https://... (optional)">
+                </div>
+              </div>
+
+              <!-- Pill Text -->
+              <div>
+                <label class="text- font-semibold text-white/70 uppercase tracking-wider font-bn">বাটন লেখা</label>
+                <!-- MODIFIED: Updated default value to 'Digital Shop' -->
+                <input id="pillText" class="mt-2 w-full bg-black/40 border border-white/10 focus:border-[var(--theme)]/60 focus:ring-2 focus:ring-[var(--theme)]/20 outline-none rounded-2xl px-4 h-12 text- font-bn font-semibold" value="Digital Shop">
+              </div>
+
+              <!-- Theme -->
+              <div>
+                <label class="text- font-semibold text-white/70 uppercase tracking-wider">Theme Color</label>
+                <div class="mt-2.5 flex flex-wrap gap-2.5" id="themeSwatches">
+                  <button data-color="#FFEB3B" class="group relative w-10 h-10 rounded-xl bg-[#FFEB3B] ring-2 ring-white/80 ring-offset-2 ring-offset-slate-950 transition"></button>
+                  <button data-color="#22d3ee" class="w-10 h-10 rounded-xl bg-[#22d3ee] hover:ring-2 hover:ring-white/60 hover:ring-offset-2 hover:ring-offset-slate-950 transition"></button>
+                  <button data-color="#f472b6" class="w-10 h-10 rounded-xl bg-[#f472b6] hover:ring-2 hover:ring-white/60 hover:ring-offset-2 hover:ring-offset-slate-950 transition"></button>
+                  <button data-color="#a3e635" class="w-10 h-10 rounded-xl bg-[#a3e635] hover:ring-2 hover:ring-white/60 hover:ring-offset-2 hover:ring-offset-slate-950 transition"></button>
+                  <button data-color="#fb923c" class="w-10 h-10 rounded-xl bg-[#fb923c] hover:ring-2 hover:ring-white/60 hover:ring-offset-2 hover:ring-offset-slate-950 transition"></button>
+                  <button data-color="#ffffff" class="w-10 h-10 rounded-xl bg-white border border-black/10 hover:ring-2 hover:ring-white/60 hover:ring-offset-2 hover:ring-offset-slate-950 transition"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="border-t border-white/10 bg-black/20 p-6 sm:p-8 backdrop-blur-xl">
+            <div class="grid sm:grid-cols-2 gap-3">
+              <button id="downloadBtn" class="group relative h- rounded-2xl bg-[var(--theme)] text-black font-bold text- overflow-hidden transition active:scale-[.98]">
+                <span class="relative z-10 flex items-center justify-center gap-2">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  PNG ডাউনলোড
+                </span>
+                <div class="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
+              </button>
+              <button onclick="window.print()" class="h- rounded-2xl bg-white/8 hover:bg-white/12 border border-white/10 text-white font-semibold text- transition active:scale-[.98] flex items-center justify-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                প্রিন্ট (48×64mm)
+              </button>
+            </div>
+            <p class="text- text-white/45 text-center mt-3.5 font-bn">300 DPI প্রিন্ট রেডি • স্টিকার সাইজে অটো ফিট</p>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="no-print mt-16 pb-8 text-center text- text-white/35">
+      © ScanKoro — Made for Bangladeshi shops. <span class="font-bn">স্ক্যান করো, সহজে কিনো</span>
+    </footer>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[100] pointer-events-none opacity-0 transition-all duration-300">
+    <div class="glass border border-white/15 rounded-2xl px-4 py-2.5 text-sm font-medium shadow-2xl flex items-center gap-2">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-emerald-400"><polyline points="20 6 9 17 4 12"/></svg>
+      <span id="toastMsg" class="font-bn">কপি করা হয়েছে!</span>
+    </div>
+  </div>
+
+<script>
+  const $ = (s) => document.querySelector(s);
+  const shopNameInput = $('#shopName');
+  const shopSlugInput = $('#shopSlug');
+  const customUrlInput = $('#customUrl');
+  const pillTextInput = $('#pillText');
+  const shopNamePreview = $('#shopNamePreview');
+  const pillTextPreview = $('#pillTextPreview'); // Target the span inside the pill
+  const qrImg = $('#qr');
+  const sticker = $('#sticker');
+  const downloadBtn = $('#downloadBtn');
+  const copyBtn = $('#copyBtn');
+  const themeSwatches = $('#themeSwatches');
+  const toast = $('#toast');
+  const toastMsg = $('#toastMsg');
+  const tiltWrap = $('#tiltWrap');
+
+  let currentTheme = '#FFEB3B';
+
+  function slugify(str) {
+    return str.toLowerCase().trim()
+      .replace(/[^a-z0-9\u0980-\u09FF]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'shop';
+  }
+
+  function getShopUrl() {
+    const custom = customUrlInput.value.trim();
+    if (custom) return custom;
+    const slug = slugify(shopSlugInput.value || shopNameInput.value);
+    return `https://scankoro.com/s/${slug}`;
+  }
+
+  function updateQR() {
+    const url = getShopUrl();
+    const bgColor = currentTheme.replace('#', '');
+    const qrApi = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(url)}&format=png&margin=2&color=000000&bgcolor=${bgColor}`;
+    if (qrImg.src !== qrApi) {
+      qrImg.src = qrApi;
+    }
+  }
+
+  function updatePreview() {
+    shopNamePreview.textContent = shopNameInput.value || 'দোকানের নাম';
+    // MODIFIED: Update the text of the span inside the pill
+    pillTextPreview.textContent = pillTextInput.value || 'Digital Shop';
+    updateQR();
+    if (!shopSlugInput.dataset.touched) {
+      shopSlugInput.value = slugify(shopNameInput.value);
+    }
+  }
+
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : { r: 255, g: 235, b: 59 };
+}
+
+function setTheme(color) {
+  currentTheme = color;
+  document.documentElement.style.setProperty('--theme', color);
+  
+  // Smart text color based on background brightness
+  const rgb = hexToRgb(color);
+  const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+  const textColor = brightness > 160 ? '#000000' : '#FFFFFF';
+  const iconColor = brightness > 160 ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.9)';
+  
+  document.documentElement.style.setProperty('--pill-text-color', textColor);
+  
+  // Update pill icon color
+  const pillIcon = document.querySelector('.pill svg');
+  if (pillIcon) pillIcon.style.color = iconColor;
+  
+  [...themeSwatches.children].forEach(btn => {
+    const isActive = btn.dataset.color === color;
+    btn.classList.toggle('ring-2', isActive);
+    btn.classList.toggle('ring-white/80', isActive);
+    btn.classList.toggle('ring-offset-2', isActive);
+    btn.classList.toggle('ring-offset-slate-950', isActive);
+  });
+  document.querySelector('.bg-decor > div:nth-child(2)').style.backgroundColor = color + '33';
+  updateQR();
+}
+  function showToast(msg) {
+    toastMsg.textContent = msg;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translate(-50%, 0)';
+    toast.style.pointerEvents = 'auto';
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translate(-50%, 10px)';
+    }, 2000);
+  }
+
+  async function downloadPNG() {
+    downloadBtn.disabled = true;
+    downloadBtn.querySelector('span').innerHTML = `<svg class="animate-spin" width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-opacity=".2" stroke-width="4" fill="none"/><path d="M12 2 a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round"/></svg> তৈরি হচ্ছে...`;
+    
+    await document.fonts.ready;
+    await new Promise(r => setTimeout(r, 150));
+
+    const magnifier = sticker.querySelector('.magnifier');
+    const prevAnim = magnifier.style.animation;
+    magnifier.style.animation = 'none';
+    
+    const canvas = await html2canvas(sticker, {
+      backgroundColor: null,
+      scale: 3,
+      useCORS: true,
+      allowTaint: true,
+      logging: false,
+    });
+    
+    magnifier.style.animation = prevAnim;
+    
+    const link = document.createElement('a');
+    const slug = slugify(shopSlugInput.value || 'shop');
+    link.download = `scankoro-${slug}-sticker.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    
+    downloadBtn.disabled = false;
+    downloadBtn.querySelector('span').innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PNG ডাউনলোড`;
+    showToast('PNG ডাউনলোড হয়েছে!');
+  }
+
+  // Events
+  shopNameInput.addEventListener('input', updatePreview);
+  shopSlugInput.addEventListener('input', () => { shopSlugInput.dataset.touched = '1'; updatePreview(); });
+  customUrlInput.addEventListener('input', updatePreview);
+  pillTextInput.addEventListener('input', updatePreview);
+
+  shopNamePreview.addEventListener('input', () => {
+    shopNameInput.value = shopNamePreview.textContent;
+    updatePreview();
+  });
+  shopNamePreview.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); shopNamePreview.blur(); }
+  });
+
+  themeSwatches.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    setTheme(btn.dataset.color);
+  });
+
+  copyBtn.addEventListener('click', async () => {
+    const url = getShopUrl();
+    try {
+      await navigator.clipboard.writeText(url);
+      showToast('লিংক কপি হয়েছে!');
+    } catch {
+      showToast(url);
+    }
+  });
+
+  downloadBtn.addEventListener('click', downloadPNG);
+
+  // Tilt effect
+  if (window.matchMedia('(hover: hover)').matches) {
+    tiltWrap.addEventListener('mousemove', (e) => {
+      const r = tiltWrap.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      sticker.style.transform = `rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateZ(0)`;
+    });
+    tiltWrap.addEventListener('mouseleave', () => {
+      sticker.style.transform = 'rotateY(0) rotateX(0)';
+    });
+  }
+
+  // Init from URL params
+  const params = new URLSearchParams(location.search);
+  const paramShop = params.get('shop');
+  const paramUrl = params.get('url');
+  const paramColor = params.get('color');
+  if (paramShop) {
+    shopNameInput.value = decodeURIComponent(paramShop);
+    shopSlugInput.value = slugify(paramShop);
+  }
+  if (paramUrl) customUrlInput.value = paramUrl;
+  if (paramColor && /^#?[0-9a-f]{3,6}$/i.test(paramColor)) {
+    setTheme(paramColor.startsWith('#') ? paramColor : '#' + paramColor);
+  } else {
+    setTheme(currentTheme);
+  }
+
+  updatePreview();
+</script>
+</body>
+</html>
