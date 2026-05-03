@@ -1,9 +1,38 @@
+<!-- 
+========================================================================
+BABY Fazle
+🤖 AI ASSISTANT INSTRUCTIONS (CRITICAL - DO NOT IGNORE)
+========================================================================
+This file is a "Single Source of Truth" used for BOTH a client-side 
+website AND a server-side Firebase Node.js environment.
+
+RULES FOR MODIFYING THIS FILE:
+1. NO BACKTICKS: This entire file is returned inside a JavaScript template 
+   literal (backticks) on the backend. You MUST NOT use any backticks (`) 
+   anywhere in this file. Use standard string concatenation with single ('') 
+   or double ("") quotes inside the <script> and <style> tags.
+2. SERVER INJECTION: Backend variables are injected ONLY into the 
+   <meta name="server-..."> tags inside the <head>. Do NOT inject dynamic 
+   variables directly into the HTML body elements.
+3. DO NOT REMOVE THE SCRIPT: The <script> block at the bottom is required 
+   for the server-side version to work. It reads the meta tags and updates 
+   the DOM. Leave the `isServer` logic intact.
+========================================================================
+-->
 <!DOCTYPE html>
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ScanKoro – Digital Shop Sticker Studio</title>
+
+<!-- Firebase Server Injection Tags -->
+<!-- In website mode, these stay as literal strings. In Firebase, Node.js injects the data. -->
+<meta name="server-mode" content="${typeof sellerId !== 'undefined' ? 'true' : 'false'}">
+<meta name="server-shop" content="${typeof displayName !== 'undefined' ? displayName : ''}">
+<meta name="server-qr" content="${typeof qrApiUrl !== 'undefined' ? qrApiUrl : ''}">
+<meta name="server-theme" content="${typeof themeColor !== 'undefined' ? themeColor : ''}">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@500;600;700&family=Inter:wght@800;900&display=swap" rel="stylesheet">
@@ -448,13 +477,13 @@
     const custom = customUrlInput.value.trim();
     if (custom) return custom;
     const slug = slugify(shopSlugInput.value || shopNameInput.value);
-    return `https://scankoro.com/s/${slug}`;
+    return 'https://scankoro.com/s/' + slug;
   }
 
   function updateQR() {
     const url = getShopUrl();
     const bgColor = currentTheme.replace('#', '');
-    const qrApi = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(url)}&format=png&margin=2&color=000000&bgcolor=${bgColor}`;
+    const qrApi = 'https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=' + encodeURIComponent(url) + '&format=png&margin=2&color=000000&bgcolor=' + bgColor;
     if (qrImg.src !== qrApi) {
       qrImg.src = qrApi;
     }
@@ -505,6 +534,7 @@ function setTheme(color) {
   document.querySelector('.bg-decor > div:nth-child(2)').style.backgroundColor = color + '33';
   updateQR();
 }
+
   function showToast(msg) {
     toastMsg.textContent = msg;
     toast.style.opacity = '1';
@@ -518,7 +548,7 @@ function setTheme(color) {
 
   async function downloadPNG() {
     downloadBtn.disabled = true;
-    downloadBtn.querySelector('span').innerHTML = `<svg class="animate-spin" width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-opacity=".2" stroke-width="4" fill="none"/><path d="M12 2 a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round"/></svg> তৈরি হচ্ছে...`;
+    downloadBtn.querySelector('span').innerHTML = '<svg class="animate-spin" width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-opacity=".2" stroke-width="4" fill="none"/><path d="M12 2 a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round"/></svg> তৈরি হচ্ছে...';
     
     await document.fonts.ready;
     await new Promise(r => setTimeout(r, 150));
@@ -539,12 +569,12 @@ function setTheme(color) {
     
     const link = document.createElement('a');
     const slug = slugify(shopSlugInput.value || 'shop');
-    link.download = `scankoro-${slug}-sticker.png`;
+    link.download = 'scankoro-' + slug + '-sticker.png';
     link.href = canvas.toDataURL('image/png');
     link.click();
     
     downloadBtn.disabled = false;
-    downloadBtn.querySelector('span').innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PNG ডাউনলোড`;
+    downloadBtn.querySelector('span').innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PNG ডাউনলোড';
     showToast('PNG ডাউনলোড হয়েছে!');
   }
 
@@ -586,30 +616,61 @@ function setTheme(color) {
       const r = tiltWrap.getBoundingClientRect();
       const x = (e.clientX - r.left) / r.width - 0.5;
       const y = (e.clientY - r.top) / r.height - 0.5;
-      sticker.style.transform = `rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateZ(0)`;
+      sticker.style.transform = 'rotateY(' + (x * 6) + 'deg) rotateX(' + (-y * 6) + 'deg) translateZ(0)';
     });
     tiltWrap.addEventListener('mouseleave', () => {
       sticker.style.transform = 'rotateY(0) rotateX(0)';
     });
   }
 
-  // Init from URL params
-  const params = new URLSearchParams(location.search);
-  const paramShop = params.get('shop');
-  const paramUrl = params.get('url');
-  const paramColor = params.get('color');
-  if (paramShop) {
-    shopNameInput.value = decodeURIComponent(paramShop);
-    shopSlugInput.value = slugify(paramShop);
-  }
-  if (paramUrl) customUrlInput.value = paramUrl;
-  if (paramColor && /^#?[0-9a-f]{3,6}$/i.test(paramColor)) {
-    setTheme(paramColor.startsWith('#') ? paramColor : '#' + paramColor);
-  } else {
-    setTheme(currentTheme);
-  }
+  // --- START INITIALIZATION ---
+  // Check if we are running via Firebase Puppeteer (Server Mode)
+  const metaServerMode = document.querySelector('meta[name="server-mode"]');
+  const isServer = metaServerMode && metaServerMode.content === 'true';
 
-  updatePreview();
+  if (isServer) {
+    // We are in Firebase! Use the injected values directly and skip URL generation.
+    const sShop = document.querySelector('meta[name="server-shop"]').content;
+    const sQr = document.querySelector('meta[name="server-qr"]').content;
+    const sTheme = document.querySelector('meta[name="server-theme"]').content;
+
+    shopNamePreview.textContent = sShop || 'আমার দোকান';
+    if (sQr) qrImg.src = sQr;
+    
+    if (sTheme) {
+      currentTheme = sTheme;
+      document.documentElement.style.setProperty('--theme', sTheme);
+      
+      const rgb = hexToRgb(sTheme);
+      const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+      const textColor = brightness > 160 ? '#000000' : '#FFFFFF';
+      const iconColor = brightness > 160 ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.9)';
+      
+      document.documentElement.style.setProperty('--pill-text-color', textColor);
+      const pillIcon = document.querySelector('.pill svg');
+      if (pillIcon) pillIcon.style.color = iconColor;
+      document.querySelector('.bg-decor > div:nth-child(2)').style.backgroundColor = sTheme + '33';
+    }
+  } else {
+    // We are on the regular website. Init from URL params normally.
+    const params = new URLSearchParams(location.search);
+    const paramShop = params.get('shop');
+    const paramUrl = params.get('url');
+    const paramColor = params.get('color');
+    
+    if (paramShop) {
+      shopNameInput.value = decodeURIComponent(paramShop);
+      shopSlugInput.value = slugify(paramShop);
+    }
+    if (paramUrl) customUrlInput.value = paramUrl;
+    if (paramColor && /^#?[0-9a-f]{3,6}$/i.test(paramColor)) {
+      setTheme(paramColor.startsWith('#') ? paramColor : '#' + paramColor);
+    } else {
+      setTheme(currentTheme);
+    }
+
+    updatePreview();
+  }
 </script>
 </body>
 </html>
